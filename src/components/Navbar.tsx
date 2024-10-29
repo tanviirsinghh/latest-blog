@@ -1,8 +1,9 @@
 import { Search, Bell, Edit, User,} from 'lucide-react'
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {  toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
+// import { Blog } from '../pages/Blog';
 const categories = ['For you', 'Following', 'React', 'JavaScript', 'Design', 'Software Development']
 
 
@@ -33,7 +34,7 @@ function onClick():void {
            <div className="flex justify-between h-16">
              <div className="flex">
                <div className="flex-shrink-0 flex items-center">
-                 <span className="text-2xl font-bold text-gray-900">Blog</span>
+                 <span className="text-2xl font-bold text-gray-900"><Link to={'/blogs'}> Blog</Link></span>
                </div>
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                  {categories.map((category) => (

@@ -1,7 +1,9 @@
 
-import {  Star, ThumbsUp, MessageSquare, MoreHorizontal, Bookmark } from "lucide-react"
+import DOMPurify from "dompurify"
+import {  Star, ThumbsUp, MessageSquare, MoreHorizontal } from "lucide-react"
 import {   ReactNode } from 'react'
-import React from "react"
+// import React from "react"
+import { Link } from "react-router-dom"
 
 interface Props{
     children?:ReactNode,
@@ -75,12 +77,13 @@ export default function SingleBlog({id, authorName, title,content, publishDate}:
   // }
 
   return (
+    
    
-      
+    <Link to={`/blog/${id}`}>
 
-<main className="container mx-auto px-1 py-3 bg-green-800">
-        <div className="flex flex-col justify-center lg:flex-row bg-pink-900">
-          <div className="lg:w-11/12 bg-yellow-800">
+<main className="container mx-auto px-1 py-3 ">
+        <div className="flex flex-col justify-center lg:flex-row ">
+          <div className="lg:w-11/12 ">
             
               <Card key={id} className="mb-1">
                 <CardContent className="p-6">
@@ -96,7 +99,9 @@ export default function SingleBlog({id, authorName, title,content, publishDate}:
                         {/* <span className="text-sm font-medium">{post.category}</span> */}
                       </div>
                       <h2 className="text-xl font-bold mb-2">{title}</h2>
-                      <p className="text-gray-600 mb-4">{content}</p>
+                      <p className="text-gray-600 mb-4" dangerouslySetInnerHTML={{ 
+          __html: DOMPurify.sanitize(content.slice(1, 100) + "....") 
+        }} ></p>
                       <div className="flex items-center text-sm text-gray-500 space-x-4">
                         <span>{publishDate}</span>
                         <span>·</span>
@@ -141,6 +146,6 @@ export default function SingleBlog({id, authorName, title,content, publishDate}:
 
         </div>
       </main>
-
+</Link>
   )
 }

@@ -4,25 +4,29 @@ import { Appbar } from "./Appbar"
 // import { Blog } from '../pages/Blog';
 import { Blog } from '../hooks/index';
 import { Avatar } from "./BlogCard";
+import DOMPurify from "dompurify";
 
 export const FullBlog =( { blog  }: {blog:Blog}) => {
     return <div>
         <Appbar />
         <div className="flex justify-center">
             <div className="grid grid-cols-12 px-10 w-full pt-200 max-w-screen-xl pt-12">
-                <div className="col-span-8">
+                <div className="col-span-9">
                     
-                    <div className="text-5xl font-extrabold">
+                    <div className=" bg-green-700 text-4xl font-extrabold break-words">
                         {blog.title}
                     </div>
-                    <div className="text-slate-500 pt-2">
+                    <div className="text-slate-500 pt-2 ">
                         Post on 2nd December 2023
                     </div>
-                    <div className="pt-4">
-                        {blog.content}
+                    <div className="pt-4 flex flex-col break-words" dangerouslySetInnerHTML={{ 
+          __html: DOMPurify.sanitize(blog.content) 
+        }}  >
+                      
+                        
                     </div>
                 </div>
-                <div className="col-span-4">
+                <div className="col-span-3  ml-8">
         
                     <div className="text-slate-600 text-lg">
                         Author
