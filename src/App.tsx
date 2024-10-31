@@ -14,6 +14,7 @@ import SingleBlog from './components/SingleBlog'
 // import NewCard from './components/NewCard'
 import TextEditor from './pages/TextEditor'
 import { ToastContainer } from 'react-toastify'
+import UserProfile from './pages/UserProfile'
 // import Latest from './components/Latest'
 // import  Background  from './pages/Signin'
 function App() {
@@ -38,6 +39,9 @@ function App() {
   <Route path='/' element={token? <Blogs/> : <Signin/>}></Route>
   <Route path = '/singleblogtemplate' element={<SingleBlog/>}></Route>
   <Route path = '/publish' element={<TextEditor/>}></Route>
+  <Route path = '/userprofile' element={<UserProfile/>}></Route>
+
+
 
  
 
