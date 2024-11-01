@@ -1,6 +1,7 @@
-import ProfileInfo from '../components/UserProfile.tsx/ProfileInfo';
-import SavedBlogs from '../components/UserProfile.tsx/SavedBlogs';
-import MyActivities from '../components/UserProfile.tsx/MyActivities';
+import ProfileInfo from '../components/UserProfile.tsx/ProfileInfo'
+import SavedBlogs from '../components/UserProfile.tsx/SavedBlogs'
+import MyActivities from '../components/UserProfile.tsx/MyActivities'
+import Navbar from '../components/Navbar'
 
 // Simple Avatar component
 
@@ -60,7 +61,7 @@ import MyActivities from '../components/UserProfile.tsx/MyActivities';
 //   ]
 // }
 
-export default function UserProfile() {
+export default function UserProfile () {
   // const [isEditing, setIsEditing] = useState(false)
   // const [editedUser, setEditedUser] = useState(user)
   // const [avatarPreview, setAvatarPreview] = useState(user.avatar)
@@ -101,17 +102,23 @@ export default function UserProfile() {
   // }
 
   return (
-    <div className=" h-4/5 w-screen bg-yellow-600 flex flex-col justify-center items-center">
-      <div className='h-16 w-56 bg-pink-500 flex justify-center items-center '>
-      <h1 className="text-3xl font-bold font-sans  ">User Profile</h1>
+
+    <div className='h-[60rem] w-full  '>
+      <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+      <Navbar />
+      <div className='h-[34rem] w-full  flex flex-col justify-center items-center'>
+        <div className='h-16 w-56  flex justify-center items-center '>
+          <h1 className='text-3xl font-bold font-sans  '>User Profile</h1>
+        </div>
+        <div className='h-3/4 w-3/4 flex justify-evenly items-center  '>
+          <ProfileInfo />
+          <SavedBlogs />
+        </div>
       </div>
-      <div className="h-3/4 w-3/4 flex justify-evenly items-center bg-green-500  ">
-        {/*  */}
-        {/* ProfileInformation here */}
-       < ProfileInfo/>
-        {/* <SavedBlogs/> */}
+      <div className=' h-1/3 flex justify-center items-center '>
+        <MyActivities />
       </div>
-     {/* <MyActivities/> */}
+    </div>
     </div>
   )
 }

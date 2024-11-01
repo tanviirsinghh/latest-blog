@@ -27,8 +27,8 @@ export default function MyActivities() {
       const [showUserActivities, setShowUserActivities] = useState(true)
       const [showLikes, setShowLikes] = useState(true)      
   return (
-    <div>
-     <div className="mt-6 bg-white shadow rounded-lg p-6">
+    <div className='h-[20rem] w-2/4'>
+     <div className="h-full bg-white shadow rounded-lg p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Activities</h2>
           <div className="flex items-center space-x-2">

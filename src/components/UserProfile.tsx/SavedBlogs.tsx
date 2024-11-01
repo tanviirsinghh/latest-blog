@@ -4,9 +4,11 @@ import { BookmarkIcon } from 'lucide-react'
 export default function SavedBlogs() {
   return (
     <div>
-      <div className=" bg-white shadow rounded-lg ">
+      <div className="h-96 w-[33rem] shadow-lg rounded-lg p-2 flex flex-col justify-evenly items-start">
+        <div className='h-8 w-full  flex justify-center items-center'>
           <h2 className="text-xl font-semibold mb-4">Saved Blogs</h2>
-          <div className="h-[300px] overflow-y-auto pr-2">
+          </div>
+          <div className="h-[350px] p-2 w-full  overflow-y-auto pr-2">
             <ul className="space-y-4">
              
                 <li  className="flex items-start space-x-2">
