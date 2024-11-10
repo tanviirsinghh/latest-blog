@@ -81,12 +81,12 @@ export default function SingleBlog({id, authorName, title,content, publishDate}:
    
     <Link to={`/blog/${id}`}>
 
-<main className="container mx-auto px-1 py-3 ">
-        <div className="flex flex-col justify-center lg:flex-row ">
-          <div className="lg:w-11/12 ">
+{/* <main className="container h-full w-[46rem]  bg-yellow-700 ">
+        <div className=" w-full bg-slate-700 lg:flex-row "> */}
+          <div className="w-[45rem] border rounded-md h-full  m-1">
             
-              <Card key={id} className="mb-1">
-                <CardContent className="p-6">
+              <Card key={id} className=" w-full  p-1 ">
+                <CardContent className="p-6 ">
                   <div className="flex items-start space-x-4">
                     <div className="flex-grow">
                       <div className="flex items-center space-x-2 mb-2">
@@ -144,8 +144,8 @@ export default function SingleBlog({id, authorName, title,content, publishDate}:
           </div>
 
 
-        </div>
-      </main>
+        {/* </div> */}
+      {/* </main> */}
 </Link>
   )
 }

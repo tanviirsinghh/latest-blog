@@ -10,6 +10,19 @@ const categories = ['For you', 'Following', 'React', 'JavaScript', 'Design', 'So
 
 export const Navbar = () => {
   const navigate = useNavigate();
+
+  function OpenUserProfile(){
+    const token = localStorage.getItem('token')
+        if(!token){
+          toast.warn("Sign In First", {
+            position: "top-right"
+          });
+        }
+     
+      navigate('/userprofile')
+    
+   
+  }
   
 function onClick():void {
         const token = localStorage.getItem('token')
@@ -28,8 +41,8 @@ function onClick():void {
 
     return(
        
-             <div className="bg-white">
-   <nav className="border-b border-gray-200">
+           
+   <nav className="border-b inset-0 -z-10 bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] ">
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
            <div className="flex justify-between h-16">
              <div className="flex">
@@ -70,16 +83,16 @@ function onClick():void {
                 <Edit className="h-5 w-5 mr-2" />
                 Write
               </button>
-              <button className="ml-3 p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              <button onClick={OpenUserProfile} className="ml-3 p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 <User className="h-6 w-6" ></User>
               </button>
             </div>
           </div>
         </div>
       </nav>
-   {/* single blog template here */}
+
           
-        </div>
+      
     
    
 

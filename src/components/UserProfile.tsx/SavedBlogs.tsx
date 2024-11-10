@@ -4,7 +4,7 @@ import { BookmarkIcon } from 'lucide-react'
 export default function SavedBlogs() {
   return (
     <div>
-      <div className="h-96 w-[33rem] shadow-lg rounded-lg p-2 flex flex-col justify-evenly items-start">
+      <div className="h-96 w-[33rem] shadow-lg rounded-lg p-2 flex flex-col justify-evenly items-start bg-white">
         <div className='h-8 w-full  flex justify-center items-center'>
           <h2 className="text-xl font-semibold mb-4">Saved Blogs</h2>
           </div>

@@ -36,7 +36,10 @@ function App() {
   <Route path='/blogs' element={<Blogs/>}> </Route>
   <Route path="/blog/:id" element={<Blog/>}></Route>
   {/* <Route path='/publish' element={<Publish/>}></Route> */}
-  <Route path='/' element={token? <Blogs/> : <Signin/>}></Route>
+  {/* <Route path='/' element={token? <Blogs/> : <Signin/>}></Route> */}
+  {/* everyone can see this main page, but cannot interact with that untill they login and sign up */}
+    <Route path='/' element={<Blogs/>}></Route>
+
   <Route path = '/singleblogtemplate' element={<SingleBlog/>}></Route>
   <Route path = '/publish' element={<TextEditor/>}></Route>
   <Route path = '/userprofile' element={<UserProfile/>}></Route>

@@ -49,7 +49,7 @@ export default function LowerSidebar() {
 
   return (
     
-
+    <div className=' flex justify-start fixed'>
             <Card>
               <CardHeader>
                 <CardTitle>Recommended topics</CardTitle>
@@ -65,6 +65,7 @@ export default function LowerSidebar() {
                 <Button variant="link" className="mt-4 p-0">See more topics</Button>
               </CardContent>
             </Card>
+            </div>
           
   )
 }

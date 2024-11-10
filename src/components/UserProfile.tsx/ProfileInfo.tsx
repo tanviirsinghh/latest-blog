@@ -64,7 +64,7 @@ export default function ProfileInfo () {
   return (
   
    
-    <div  className='overflow-y-auto h-96 w-96 roundeed-lg shadow-lg bg-slate-50 '>
+    <div  className='overflow-y-auto h-96 w-96 roundeed-lg shadow-lg bg-white '>
       <div className='overflow-y-auto h-full w-full  shadow rounded-lg p-6'>
         <h2 className='text-xl font-semibold mb-4'>Profile Information</h2>
         <div className='flex items-center space-x-4 mb-4'>

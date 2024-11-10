@@ -52,7 +52,7 @@ export default function Sidebar() {
         </button>
       )
   return (
-    <div className='flex justify-start mt-9'>
+    <div className=' flex justify-start mt-9 fixed'>
        <Card className="mb-6">
               <CardHeader>
                 <CardTitle>Staff Picks</CardTitle>

@@ -47,12 +47,14 @@ export const Blogs = () => {
 //        </div>
 
 
-
-<div className="min-h-screen ">
-      <Navbar/>
-<main className="mx-32 ">
-        <div className="flex flex-col  lg:flex-row ">
-            <div>
+<>
+<Navbar/>
+<div className=" relative min-h-screen inset-0 -z-10 bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]  ">
+     
+<main className="mx-32">
+        <div className="flex flex-col   lg:flex-row ">
+            <div className=' h-full w-[90rem] flex justify-center items-center'>
+            <div className=' h-full w-full flex flex-col justify-between items-center p-8  '>
         {blogs.map(blog => <SingleBlog
   id={blog.id}
   authorName={blog.author.name || "Anonymous"}
@@ -61,20 +63,21 @@ export const Blogs = () => {
   publishDate={date.toString()}
 />)}
 </div>
-          <div className="">
+</div>
+          <div className="bg-green-900 relative ">
            <Sidebar/>
 
             <LowerSidebar/>
           </div>
           </div>
 
-
+ {/* a quick brown fox jumps over the lazy dog a quick brown fox jumps over the lazy dog a quick brown fox jumps over the lazy dog a quick brown  */}
         
         
       </main>
     </div>
    
-
+    </>
     )
 
 }

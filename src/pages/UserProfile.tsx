@@ -2,6 +2,7 @@ import ProfileInfo from '../components/UserProfile.tsx/ProfileInfo'
 import SavedBlogs from '../components/UserProfile.tsx/SavedBlogs'
 import MyActivities from '../components/UserProfile.tsx/MyActivities'
 import Navbar from '../components/Navbar'
+// import NewLikeComments from '../components/UserProfile.tsx/NewLikeComment';
 
 // Simple Avatar component
 
@@ -102,10 +103,11 @@ export default function UserProfile () {
   // }
 
   return (
-
-    <div className='h-[60rem] w-full  '>
-      <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
-      <Navbar />
+<>
+<Navbar />
+    <div className='h-[60rem] w-full inset-0 -z-10 bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] '>
+      {/* <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"> */}
+      
       <div className='h-[34rem] w-full  flex flex-col justify-center items-center'>
         <div className='h-16 w-56  flex justify-center items-center '>
           <h1 className='text-3xl font-bold font-sans  '>User Profile</h1>
@@ -117,8 +119,10 @@ export default function UserProfile () {
       </div>
       <div className=' h-1/3 flex justify-center items-center '>
         <MyActivities />
+        {/* Its a new component yet to be editted */}
+        {/* <NewLikeComments/> */}
       </div>
     </div>
-    </div>
+    </>
   )
 }
