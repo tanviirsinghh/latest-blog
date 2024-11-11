@@ -49,8 +49,8 @@ export default function LowerSidebar() {
 
   return (
     
-    <div className=' flex justify-start fixed'>
-            <Card>
+    <div className=' flex justify-center w-[26rem] '>
+            <Card>  
               <CardHeader>
                 <CardTitle>Recommended topics</CardTitle>
               </CardHeader>
