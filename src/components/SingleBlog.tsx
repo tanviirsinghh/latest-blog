@@ -95,9 +95,9 @@ export default function SingleBlog ({
     <Link to={`/blog/${id}`}>
       {/* <main className="container h-full w-[46rem]  bg-yellow-700 ">
         // <div className=" w-full bg-slate-700 lg:flex-row "> */}
-      <div className='w-[45rem] border bg-black rounded-md h-full  '>
-        <Card key={id} className=' w-full bg-green-900  '>
-          <CardContent className='p-8 bg-pink-400 '>
+      <div className='w-[45rem] border  rounded-md h-full  '>
+        <Card key={id} className=' w-full   '>
+          <CardContent className='p-8  '>
             <div className='flex items-start space-x-4'>
               <div className='flex-grow'>
                 <div className='flex items-center space-x-2 mb-2'>
