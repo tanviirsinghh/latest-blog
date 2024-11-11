@@ -1,6 +1,5 @@
-
 import './App.css'
-import { BrowserRouter, Routes,Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Signup from './pages/Signup'
 // import Signin from './pages/Signin'
 import Blogs from './pages/Blogs'
@@ -18,52 +17,42 @@ import UserProfile from './pages/UserProfile'
 import ImageUpload from './components/ImageUpload'
 // import { CloudHailIcon } from 'lucide-react'
 
-
-
-
-function App() {
-
-  
-
-
+function App () {
   // const navigate  = useNavigate();
   //   const token = localStorage.getItem('token');
   //   console.log(token)
   //   if(token == null){
   //     navigate('/signin')
   //   }
-   
 
   return (
     <>
-     <ToastContainer />
-<BrowserRouter>
-<Routes>
-  <Route path='/signup' element={<Signup/>}> </Route>
-  <Route path='/signin' element={<Signin/>}> </Route>
-  <Route path='/blogs' element={<Blogs/>}> </Route>
-  <Route path="/blog/:id" element={<Blog/>}></Route>
-  {/* <Route path='/publish' element={<Publish/>}></Route> */}
-  {/* <Route path='/' element={token? <Blogs/> : <Signin/>}></Route> */}
-  {/* everyone can see this main page, but cannot interact with that untill they login and sign up */}
-    <Route path='/' element={<Blogs/>}></Route>
+      <ToastContainer />
+      <BrowserRouter>
+        <Routes>
+          <Route path='/signup' element={<Signup />}>
+            {' '}
+          </Route>
+          <Route path='/signin' element={<Signin />}>
+            {' '}
+          </Route>
+          <Route path='/blogs' element={<Blogs />}>
+            {' '}
+          </Route>
+          <Route path='/blog/:id' element={<Blog />}></Route>
+          {/* <Route path='/publish' element={<Publish/>}></Route> */}
+          {/* <Route path='/' element={token? <Blogs/> : <Signin/>}></Route> */}
+          {/* everyone can see this main page, but cannot interact with that untill they login and sign up */}
+          <Route path='/' element={<Blogs />}></Route>
 
-  <Route path = '/singleblogtemplate' element={<SingleBlog/>}></Route>
-  <Route path = '/publish' element={<TextEditor/>}></Route>
-  <Route path = '/userprofile' element={<UserProfile/>}></Route>
-  <Route path = '/imageupload' element={<ImageUpload/>}></Route>
+          <Route path='/singleblogtemplate' element={<SingleBlog />}></Route>
+          <Route path='/publish' element={<TextEditor />}></Route>
+          <Route path='/userprofile' element={<UserProfile />}></Route>
+          <Route path='/imageupload' element={<ImageUpload />}></Route>
 
-
-
-
- 
-
-  {/* <Route path='/latest' element={<Latest/>}></Route> */}
-
-
-
-
-  </Routes></BrowserRouter>      
+          {/* <Route path='/latest' element={<Latest/>}></Route> */}
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }
