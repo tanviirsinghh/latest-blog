@@ -40,11 +40,7 @@ export default function ImageUpload () {
         msg:"Image didn't upload"
     })
     }
-    //   .then(resp => resp.json())
-    //   .then(data => {
-    //     setUrl(data.url)
-    //   })
-    //   .catch(err => console.log(err))
+   
   }
 
  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
