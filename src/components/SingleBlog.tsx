@@ -113,7 +113,7 @@ export default function SingleBlog ({
                 <p
                   className='text-gray-600 mb-4'
                   dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(content.slice(1, 100) + '....')
+                    __html: DOMPurify.sanitize(content ? content.slice(1, 100) : " " + '....')
                   }}
                 ></p>
                 <div className='flex items-center text-sm text-gray-500 space-x-4'>

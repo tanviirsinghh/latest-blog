@@ -6,16 +6,12 @@ import Blogs from './pages/Blogs'
 import { Blog } from './pages/Blog'
 // import { Publish } from './pages/Publish'
 import Signin from './pages/Signin'
-// import NewCard from './components/NewCard'
 // import Home from './pages/Home'
-// import Vishal from './components/Vishal'
-import SingleBlog from './components/SingleBlog'
-// import NewCard from './components/NewCard'
 import TextEditor from './pages/TextEditor'
 import { ToastContainer } from 'react-toastify'
 import UserProfile from './pages/UserProfile'
 import ImageUpload from './components/ImageUpload'
-// import { CloudHailIcon } from 'lucide-react'
+
 
 function App () {
   // const navigate  = useNavigate();
@@ -45,12 +41,15 @@ function App () {
           {/* everyone can see this main page, but cannot interact with that untill they login and sign up */}
           <Route path='/' element={<Blogs />}></Route>
 
-          <Route path='/singleblogtemplate' element={<SingleBlog />}></Route>
+          {/* <Route path='/singleblogtemplate' element={<SingleBlog id="1" 
+  authorName="John Doe" 
+  title="Sample Blog Post" 
+  content="This is a sample content" 
+  publishDate="2024-11-07"  />}></Route> */}
           <Route path='/publish' element={<TextEditor />}></Route>
           <Route path='/userprofile' element={<UserProfile />}></Route>
           <Route path='/imageupload' element={<ImageUpload />}></Route>
 
-          {/* <Route path='/latest' element={<Latest/>}></Route> */}
         </Routes>
       </BrowserRouter>
     </>
