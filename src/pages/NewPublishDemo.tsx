@@ -4,7 +4,7 @@ import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { ChangeEvent, useState } from "react";
 
-export const Publish = () => {
+export const NewPublish = () => {
     const navigate = useNavigate()
     if(!localStorage.getItem("token")){
          navigate('/signin')
@@ -12,6 +12,9 @@ export const Publish = () => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     
+// Not using this
+// 
+// 
 
     return <div>
         <Appbar />

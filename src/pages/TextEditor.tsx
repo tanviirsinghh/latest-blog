@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import { toast } from 'react-toastify'
 // import { Toast } from 'node_modules/react-toastify/dist/components'
+import UploadImg from '../components/UploadImg';
 
 export default function TextEditor () {
   const editorRef = useRef<TinyMCEEditor | null>(null)
@@ -24,10 +25,16 @@ export default function TextEditor () {
   //   };
 
   return (
-    <div className='h-screen w-full flex-col justify-center items-center'>
+    <div className='h-screen w-full  flex-col justify-center items-center'>
       <Navbar />
-      <div className='flex justify-center items-center h-32 w-full  '>
-        <div className='  max-w-screen-lg h-16 w-2/3 flex'>
+      <div className='w-full h-44 bg-pink-700 flex justify-center items-end'>
+       <div className='bg-violet-500 w-2/4 flex justify-center items-center'>
+          <UploadImg/>
+        </div>
+        </div>
+      <div className='flex bg-green-900  justify-center items-center h-32 w-full  '>
+       
+        <div className=' bg-yellow-500 max-w-screen-lg h-16 w-2/3 flex'>
           <input
             onChange={e => {
               setTitle(e.target.value)
@@ -38,7 +45,7 @@ export default function TextEditor () {
           />
         </div>
       </div>
-      <div className='  flex justify-center items-center h-3/ w-full '>
+      <div className=' bg-blue-900 flex justify-center items-center h-3/ w-full '>
         <Editor
           apiKey='s73wk7i6fwr11ew23vudqfd79tjyajof2inq6b6qg8a9c9x6
 '
@@ -83,8 +90,7 @@ export default function TextEditor () {
         <button
           onClick={async () => {
             
-          console.log(title)
-          console.log(descript)
+        
 
             if (title &&  descript == " ") {
               toast.error('Title and Description cannot be empty');

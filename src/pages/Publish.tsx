@@ -1,4 +1,3 @@
-import { Appbar } from "../components/Appbar";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +12,27 @@ export const Publish = () => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     
+
+
+// 
+// NOT USING THIS, CHECK TEXTEDITOR FILE WE are using that one
+
+// 
+// 
+// 
+// 
+// 
+
+
+
+
+
+
+
+
+
+
+
 
     return <div>
     <Navbar/>
