@@ -58,7 +58,7 @@ export default function TextEditor () {
       })
     }
     }
-      console.log('entered request frontend')
+      console.log('entered request frontend with url, title, description')
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/blog`,
         {
@@ -142,7 +142,7 @@ export default function TextEditor () {
       <Navbar />
       <div className='w-full h-44 bg-pink-700 flex justify-center items-end'>
         <div className='bg-violet-500 w-2/4 flex justify-center items-center'>
-          <ImageUpload />
+          <ImageUpload  />
         </div>
       </div>
       <div className='flex bg-green-900  justify-center items-center h-32 w-full  '>
