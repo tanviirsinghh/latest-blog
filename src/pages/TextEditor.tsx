@@ -35,7 +35,7 @@ export default function TextEditor () {
 
    
       if (img) {
-        console.log('No image selected')
+        console.log(' image selected')
 
 
         const data = new FormData()
