@@ -52,8 +52,8 @@ export default function Sidebar() {
         </button>
       )
   return (
-    <div className=' flex justify-center mt-10 w-full'>
-       <Card className="mb-6">
+    <div className=' flex justify-center border rounded-md mt-14 w-full'>
+       <Card className="">
               <CardHeader>
                 <CardTitle>Staff Picks</CardTitle>
               </CardHeader>

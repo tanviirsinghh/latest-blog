@@ -3,13 +3,13 @@ import { Editor as TinyMCEEditor } from 'tinymce'
 import { Editor } from '@tinymce/tinymce-react'
 // import { Appbar } from '../components/Appbar'
 import axios from 'axios'
-import { BACKEND_URL } from '../config'
+import { BACKEND_URL, CLOUDINARY_URL } from '../config'
 import { useNavigate } from 'react-router-dom'
 // import { ChangeEvent } from 'react'
 import Navbar from '../components/Navbar'
 import { toast } from 'react-toastify'
 // import { Toast } from 'node_modules/react-toastify/dist/components'
-import UploadImg from '../components/UploadImg';
+import ImageUpload from '../components/ImageUpload';
 
 export default function TextEditor () {
   const editorRef = useRef<TinyMCEEditor | null>(null)
@@ -17,7 +17,74 @@ export default function TextEditor () {
 
   const [title, setTitle] = useState('')
   const [descript, setDescript] = useState("" )
+  // const [image, setImage] = useState<File | null>(null)
 
+  // const [url, setUrl] = useState("")
+
+
+  const SendPost = async () => {
+
+    if ( !title && !descript) {
+      toast.error('Title and Description cannot be empty');
+      return;
+    }
+    // uploading the img to the cloudinary server
+      // if (!image) {
+      //   console.log('No image selected')
+      //   toast.error('Upload image')
+      //   return
+      // }
+      // const data = new FormData()
+      // data.append('file', image)
+      // data.append('upload_preset', 'Blog-Project')
+      // data.append('cloud_name', 'dktr9buob')
+      // console.log('start request')
+      // try {
+      //   const response = await axios.post(`${CLOUDINARY_URL}`, data, {
+      //     headers: {
+      //       'Content-Type': 'multipart/form-data'
+      //     }
+      //   })
+      //   console.log(response.data.secure_url)
+      //   console.log('complete')
+      //   setUrl(response.data.secure_url)
+      // } catch (e) {
+      //   return Response.json({
+      //     msg: "Image didn't upload"
+      //   })
+      // }
+    
+    try{
+      console.log("entered request frontend")
+    const response = await axios.post(
+      `${BACKEND_URL}/api/v1/blog`,
+      {
+        title,
+        content: descript
+        // img:img file
+      },
+      {
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+      }
+    )
+    navigate(`/blog/${response.data.id}`)
+  
+  }catch (e : unknown ){
+    if(axios.isAxiosError(e) && e.response?.status === 401){
+   toast.error('User not found / Sign up first')
+} else if (axios.isAxiosError(e) && e.response?.status === 500){
+    toast.error('Please try again / Internal Server Error')
+}
+else if (axios.isAxiosError(e) && e.response?.status === 411){
+    toast.error('Input Not Correct')
+}
+else if (axios.isAxiosError(e) && e.response?.status === 403){
+    toast.error('Email Already in use')
+}
+ }
+  }
   //   const log = () => {
   //     if (editorRef.current) {
   //       console.log(editorRef.current.getContent());
@@ -28,9 +95,9 @@ export default function TextEditor () {
     <div className='h-screen w-full  flex-col justify-center items-center'>
       <Navbar />
       <div className='w-full h-44 bg-pink-700 flex justify-center items-end'>
-       <div className='bg-violet-500 w-2/4 flex justify-center items-center'>
-          <UploadImg/>
-        </div>
+       {/* <div className='bg-violet-500 w-2/4 flex justify-center items-center'>
+          <ImageUpload/>
+        </div> */}
         </div>
       <div className='flex bg-green-900  justify-center items-center h-32 w-full  '>
        

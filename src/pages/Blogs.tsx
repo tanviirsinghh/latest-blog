@@ -41,7 +41,7 @@ export const Blogs = () => {
   <div className="flex w-full  pt-[4rem] ">
     <main className="flex justify-center w-full">
       {/* Blogs Container */}
-      <div className="h-full max-w-[50rem] mt-9  flex flex-col items-center">
+      <div className="h-full  max-w-[50rem] mt-9  flex flex-col items-center">
         {blogs.map(blog => (
           <SingleBlog
             key={blog.id}
@@ -54,10 +54,10 @@ export const Blogs = () => {
         ))}
       </div>
       <div className=' w-[26rem] relative flex-col'>
-              <div className='fixed right-40 top-20'>
+              <div className='fixed right-36  top-20'>
                 <Sidebar />
               </div>
-              <div className='fixed right-38 bottom-8'>
+              <div className='fixed right-32 bottom-8'>
                 <LowerSidebar />
               </div>
             </div>

@@ -49,7 +49,7 @@ export default function LowerSidebar() {
 
   return (
     
-    <div className=' flex justify-center w-[26rem] '>
+    <div className=' flex justify-center border rounded-md w-[26rem] '>
             <Card>  
               <CardHeader>
                 <CardTitle>Recommended topics</CardTitle>

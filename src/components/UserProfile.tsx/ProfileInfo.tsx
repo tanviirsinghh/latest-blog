@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { PencilIcon, UploadIcon } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 interface Userinfo {
   name: string
@@ -13,6 +15,13 @@ export default function ProfileInfo () {
     email: '',
     bio: ''
   })
+  const navigate = useNavigate();
+  const Logout = () => {
+    localStorage.removeItem('token')
+    toast.done('Account Logout')
+  
+    navigate('/signin')
+}
   //   const [avatarPreview, setAvatarPreview] = useState(user.avatar)
   const fileInputRef = useRef<HTMLInputElement>(null)
   //   const [showUserActivities, setShowUserActivities] = useState(true)
@@ -61,6 +70,7 @@ export default function ProfileInfo () {
       )
     }
   }
+ 
   return (
   
    
@@ -157,6 +167,14 @@ export default function ProfileInfo () {
         >
           {isEditing ? 'Save Changes' : 'Edit Profile'}
           <PencilIcon className='inline-block ml-2 h-4 w-4' />
+        </button>
+        {/* Logout the user */}
+        <button
+          className='mt-4 ml-9 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors'
+          onClick={Logout}
+        >
+          Logout
+          {/* <PencilIcon className='inline-block ml-2 h-4 w-4' /> */}
         </button>
         { isEditing?(
         <button onClick={handleOnClick}  className="mt-4 ml-9 px-7 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">

@@ -3,6 +3,7 @@ import {Link, useNavigate} from "react-router-dom"
 import { SignupInput } from '../../../common/dist/index';
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import { toast } from "react-toastify";
 
 export const Auth =({type}: {type:"signup" | "signin"}) =>{
     const navigate= useNavigate()
@@ -15,21 +16,27 @@ export const Auth =({type}: {type:"signup" | "signin"}) =>{
 
   async function sendRequest(){
     try{
-        console.log("enter the post frontend")
-        console.log("inputs from the frontend"+ inputs)
       const response =  await axios.post(`${BACKEND_URL}/api/v1/user/${type=== "signup"? "signup" : "signin"}`, inputs)
-      console.log(response.data)
         const token = response.data.token
         // const jwt = "Bearer" + response.data.token;
         // localStorage.setItem("token", jwt)
         // console.log(token)
         localStorage.setItem("token", token)
             navigate('/blogs')
-    
-    
-}catch(e){
-    alert("Error while signing up")
+
+}catch (e : unknown ){
+    if(axios.isAxiosError(e) && e.response?.status === 401){
+   toast.error('User not found / Sign up first')
+} else if (axios.isAxiosError(e) && e.response?.status === 500){
+    toast.error('Please try again / Internal Server Error')
 }
+else if (axios.isAxiosError(e) && e.response?.status === 411){
+    toast.error('Input Not Correct')
+}
+else if (axios.isAxiosError(e) && e.response?.status === 403){
+    toast.error('Email Already in use')
+}
+ }
 }
     return(
     

@@ -96,7 +96,7 @@ export default function SingleBlog ({
       {/* <main className="container h-full w-[46rem]  bg-yellow-700 ">
         // <div className=" w-full bg-slate-700 lg:flex-row "> */}
       <div className='w-[50rem]  h-full m-2 '>
-        <Card key={id} className=' w-full   '>
+        <Card key={id} className='border w-full   '>
           <CardContent className='p-8  '>
             <div className='flex items-start space-x-4'>
               <div className='flex-grow'>
