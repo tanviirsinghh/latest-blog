@@ -12,7 +12,10 @@ export const FullBlog =( { blog  }: {blog:Blog}) => {
         <div className="flex justify-center">
             <div className="grid grid-cols-12 px-10 w-full pt-200 max-w-screen-xl pt-12">
                 <div className="col-span-9">
-                    
+                    <div className="h-[23rem] w-2/4 bg-pink-700 ">
+                    <img className="h-full w-full" src={blog.url}/>
+                     
+                    </div>
                     <div className=" bg-green-700 text-4xl font-extrabold break-words">
                         {blog.title}
                     </div>

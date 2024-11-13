@@ -6,11 +6,12 @@ import { useNavigate } from "react-router-dom";
  export interface Blog{
     "content":string,
     "title":string,
-    "id":string, //changed from number
+    "id":string, 
+    "url": string,//changed from number
     "author":{
         "name":string
     }
-    
+   
 }
 
 export const useBlog = ({ id }: { id: string }) => {
@@ -30,7 +31,7 @@ export const useBlog = ({ id }: { id: string }) => {
             .then(response => {
                 setBlog(response.data);
                 // console.log(response)
-                // console.log(response.data)
+                console.log(response.data)
                 setLoading(false);
             })
     }, [id])

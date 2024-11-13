@@ -3,45 +3,23 @@ import { CLOUDINARY_URL } from '../config'
 import { PropsWithChildren, useState } from 'react'
 import { toast } from 'react-toastify'
 
-export default function ImageUpload () {
+type getImgFile = { // getting this file to the parent function, its a callback function that gets called here
+  getImgFile: (file: File | null) => void;
+}
+export default function ImageUpload ({getImgFile}: getImgFile) {
   const [image, setImage] = useState<File | null>(null)
-  // const [url, setUrl] = useState('')
 
-  // const uploadImage = async () => {
-  //   if (!image) {
-  //     console.log('No image selected')
-  //     toast.error('Upload image')
-  //     return
-  //   }
-  //   const data = new FormData()
-  //   data.append('file', image)
-  //   data.append('upload_preset', 'Blog-Project')
-  //   data.append('cloud_name', 'dktr9buob')
-  //   console.log('start request')
-  //   try {
-  //     const response = await axios.post(`${CLOUDINARY_URL}`, data, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data'
-  //       }
-  //     })
-  //     console.log(response.data.secure_url)
-  //     console.log('complete')
-  //     setUrl(response.data.secure_url)
-  //   } catch (e) {
-  //     return Response.json({
-  //       msg: "Image didn't upload"
-  //     })
-  //   }
-  // }
-  
-
+   
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileInput = event.target.files
     if (fileInput && fileInput[0]) {
       const file = fileInput[0]
       setImage(file)
+      getImgFile(file)  // retrieving the file from the state here and passing it through props to the parent function
+
     }
   }
+  
   return (
     <>
     {/* <div>
