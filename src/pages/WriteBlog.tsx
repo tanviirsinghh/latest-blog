@@ -1,14 +1,11 @@
 import { useRef, useState } from 'react'
 import { Editor as TinyMCEEditor } from 'tinymce'
 import { Editor } from '@tinymce/tinymce-react'
-// import { Appbar } from '../components/Appbar'
 import axios from 'axios'
 import { BACKEND_URL, CLOUDINARY_URL } from '../config'
 import { useNavigate } from 'react-router-dom'
-// import { ChangeEvent } from 'react'
 import Navbar from '../components/Navbar'
 import { toast } from 'react-toastify'
-// import { Toast } from 'node_modules/react-toastify/dist/components'
 import ImageUpload from '../components/ImageUpload'
 
 export default function TextEditor () {
@@ -18,11 +15,10 @@ export default function TextEditor () {
   const [title, setTitle] = useState('')
   const [descript, setDescript] = useState('')
   const [img, setImg] = useState<File | null>(null)
- 
+
   const getImgFile = (file: File | null) => {
     setImg(file)
   }
-  // const [url, setUrl] = useState('')
 
   const SendPost = async () => {
     if (!title && !descript) {
@@ -33,57 +29,50 @@ export default function TextEditor () {
 
     // Append if file is not null
 
-   
-      if (img) {
-        console.log(' image selected')
-      
+    if (img) {
+      console.log(' image selected')
 
-        const data = new FormData()
-        data.append('file', img)
-        data.append('upload_preset', 'Blog-Project')
-        data.append('cloud_name', 'dktr9buob')
-        console.log('start request')
-        try {
-          const response = await axios.post(`${CLOUDINARY_URL}`, data, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          })
-          console.log(response.data.secure_url)
-          console.log('complete')
-          const imgUrl = response.data.secure_url
+      const data = new FormData()
+      data.append('file', img)
+      data.append('upload_preset', 'Blog-Project')
+      data.append('cloud_name', 'dktr9buob')
+      console.log('start request')
+      try {
+        const response = await axios.post(`${CLOUDINARY_URL}`, data, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        console.log(response.data.secure_url)
+        console.log('complete')
+        const imgUrl = response.data.secure_url
         // setUrl(imgUrl)
 
         await sendData(imgUrl)
-
-        } catch (e) {
-          toast.error('Error Occurred / Please Re-Upload')
-          return Response.json({
-            msg: "Image didn't upload"
-          })
-        }
-      }else{
-        await sendData("")
+      } catch (e) {
+        toast.error('Error Occurred / Please Re-Upload')
+        return Response.json({
+          msg: "Image didn't upload"
+        })
       }
-
-     
-    
+    } else {
+      await sendData('')
+    }
   }
-  const sendData = async (imgUrl:string ) => {
+  const sendData = async (imgUrl: string) => {
     try {
-      
       console.log('entered request frontend with url, title, description')
-      console.log("here is the url " + imgUrl)
+      console.log('here is the url ' + imgUrl)
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/blog`,
         {
           title,
           content: descript,
-          url: imgUrl || " "
+          url: imgUrl || ' '
         },
         {
           headers: {
-            Authorization: localStorage.getItem('token'),
+            Authorization: localStorage.getItem('token')
           }
         }
       )
@@ -91,19 +80,19 @@ export default function TextEditor () {
       navigate(`/blog/${response.data.id}`)
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
-            switch (e.response?.status) {
-              case 500:
-                toast.error('Please try again / Internal Server Error');
-                break;
-              case 411:
-                toast.error('Input Not Correct');
-                break;
-              default:
-                toast.error('An unexpected error occurred');
-            }
-          }
+        switch (e.response?.status) {
+          case 500:
+            toast.error('Please try again / Internal Server Error')
+            break
+          case 411:
+            toast.error('Input Not Correct')
+            break
+          default:
+            toast.error('An unexpected error occurred')
+        }
+      }
     }
-   }
+  }
 
   //   const log = () => {
   //     if (editorRef.current) {
@@ -182,5 +171,3 @@ export default function TextEditor () {
     </div>
   )
 }
-
-
