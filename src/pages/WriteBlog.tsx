@@ -22,7 +22,7 @@ export default function TextEditor () {
   const getImgFile = (file: File | null) => {
     setImg(file)
   }
-  const [url, setUrl] = useState('')
+  // const [url, setUrl] = useState('')
 
   const SendPost = async () => {
     if (!title && !descript) {
