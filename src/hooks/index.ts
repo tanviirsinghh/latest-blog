@@ -14,27 +14,28 @@ import { useNavigate } from "react-router-dom";
    
 }
 
-export const useBlog = ({ id }: { id: string }) => {
-    const navigate = useNavigate()
-    if(!localStorage.getItem("token")){
-         navigate('/signin')
-    }
+export const useBlog =  ({ id }: { id: string }) => {
+   
     const [loading, setLoading] = useState(true);
     const [blog, setBlog] = useState<Blog>();
-
+       
+   
     useEffect(() => {
-        axios.get(`${BACKEND_URL}/api/v1/blog/${id}`, {
+        const getBlogData = async ()=>{
+       const response =  await axios.get(`${BACKEND_URL}/api/v1/blog/${id}`, {
             headers: {
                 Authorization: localStorage.getItem("token")
             }
         })
-            .then(response => {
-                const blogData = response.data
+                // const blogData = response.data.data;
+                // console.log("getting url from the get api "+ blogData) // getting undefined
                 setBlog(response.data);
-                console.log(response)
-                console.log("data fetched from backend " + blogData)
+                console.log( "get response from backend for blog " + JSON.stringify(response.data) )
+                // console.log("data fetched from backend " + blogData)
                 setLoading(false);
-            })
+           
+        }
+        getBlogData();
     }, [id])
 
     return {

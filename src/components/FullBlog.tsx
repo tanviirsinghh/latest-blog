@@ -5,8 +5,17 @@ import { Appbar } from "./Appbar"
 import { Blog } from '../hooks/index';
 import { Avatar } from "./BlogCard";
 import DOMPurify from "dompurify";
+import { useNavigate } from "react-router-dom";
 
 export const FullBlog =( { blog  }: {blog:Blog}) => {
+    const navigate = useNavigate()
+ 
+       
+    if(!localStorage.getItem("token")){
+        navigate('/signin')
+        return{}
+     
+   }
     return <div>
         <Appbar />
         <div className="flex justify-center">

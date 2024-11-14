@@ -36,7 +36,7 @@ export default function TextEditor () {
    
       if (img) {
         console.log(' image selected')
-
+      
 
         const data = new FormData()
         data.append('file', img)
@@ -67,39 +67,7 @@ export default function TextEditor () {
       }
 
      
-    //   try {
-        
-    //   console.log('entered request frontend with url, title, description')
-    //   console.log("here is the url " + url)
-    //   const response = await axios.post(
-    //     `${BACKEND_URL}/api/v1/blog`,
-    //     {
-    //       title,
-    //       content: descript,
-    //       url: url
-    //     },
-    //     {
-    //       headers: {
-    //         Authorization: localStorage.getItem('token'),
-    //       }
-    //     }
-    //   )
-    //   toast.success('Blog Posted Successfully')
-    //   navigate(`/blog/${response.data.id}`)
-    // } catch (e: unknown) {
-    //   if (axios.isAxiosError(e)) {
-    //         switch (e.response?.status) {
-    //           case 500:
-    //             toast.error('Please try again / Internal Server Error');
-    //             break;
-    //           case 411:
-    //             toast.error('Input Not Correct');
-    //             break;
-    //           default:
-    //             toast.error('An unexpected error occurred');
-    //         }
-    //       }
-    // }
+    
   }
   const sendData = async (imgUrl:string ) => {
     try {
