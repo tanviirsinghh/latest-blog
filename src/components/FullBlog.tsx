@@ -13,7 +13,7 @@ export const FullBlog =( { blog  }: {blog:Blog}) => {
        
     if(!localStorage.getItem("token")){
         navigate('/signin')
-        return{}
+        return
      
    }
     return <div>

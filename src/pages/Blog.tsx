@@ -9,13 +9,15 @@ import {useNavigate, useParams} from "react-router-dom";
 // atomFamilies/selectorFamilies
 export default function  Blog  () {
      const navigate = useNavigate()
-    if(!localStorage.getItem("token")){
-         navigate('/signin')
-    }
+  
     const { id } = useParams();
     const {loading, blog} = useBlog({
         id: id || ""
     });
+    if(!localStorage.getItem("token")){
+        navigate('/signin')
+        return 
+   }
     // console.log(blog)
        if(loading){
         return <div>

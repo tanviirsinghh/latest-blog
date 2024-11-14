@@ -1,7 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { BACKEND_URL } from "../config";
-import { useNavigate } from "react-router-dom";
 
  export interface Blog{
     "content":string,
@@ -56,8 +55,9 @@ export const useBlogs= ()=>{
             }
         })
             .then(response => {
-                console.log(localStorage.getItem("token"))
+               
               setBlogs(response.data.posts)
+              console.log(response.data.posts )
               setLoading(false)
             })
         
