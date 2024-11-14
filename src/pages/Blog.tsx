@@ -4,6 +4,7 @@ import { FullBlog } from "../components/FullBlog";
 import {  useBlog } from "../hooks";
 
 import {useNavigate, useParams} from "react-router-dom";
+import Navbar from '../components/Navbar';
 
 
 // atomFamilies/selectorFamilies
@@ -26,8 +27,7 @@ export default function  Blog  () {
        }
     if (loading || !blog) {
         return <div>
-            <Appbar />
-        
+            <Navbar/>        
             <div className="h-screen flex flex-col justify-center">
                
                 <div className="flex justify-center">
