@@ -3,6 +3,7 @@ import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import Loading from './components/Loading'
+import NewFullBlog from './pages/NewFullBlog'
 // Implementing lazy loading
 const Signup = React.lazy(() => import('./pages/Signup'))
 const Signin = React.lazy(() => import('./pages/Signin'))
@@ -80,6 +81,7 @@ function App () {
               </React.Suspense>
             }
           ></Route>
+          <Route path='/newfullblog' element={<NewFullBlog/>}></Route>
         </Routes>
       </BrowserRouter>
     </>

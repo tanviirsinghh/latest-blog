@@ -66,9 +66,9 @@
 
 import  { useState } from 'react';
 import { Heart, MessageCircle, Share2, Bookmark, Twitter, Linkedin, GitlabIcon as GitHub, ChevronRight, X } from 'lucide-react';
-import { tempBlog } from '@/hooks';
+// import { Blog } from '@/hooks';
 
-export default function EnhancedUsertempBlogPage(/*{ tempBlog }: { tempBlog: tempBlog }*/) {
+export default function NewFullBlog(/*{ Blog }: { Blog: Blog }*/) {
   const [user, setUser] = useState({
     name: 'John Doe',
     email: 'john.doe@example.com',
@@ -148,7 +148,7 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
     setIsBookmarked(!isBookmarked);
   };
 
-  const handleCommentSubmit = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const handleCommentSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newComment.trim()) {
       const newCommentObj = {
@@ -178,17 +178,17 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left side - tempBlog Content */}
         <div className="lg:w-2/3">
-          <h1 className="text-4xl font-bold mb-4">{tempBlog.title}</h1>
+          <h1 className="text-4xl font-bold mb-4">blog title</h1>
           <div className="flex items-center mb-6">
-            <img src={user.avatar} alt={user.name} className="w-12 h-12 rounded-full mr-4" />
+            {/* <img src={Blog.url}  className="w-12 h-12 rounded-full mr-4" /> */}
             <div>
-              <p className="font-semibold">{user.name}</p>
-              <p className="text-gray-600 text-sm">{tempBlog.date} · {tempBlog.readTime}</p>
+              <p className="font-semibold">user name</p>
+              {/* <p className="text-gray-600 text-sm">{tempBlog.date} · {tempBlog.readTime}</p> */}
             </div>
           </div>
           <img src={tempBlog.image} alt="tempBlog cover" className="w-full rounded-lg mb-6" />
-          <p className="text-xl mb-6">{tempBlog.description}</p>
-          <div className="prose max-w-none mb-8">{tempBlog.content}</div>
+          {/* <p className="text-xl mb-6">{tempBlog.description}</p> */}
+          {/* <div className="prose max-w-none mb-8">{Blog.content/}</div> */}
           <div className="flex items-center justify-between border-t border-b py-4">
             <div className="flex items-center space-x-4">
               <button onClick={handleLike} className="flex items-center space-x-1 text-gray-600 hover:text-red-500">
