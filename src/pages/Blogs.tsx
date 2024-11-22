@@ -8,7 +8,6 @@ import LowerSidebar from '../components/LowerSidebar'
 import NewSingleBlog from '../components/NewSingleBlog';
 
 export const Blogs = () => {
-  const date = new Date()
   const { loading, blogs } = useBlogs()
   const navigate = useNavigate()
   if (!localStorage.getItem('token')) {
