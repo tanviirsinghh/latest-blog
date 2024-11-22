@@ -122,9 +122,6 @@ export default function NewSingleBlog ({
       </div>
     </div>
     </div>
-
-{/* </div> */}
-{/* </main> */}
 </Link>
   )
 }
