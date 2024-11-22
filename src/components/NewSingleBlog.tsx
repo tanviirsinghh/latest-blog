@@ -51,9 +51,12 @@ export default function NewSingleBlog ({
 
   return (
     <Link to={`/blog/${id}`}>
-    <div className='w-[50rem]  h-full m-2 '>
-    <div className='h-screen w-full flex justify-center items-start'>
-      <div key={id} className='max-w-3xl max-h-56 bg-white rounded-md shadow-md overflow-hidden'>
+
+    <div className='w-[50rem] bg-green-800 h-full m-1'>
+
+
+    <div className=' w-full border bg-pink-800'>
+      <div key={id} className='border w-full h-full bg-white rounded-md drop-shadow-lg'>
         <div  className='md:flex'>
           <div className='md:flex-1 p-8'>
             <div className='flex items-center mb-4'>
