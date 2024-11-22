@@ -5,8 +5,6 @@ import Navbar from '../components/Navbar'
 import SingleBlog from '../components/SingleBlog'
 import Sidebar from '../components/Sidebar'
 import LowerSidebar from '../components/LowerSidebar'
-// import SingleBlog from '@/components/SingleBlog'
-// import NewFullBlog from './NewFullBlog';
 import NewSingleBlog from '../components/NewSingleBlog';
 
 export const Blogs = () => {
