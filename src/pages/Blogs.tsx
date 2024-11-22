@@ -2,7 +2,6 @@ import { useBlogs } from '../hooks'
 import { BlogSkeleton } from '../components/BlogSkeleton'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
-import SingleBlog from '../components/SingleBlog'
 import Sidebar from '../components/Sidebar'
 import LowerSidebar from '../components/LowerSidebar'
 import NewSingleBlog from '../components/NewSingleBlog';
