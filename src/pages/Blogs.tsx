@@ -54,6 +54,11 @@ export const Blogs = () => {
             content={blog.content}
             publishDate=" save the date also and then fetch here"
             url={blog.url}
+
+            // make user upload the photo then fetch here
+            authorAvatar=''
+            initialLikes= {1}
+            initialComments={5}
           />
         ))}
       </div>
