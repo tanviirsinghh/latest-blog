@@ -6,6 +6,8 @@ import SingleBlog from '../components/SingleBlog'
 import Sidebar from '../components/Sidebar'
 import LowerSidebar from '../components/LowerSidebar'
 // import SingleBlog from '@/components/SingleBlog'
+import NewFullBlog from './NewFullBlog';
+import NewSingleBlog from '../components/NewSingleBlog';
 
 export const Blogs = () => {
   const date = new Date()
@@ -44,13 +46,14 @@ export const Blogs = () => {
       {/* Blogs Container */}
       <div className="h-full  max-w-[50rem] mt-9  flex flex-col items-center">
         {blogs.map(blog => (
-          <SingleBlog
+          <NewSingleBlog
             key={blog.id}
             id={blog.id}
             authorName={blog.author.name || 'Anonymous'}
             title={blog.title}
             content={blog.content}
-            publishDate={date.toString()}
+            publishDate=" save the date also and then fetch here"
+            image={blog.img}
           />
         ))}
       </div>

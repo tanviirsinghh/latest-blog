@@ -76,6 +76,7 @@ export default function SingleBlog ({
   title,
   content,
   publishDate
+
 }: BlogPost) {
   // const [savedPosts, setSavedPosts] = React.useState<Set<number>>(new Set())
 
@@ -143,7 +144,7 @@ export default function SingleBlog ({
                           > */}
                     {/* <Bookmark className="h-4 w-4 mr-1" />
                             {savedPosts.has(index) ? "Saved" : "Save"}
-                          </Button> */}
+                          </aButton> */}
                     <Button variant='ghost' size='sm' className='text-gray-500'>
                       <MoreHorizontal className='h-4 w-4' />
                     </Button>
