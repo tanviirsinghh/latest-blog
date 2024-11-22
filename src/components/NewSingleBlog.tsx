@@ -56,7 +56,7 @@ export default function NewSingleBlog ({
             <div className='flex items-center mb-4'>
               <img
                 className='h-10 w-10 rounded-full mr-2'
-                src={image}
+                src={authorAvatar}
                 alt={authorName}
               />
               <div>
@@ -111,7 +111,7 @@ export default function NewSingleBlog ({
           <div className='md:w-1/3 flex justify-center items-center'>
             <img
               className='h-40 w-40 object-fill'
-              src='https://picsum.photos/200/300'
+              src={url}
               alt={title}
             />
           </div>
