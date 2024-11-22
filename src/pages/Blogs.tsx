@@ -53,7 +53,7 @@ export const Blogs = () => {
             title={blog.title}
             content={blog.content}
             publishDate=" save the date also and then fetch here"
-            image={blog.url}
+            url={blog.url}
           />
         ))}
       </div>

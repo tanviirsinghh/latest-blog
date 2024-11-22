@@ -6,7 +6,7 @@ interface BlogCardProps {
   id: string
   title: string
   content: string
-  image: string
+  url: string
   authorName: string
   authorAvatar: string
   publishDate: string
@@ -20,8 +20,9 @@ export default function NewSingleBlog ({
   title,
   content,
   publishDate,
-  image,
+  url,
   authorAvatar,
+
   initialLikes,
   initialComments
 }: BlogCardProps) {
