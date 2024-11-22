@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import Loading from './components/Loading'
 import NewFullBlog from './pages/NewFullBlog'
+import NewSingleBlog from './components/NewSingleBlog'
 // Implementing lazy loading
 const Signup = React.lazy(() => import('./pages/Signup'))
 const Signin = React.lazy(() => import('./pages/Signin'))
@@ -20,6 +21,7 @@ function App () {
       <ToastContainer />
       <BrowserRouter>
         <Routes>
+          <Route path='/newsingleblog' element={<NewSingleBlog/>}></Route>
           <Route
             path='/signup'
             element={
