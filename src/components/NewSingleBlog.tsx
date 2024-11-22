@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Heart, MessageCircle, Bookmark } from 'lucide-react'
 import DOMPurify from 'dompurify'
+import { Link } from 'react-router-dom'
 
 interface BlogCardProps {
   id: string
@@ -49,9 +50,11 @@ export default function NewSingleBlog ({
   }
 
   return (
+    <Link to={`/blog/${id}`}>
+    <div className='w-[50rem]  h-full m-2 '>
     <div className='h-screen w-full flex justify-center items-start'>
-      <div className='max-w-3xl max-h-56 bg-white rounded-md shadow-md overflow-hidden'>
-        <div key={id} className='md:flex'>
+      <div key={id} className='max-w-3xl max-h-56 bg-white rounded-md shadow-md overflow-hidden'>
+        <div  className='md:flex'>
           <div className='md:flex-1 p-8'>
             <div className='flex items-center mb-4'>
               <img
@@ -118,5 +121,10 @@ export default function NewSingleBlog ({
         </div>
       </div>
     </div>
+    </div>
+
+{/* </div> */}
+{/* </main> */}
+</Link>
   )
 }
