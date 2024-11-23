@@ -7,9 +7,10 @@ import { BACKEND_URL } from "../config";
     "title":string,
     "id":string, 
     "url": string,//changed from number
-    "author":{
-        "name":string
-    }
+    // "author":{
+    //     "name":string
+    // }
+    "authorName":string
    
 }
 
@@ -29,7 +30,6 @@ export const useBlog =  ({ id }: { id: string }) => {
                 // const blogData = response.data.data;
                 // console.log("getting url from the get api "+ blogData) // getting undefined
                 setBlog(response.data);
-                console.log( "get response from backend for blog " + JSON.stringify(response.data) )
                 // console.log("data fetched from backend " + blogData)
                 setLoading(false);
            
@@ -57,6 +57,7 @@ export const useBlogs= ()=>{
             .then(response => {
                
               setBlogs(response.data.posts)
+              console.log('all posts fetching here')
               console.log(response.data.posts )
               setLoading(false)
             })
