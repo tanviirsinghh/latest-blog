@@ -4,6 +4,7 @@ import {  useBlog } from "../hooks";
 
 import {useNavigate, useParams} from "react-router-dom";
 import Navbar from '../components/Navbar';
+import NewFullBlog from './NewFullBlog';
 
 
 // atomFamilies/selectorFamilies
@@ -26,7 +27,8 @@ export default function  Blog  () {
        }
     if (loading || !blog) {
         return <div>
-            <Navbar/>        
+            <Navbar/>       
+            fuckofs 
             <div className="h-screen flex flex-col justify-center">
                
                 <div className="flex justify-center">
@@ -36,7 +38,8 @@ export default function  Blog  () {
         </div>
     }
     return <div>
-   <FullBlog blog={blog!} />
+   {/* <FullBlog blog={blog!} /> */}
+   <NewFullBlog blog={blog!}/>
      
     </div>
 }

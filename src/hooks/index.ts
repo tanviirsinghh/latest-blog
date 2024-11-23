@@ -7,10 +7,10 @@ import { BACKEND_URL } from "../config";
     "title":string,
     "id":string, 
     "url": string,//changed from number
-    // "author":{
-    //     "name":string
-    // }
-    "authorName":string
+    "author":{
+        "name":string
+    }
+    // "authorName":string
    
 }
 

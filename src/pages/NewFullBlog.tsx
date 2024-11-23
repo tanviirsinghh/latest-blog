@@ -5,10 +5,14 @@
 
 import  { useState } from 'react';
 import { Heart, MessageCircle, Share2, Bookmark, Twitter, Linkedin, GitlabIcon as GitHub, ChevronRight, X } from 'lucide-react';
-// import { Blog } from '@/hooks';
 import Navbar from '../components/Navbar';
+import { useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
+import {Blog} from '../hooks/index';
 
-export default function NewFullBlog(/*{ Blog }: { Blog: Blog }*/) {
+export default function NewFullBlog({ blog }: { blog: Blog }) {
+  const navigate = useNavigate()
+   
   const [user, setUser] = useState({
     name: 'John Doe',
     email: 'john.doe@example.com',
@@ -74,8 +78,12 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
-  const [showShareModal, setShowShareModal] = useState(false);
+  // const [showShareModal, setShowShareModal] = useState(false);
 
+  if(!localStorage.getItem('token')){
+    navigate('/signin')
+    return 
+  }
   const handleLike = () => {
     setIsLiked(!isLiked);
     settempBlog(prevtempBlog => ({
@@ -105,13 +113,16 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
     }
   };
 
-  const handleShare = () => {
-    setShowShareModal(true);
-  };
+  // const handleShare = () => {
+  //   setShowShareModal(true);
+  // };
 
-  const closeShareModal = () => {
-    setShowShareModal(false);
-  };
+  // const closeShareModal = () => {
+  //   setShowShareModal(false);
+  // };
+
+   
+  
 
   return (
     <>
@@ -121,17 +132,19 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left side - tempBlog Content */}
         <div className="lg:w-2/3">
-          <h1 className="text-4xl font-bold mb-4">blog title</h1>
+          <h1 className="text-4xl font-bold mb-4">{blog.title}</h1>
           <div className="flex items-center mb-6">
             {/* <img src={Blog.url}  className="w-12 h-12 rounded-full mr-4" /> */}
             <div>
-              <p className="font-semibold">user name</p>
+              <p className="font-semibold">{blog.author.name}</p>
               {/* <p className="text-gray-600 text-sm">{tempBlog.date} · {tempBlog.readTime}</p> */}
             </div>
           </div>
-          <img src={tempBlog.image} alt="tempBlog cover" className="w-full rounded-lg mb-6" />
+          <img src={blog.url} alt="conditional render the img" className="w-full rounded-lg mb-6" />
           {/* <p className="text-xl mb-6">{tempBlog.description}</p> */}
-          {/* <div className="prose max-w-none mb-8">{Blog.content/}</div> */}
+          <div className="prose max-w-none mb-8"  dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(blog.content)
+              }}></div>
           <div className="flex items-center justify-between border-t border-b py-4">
             <div className="flex items-center space-x-4">
               <button onClick={handleLike} className="flex items-center space-x-1 text-gray-600 hover:text-red-500">
@@ -144,9 +157,9 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
               </button>
             </div>
             <div className="flex items-center space-x-4">
-              <button onClick={handleShare} className="text-gray-600 hover:text-green-500">
+              {/* <button onClick={handleShare} className="text-gray-600 hover:text-green-500">
                 <Share2 className="w-6 h-6" />
-              </button>
+              </button> */}
               <button onClick={handleBookmark} className="text-gray-600 hover:text-yellow-500">
                 <Bookmark className={`w-6 h-6 ${isBookmarked ? 'fill-current text-yellow-500' : ''}`} />
               </button>
@@ -186,9 +199,9 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
 
         {/* Right side - User Profile and Related tempBlogs */}
         <div className="lg:w-1/3 space-y-8">
-          {/* User Profile */}
+          User Profile
           <div className="bg-gray-100 rounded-lg p-6">
-            <img src={user.avatar} alt={user.name} className="w-24 h-24 rounded-full mx-auto mb-4" />
+            <img src={user.avatar} alt={blog.authorName} className="w-24 h-24 rounded-full mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-center mb-2">{user.name}</h2>
             <p className="text-gray-600 text-center mb-4">{user.email}</p>
             <p className="text-gray-800 mb-6">{user.bio}</p>
@@ -209,7 +222,7 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
           </div>
 
           {/* Related tempBlogs */}
-          <div className="bg-gray-100 rounded-lg p-6">
+          {/* <div className="bg-gray-100 rounded-lg p-6">
             <h3 className="text-xl font-bold mb-4">Related tempBlogs</h3>
             <div className="space-y-4">
               {relatedtempBlogs.map((relatedtempBlog) => (
@@ -227,12 +240,12 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
               View More
               <ChevronRight className="w-4 h-4 ml-1" />
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
 
       {/* Share Modal */}
-      {showShareModal && (
+      {/* {showShareModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg w-96">
             <div className="flex justify-between items-center mb-4">
@@ -257,7 +270,7 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
     </>
   );

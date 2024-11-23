@@ -8,7 +8,7 @@ interface BlogCardProps {
   title: string
   content: string
   url: string
-  authorName: string
+  authorName:string
   authorAvatar: string
   publishDate: string
   initialLikes: number
