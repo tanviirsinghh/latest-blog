@@ -1,7 +1,5 @@
-import axios from 'axios'
-import { CLOUDINARY_URL } from '../config'
-import { PropsWithChildren, useState } from 'react'
-import { toast } from 'react-toastify'
+
+import {  useState } from 'react'
 
 type getImgFile = { // getting this file to the parent function, its a callback function that gets called here
   getImgFile: (file: File | null) => void;
