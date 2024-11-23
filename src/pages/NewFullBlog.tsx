@@ -5,6 +5,8 @@ import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import {Blog} from '../hooks/index';
+import UserInfoSide from '../components/UserInfoSide';
+
 
 export default function NewFullBlog({ blog }: { blog: Blog }) {
   const navigate = useNavigate()
@@ -136,7 +138,7 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
               {/* <p className="text-gray-600 text-sm">{tempBlog.date} · {tempBlog.readTime}</p> */}
             </div>
           </div>
-          <img src={blog.url} alt="conditional render the img" className="w-full rounded-lg mb-6" />
+          <img src={blog.url} alt="conditional render the img" className=" w-full rounded-lg mb-6 h-80 object-fill" />
           {/* <p className="text-xl mb-6">{tempBlog.description}</p> */}
           <div className="prose max-w-none mb-8"  dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(blog.content)
@@ -194,50 +196,7 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
         </div>
 
         {/* Right side - User Profile and Related tempBlogs */}
-        <div className="lg:w-1/3 space-y-8">
-          User Profile
-          <div className="bg-gray-100 rounded-lg p-6">
-            <img src={user.avatar} alt={blog.authorName} className="w-24 h-24 rounded-full mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-center mb-2">{user.name}</h2>
-            <p className="text-gray-600 text-center mb-4">{user.email}</p>
-            <p className="text-gray-800 mb-6">{user.bio}</p>
-            <div className="flex justify-center space-x-4 mb-6">
-              <a href={user.socialLinks.twitter} className="text-blue-400 hover:text-blue-600" aria-label="Twitter">
-                <Twitter className="w-6 h-6" />
-              </a>
-              <a href={user.socialLinks.linkedin} className="text-blue-700 hover:text-blue-900" aria-label="LinkedIn">
-                <Linkedin className="w-6 h-6" />
-              </a>
-              <a href={user.socialLinks.github} className="text-gray-800 hover:text-gray-600" aria-label="GitHub">
-                <GitHub className="w-6 h-6" />
-              </a>
-            </div>
-            <button className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300">
-              Follow
-            </button>
-          </div>
-
-          {/* Related tempBlogs */}
-          {/* <div className="bg-gray-100 rounded-lg p-6">
-            <h3 className="text-xl font-bold mb-4">Related tempBlogs</h3>
-            <div className="space-y-4">
-              {relatedtempBlogs.map((relatedtempBlog) => (
-                <div key={relatedtempBlog.id} className="flex items-start space-x-4">
-                  <img src={relatedtempBlog.image} alt={relatedtempBlog.title} className="w-20 h-20 object-cover rounded" />
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-sm mb-1">{relatedtempBlog.title}</h4>
-                    <p className="text-gray-600 text-xs mb-1">{relatedtempBlog.author}</p>
-                    <p className="text-gray-500 text-xs">{relatedtempBlog.date} · {relatedtempBlog.readTime}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <button className="w-full mt-4 text-blue-500 hover:text-blue-700 flex items-center justify-center">
-              View More
-              <ChevronRight className="w-4 h-4 ml-1" />
-            </button>
-          </div> */}
-        </div>
+      <UserInfoSide/>
       </div>
 
       {/* Share Modal */}
