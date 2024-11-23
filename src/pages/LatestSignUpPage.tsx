@@ -1,6 +1,6 @@
 import {  FormEvent, useState } from 'react';
 
-const MinimalBlogSignup = () => {
+const LatestSignupPage = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -143,5 +143,5 @@ const MinimalBlogSignup = () => {
   );
 };
 
-export default MinimalBlogSignup;
+export default LatestSignupPage;
 
