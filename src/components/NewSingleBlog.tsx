@@ -3,6 +3,16 @@ import { Heart, MessageCircle, Bookmark } from 'lucide-react'
 import DOMPurify from 'dompurify'
 import { Link } from 'react-router-dom'
 
+
+//  this is the single blog page that is being used
+
+
+
+
+
+
+
+
 interface BlogCardProps {
   id: string
   title: string

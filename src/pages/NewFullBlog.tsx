@@ -1,8 +1,4 @@
 
-
-//  latest design from the v0 appliaction
-
-
 import  { useState } from 'react';
 import { Heart, MessageCircle, Share2, Bookmark, Twitter, Linkedin, GitlabIcon as GitHub, ChevronRight, X } from 'lucide-react';
 import Navbar from '../components/Navbar';
