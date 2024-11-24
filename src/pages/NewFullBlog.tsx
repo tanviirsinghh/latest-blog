@@ -1,6 +1,6 @@
 
 import  { useState } from 'react';
-import { Heart, MessageCircle, Share2, Bookmark, Twitter, Linkedin, GitlabIcon as GitHub, ChevronRight, X } from 'lucide-react';
+import { Heart, MessageCircle,  Bookmark, } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import DOMPurify from 'dompurify';
