@@ -120,7 +120,6 @@ const LatestSignupPage = () => {
   //   if (e.target) {
   //     console.log('bond mrao')
   //   }
-  //   console.log('Blog signup submitted:', formData)
   
 
 
