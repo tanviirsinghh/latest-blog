@@ -117,8 +117,6 @@ const LatestSignupPage = () => {
 
   
  
-  
-  
   return (
     <div className='min-h-screen flex items-center justify-center bg-amber-50 p-4'>
       <div className='bg-amber-50 rounded-md shadow-2xl w-full max-w-4xl flex flex-col md:flex-row overflow-hidden'>
