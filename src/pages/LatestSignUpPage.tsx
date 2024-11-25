@@ -5,31 +5,29 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 const LatestSignupPage = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    // blogName: '',
-    blogCategory: '',
-    profilepicture: ''
-  })
-
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [blogName, setBlogName] = useState('')
+  const [url, setUrl] = useState('')
   // storing the img here
   const [image, setImage] = useState<File | null>(null)
   // storing the temporary url here to show on frontend when user select the picture
-  const [imagePreview, setImagePreview] = useState<string | ' '>(' ')
+  const [imagePreview, setImagePreview] = useState<string | undefined>(
+    undefined
+  )
 
   const navigate = useNavigate()
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target // name here is the input changed and value here is the new value that got inserted
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: value
-    }))
-  }
+  // const handleChange = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  // ) => {
+  //   const { name, value } = e.target // name here is the input changed and value here is the new value that got inserted
+  //   setFormData(prevData => ({
+  //     ...prevData,
+  //     [name]: value
+  //   }))
+  // }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target && e.target.files && e.target.files[0]) {
@@ -43,49 +41,54 @@ const LatestSignupPage = () => {
     }
   }
 
-  
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
-      if (e.target) {
-        console.log('bond mrao')
-      }
-      if (image) {
-        const data = new FormData()
-        data.append('file', image)
-        data.append('upload_preset', 'Blog-Project')
-        data.append('cloud_name', 'dktr9buob')
-        console.log('start request')
-        try {
-          const response = await axios.post(`${CLOUDINARY_URL}`, data, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          })
-          console.log(response.data.secure_url)
-          console.log('complete')
-          setFormData( response.data.secure_url)
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    //  read the chatgpt response 
+   e.preventDefault()
+   e.preventDefault();
+   if (!name || !email || !password || !blogName) {
+     toast.error('All fields are required!');
+     return;
+   }
+    if (image) {
+      const data = new FormData()
+      data.append('file', image)
+      data.append('upload_preset', 'Blog-Project')
+      data.append('cloud_name', 'dktr9buob')
+      console.log('start request')
+      try {
+        const response = await axios.post(`${CLOUDINARY_URL}`, data, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        console.log(response.data.secure_url)
+        console.log('complete')
+        
+        const imgurl = response.data.secure_url
+        setUrl(imgurl)
          
-          // setUrl(imgUrl)
-
-          await sendData(formData)
-        } catch (e) {
-          toast.error('Error Occurred / Please Re-Upload')
-          return Response.json({
-            msg: "Image didn't upload"
-          })
-        }
-      } else {
-        sendData()
+        await sendData(imgurl)
+      } catch (e) {
+        toast.error('Error Occurred / Please Re-Upload')
+        return Response.json({
+          msg: "Image didn't upload"
+        })
       }
+    } else {
+      await sendData("")
     }
+  }
 
-
-  const sendData = async (formData: FormData) => {
+  const sendData = async (imgurl: string | undefined) => {
     try {
       console.log('entered request frontend with url and user info')
-      console.log('here is the url ' + imgUrl)
+      // console.log('here is the url ' + imgUrl)
       const response = await axios.post(`${BACKEND_URL}/api/v1/user/signup`, {
-        formData
+        name,
+        email,
+        password,
+        blogName,
+        url: imgurl
       })
       toast.success('Signup Successfully')
       const token = response.data.token
@@ -246,8 +249,10 @@ const LatestSignupPage = () => {
               type='text'
               name='name'
               placeholder='Your Awesome Name'
-              value={formData.name}
-              onChange={handleChange}
+              // value={formData.name}
+              onChange={e => {
+                setName(e.target.value)
+              }}
               className='w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black'
               required
             />
@@ -255,8 +260,10 @@ const LatestSignupPage = () => {
               type='email'
               name='email'
               placeholder='your@email.com'
-              value={formData.email}
-              onChange={handleChange}
+              // value={formData.email}
+              onChange={e => {
+                setEmail(e.target.value)
+              }}
               className='w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black'
               required
             />
@@ -264,8 +271,10 @@ const LatestSignupPage = () => {
               type='password'
               name='password'
               placeholder='Super Secret Password'
-              value={formData.password}
-              onChange={handleChange}
+              // value={formData.password}
+              onChange={e => {
+                setPassword(e.target.value)
+              }}
               className='w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black'
               required
             />
@@ -280,8 +289,10 @@ const LatestSignupPage = () => {
             /> */}
             <select
               name='blogCategory'
-              value={formData.blogCategory}
-              onChange={handleChange}
+              // value={formData.blogCategory}
+              onChange={e => {
+                setBlogName(e.target.value)
+              }}
               className='w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black'
               required
             >
