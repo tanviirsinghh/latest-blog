@@ -16,9 +16,6 @@ const LatestSignupPage = () => {
   const [imagePreview, setImagePreview] = useState<string | undefined>(
     undefined
   )
-
-
-  
   const navigate = useNavigate()
 
   // const handleChange = (
