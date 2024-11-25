@@ -6,6 +6,7 @@ import Loading from './components/Loading'
 // import NewFullBlog from './pages/NewFullBlog'
 import NewSingleBlog from './components/NewSingleBlog'
 import LatestSignupPage from './pages/LatestSignUpPage'
+import LatestSignin from './components/LatestSignin'
 // Implementing lazy loading
 const Signup = React.lazy(() => import('./pages/Signup'))
 const Signin = React.lazy(() => import('./pages/Signin'))
@@ -85,6 +86,8 @@ function App () {
             }
           ></Route>
           <Route path='/newsignup' element={<LatestSignupPage/>}></Route>
+          <Route path='/newsignin' element={<LatestSignin/>}></Route>
+
         </Routes>
       </BrowserRouter>
     </>
