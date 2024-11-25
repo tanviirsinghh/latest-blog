@@ -18,15 +18,7 @@ const LatestSignupPage = () => {
   )
   const navigate = useNavigate()
 
-  // const handleChange = (
-  //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  // ) => {
-  //   const { name, value } = e.target // name here is the input changed and value here is the new value that got inserted
-  //   setFormData(prevData => ({
-  //     ...prevData,
-  //     [name]: value
-  //   }))
-  // }
+
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target && e.target.files && e.target.files[0]) {
