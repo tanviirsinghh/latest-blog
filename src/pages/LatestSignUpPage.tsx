@@ -121,7 +121,7 @@ const LatestSignupPage = () => {
   //     console.log('bond mrao')
   //   }
   //   console.log('Blog signup submitted:', formData)
-  //   console.log('Profile image:', image)
+  
 
 
   return (
