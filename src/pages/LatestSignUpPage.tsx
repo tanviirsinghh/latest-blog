@@ -122,7 +122,7 @@ const LatestSignupPage = () => {
   //   }
   //   console.log('Blog signup submitted:', formData)
   //   console.log('Profile image:', image)
-  // }
+
 
   return (
     <div className='min-h-screen flex items-center justify-center bg-amber-50 p-4'>
