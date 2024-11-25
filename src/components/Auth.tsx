@@ -10,7 +10,8 @@ export const Auth =({type}: {type:"signup" | "signin"}) =>{
     const [inputs, setInputs] = useState<SignupInput>({
         name:"",
         email:"",
-        password:""
+        password:"",
+        // blogName:""
         
     })
 
