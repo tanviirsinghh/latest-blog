@@ -115,7 +115,6 @@ const LatestSignupPage = () => {
     }
   }
 
-  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
   
  
   
