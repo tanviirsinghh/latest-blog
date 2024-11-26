@@ -10,11 +10,11 @@ interface Userinfo {
   bio: string
 }
 export default function ProfileInfo ({userDetails} : {userDetails: User }) {
-  // const { id } = useParams();
+  const { id } = useParams();
 
-  const[ loading, userDetails] = useUserDetails({
-    id:id || " "
-  })
+  // const[ loading, userDetails] = useUserDetails({
+  //   id:id || " "
+  // })
   const [isEditing, setIsEditing] = useState(false)
   const [editedUser, setEditedUser] = useState<Userinfo>({
     name: '',
