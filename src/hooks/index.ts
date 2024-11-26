@@ -1,7 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { BACKEND_URL } from '../config';
-import { getUserDetails } from './index';
 
  export interface Blog{
     "content":string,
@@ -31,7 +30,7 @@ export function useUserDetails({id} : {id : string}){
         const getUserDetails = async () =>{
 
         
-      const response = await axios.get(`${BACKEND_URL}/api/v1/userDetails/${id}`,{
+      const response = await axios.get(`${BACKEND_URL}/api/v1/user/${id}`,{
         headers: {
             Authorization: localStorage.getItem("token")
         }
