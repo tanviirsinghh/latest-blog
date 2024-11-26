@@ -15,6 +15,10 @@ export default function ProfileInfo ({userDetails} : {userDetails: User }) {
   // const[ loading, userDetails] = useUserDetails({
   //   id:id || " "
   // })
+
+
+
+
   const [isEditing, setIsEditing] = useState(false)
   const [editedUser, setEditedUser] = useState<Userinfo>({
     name: '',
@@ -96,8 +100,8 @@ export default function ProfileInfo ({userDetails} : {userDetails: User }) {
             </div>
           </div>
           <div>
-            <h2 className='text-2xl font-bold'>Tanvir Singh</h2>
-            <p className='text-gray-500'>tanvirsingh@email.com</p>
+            <h2 className='text-2xl font-bold'>{userDetails.name}</h2>
+            <p className='text-gray-500'>{userDetails.email}</p>
           </div>
         </div>
         <input
