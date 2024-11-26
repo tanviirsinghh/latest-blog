@@ -28,7 +28,7 @@ function App () {
             path='/signup'
             element={
               <React.Suspense fallback={<Loading />}>
-                <Signup />
+                <LatestSignupPage />
               </React.Suspense>
             }
           ></Route>
@@ -85,7 +85,6 @@ function App () {
               </React.Suspense>
             }
           ></Route>
-          <Route path='/newsignup' element={<LatestSignupPage/>}></Route>
           <Route path='/newsignin' element={<LatestSignin/>}></Route>
 
         </Routes>
