@@ -1,4 +1,5 @@
-import { BACKEND_URL, CLOUDINARY_URL } from '@/config'
+import ImageUploadHook from '../hooks/ImageUploadHook'
+import { BACKEND_URL } from '../config'
 import axios from 'axios'
 import { FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -9,7 +10,7 @@ const LatestSignupPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [blogName, setBlogName] = useState('')
-  const [url, setUrl] = useState('')
+  // const [url, setUrl] = useState('')
   // storing the img here
   const [image, setImage] = useState<File | null>(null)
   // storing the temporary url here to show on frontend when user select the picture
@@ -32,50 +33,45 @@ const LatestSignupPage = () => {
     if (e.target && e.target.files && e.target.files[0]) {
       const file = e.target.files[0]
       // storing the image url for quick preview
-      const previewURL = URL.createObjectURL(file)
-      setImagePreview(previewURL)
+      // When you create an object URL using URL.createObjectURL(), 
+      //it occupies memory in the browser until it's manually released. 
+      //If you create multiple object URLs without revoking them, 
+      //it can lead to a memory leak, as the URLs remain allocated even if they are no longer needed.
+      // if old img present and new image is getting update the revoke the first image
+      if(imagePreview){
+        URL.revokeObjectURL(imagePreview)
+
+      }
+      const newPreviewURL = URL.createObjectURL(file)
+      setImagePreview(newPreviewURL)
 
       // storing the img file to send it to the cloudinary server
       setImage(file)
+      console.log("img stored in the state")
     }
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     //  read the chatgpt response 
    e.preventDefault()
-   e.preventDefault();
    if (!name || !email || !password || !blogName) {
      toast.error('All fields are required!');
      return;
    }
-    if (image) {
-      const data = new FormData()
-      data.append('file', image)
-      data.append('upload_preset', 'Blog-Project')
-      data.append('cloud_name', 'dktr9buob')
-      console.log('start request')
-      try {
-        const response = await axios.post(`${CLOUDINARY_URL}`, data, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        console.log(response.data.secure_url)
-        console.log('complete')
-        
-        const imgurl = response.data.secure_url
-        setUrl(imgurl)
-         
-        await sendData(imgurl)
-      } catch (e) {
-        toast.error('Error Occurred / Please Re-Upload')
-        return Response.json({
-          msg: "Image didn't upload"
-        })
-      }
-    } else {
-      await sendData("")
+
+   try {
+    const imgUrl = image ? await ImageUploadHook(image) : '';
+    if (!imgUrl && image) {
+      // If image is present but upload failed
+      toast.error('Image upload failed. Cannot proceed.');
+      return;
     }
+    console.log("image uploaded successfully and here is your url" + imgUrl)
+    await sendData(imgUrl || ''); // Handle empty URLs gracefully
+  } catch (error) {
+    console.error('Error in handleSubmit:', error);
+    toast.error('An unexpected error occurred. Please try again.');
+  }
   }
 
   const sendData = async (imgurl: string | undefined) => {
@@ -87,7 +83,7 @@ const LatestSignupPage = () => {
         email,
         password,
         blogName,
-        url: imgurl
+        profilePicture: imgurl
       })
       toast.success('Signup Successfully')
       const token = response.data.token
@@ -205,6 +201,7 @@ const LatestSignupPage = () => {
                     src={imagePreview}
                     alt='Profile'
                     className='w-full h-full object-cover'
+                    
                   />
                 ) : (
                   <div className='w-full h-full flex items-center justify-center text-black'>
