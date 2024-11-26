@@ -38,7 +38,6 @@ export default function ProfileInfo ({userDetails} : {userDetails: User }) {
     setIsEditing(!isEditing)
     if (isEditing) {
          
-      // Here you would typically save the changes to the backend
       console.log('Saving user data:', editedUser)
       alert(
         'Profile Updated: Your profile changes have been saved successfully.'
