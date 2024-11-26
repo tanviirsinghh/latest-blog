@@ -40,7 +40,7 @@ const LatestSignupPage = () => {
       // if old img present and new image is getting update the revoke the first image
       if(imagePreview){
         URL.revokeObjectURL(imagePreview)
-
+     
       }
       const newPreviewURL = URL.createObjectURL(file)
       setImagePreview(newPreviewURL)

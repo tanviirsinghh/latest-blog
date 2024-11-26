@@ -116,13 +116,13 @@ export default function TextEditor () {
   return (
     <div className='h-screen w-full  flex-col justify-center items-center'>
       <Navbar />
-      <div className='w-full h-44 bg-pink-700 flex justify-center items-end'>
-        <div className='bg-violet-500 w-2/4 flex justify-center items-center'>
+      <div className='w-full h-44  flex justify-center  '>
+        {/* <div className='bg-violet-500 w-2/4 h-full flex justify-center items-center'> */}
           <ImageUpload getImgFile={getImgFile} />
-        </div>
+        {/* </div> */}
       </div>
-      <div className='flex bg-green-900  justify-center items-center h-32 w-full  '>
-        <div className=' bg-yellow-500 max-w-screen-lg h-16 w-2/3 flex'>
+      <div className='flex   justify-center items-center h-32 w-full  '>
+        <div className='  max-w-screen-lg h-16 w-2/3 flex'>
           <input
             onChange={e => {
               setTitle(e.target.value)
@@ -133,7 +133,7 @@ export default function TextEditor () {
           />
         </div>
       </div>
-      <div className=' bg-blue-900 flex justify-center items-center h-3/ w-full '>
+      <div className='  flex justify-center items-center h-3/ w-full '>
         <Editor
           apiKey='s73wk7i6fwr11ew23vudqfd79tjyajof2inq6b6qg8a9c9x6
 '
