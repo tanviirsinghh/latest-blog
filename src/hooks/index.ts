@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from '../config';
+import { getUserDetails } from './index';
 
  export interface Blog{
     "content":string,
@@ -13,6 +14,39 @@ import { BACKEND_URL } from "../config";
     // "authorName":string
    
 }
+
+export interface User{
+    "id": string,
+    "name": string,
+    "email": string,
+    "profilePicture":string,
+    "blogName":string
+}
+
+export function useUserDetails({id} : {id : string}){
+    const [userDetails, setUserDetails] = useState<User>()
+    const [loading, setLoading] = useState(true);
+
+    useEffect(()=>{
+        const getUserDetails = async () =>{
+
+        
+      const response = await axios.get(`${BACKEND_URL}/api/v1/userDetails/${id}`,{
+        headers: {
+            Authorization: localStorage.getItem("token")
+        }
+      })
+      setUserDetails(response.data)
+      setLoading(false)
+    }
+    getUserDetails()
+    },[id])
+    return {
+        loading, 
+        userDetails
+    }
+}
+
 
 export const useBlog =  ({ id }: { id: string }) => {
    
