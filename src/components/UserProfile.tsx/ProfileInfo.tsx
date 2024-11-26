@@ -3,6 +3,7 @@ import { PencilIcon, UploadIcon } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { User } from '../../hooks/index';
+import { Avatar } from '../BlogCard';
 
 interface Userinfo {
   name: string
@@ -88,13 +89,13 @@ export default function ProfileInfo ({userDetails} : {userDetails: User }) {
         <h2 className='text-xl font-semibold mb-4'>Profile Information</h2>
         <div className='flex items-center space-x-4 mb-4'>
           <div className='relative'>
-            {/* <Avatar
-                src={avatarPreview}
+            <Avatar
+                src={userDetails.profilePicture}
                 alt={editedUser.name}
                 fallback={editedUser.name.charAt(0)}
                 className="w-20 h-20 cursor-pointer"
                 onClick={handleAvatarClick}
-              /> */}
+              />
             <div className='absolute bottom-0 right-0  text-white rounded-full p-1'>
               <UploadIcon className='h-4 w-4' />
             </div>
