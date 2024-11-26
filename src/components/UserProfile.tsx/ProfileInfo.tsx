@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import { PencilIcon, UploadIcon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { useUserDetails } from '../../hooks/index';
 
 interface Userinfo {
   name: string
@@ -9,6 +10,7 @@ interface Userinfo {
   bio: string
 }
 export default function ProfileInfo () {
+  // const[ loading, userDetails] = useUserDetails('')
   const [isEditing, setIsEditing] = useState(false)
   const [editedUser, setEditedUser] = useState<Userinfo>({
     name: '',

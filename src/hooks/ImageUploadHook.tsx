@@ -3,7 +3,7 @@ import { CLOUDINARY_URL } from "../config"
 import axios from "axios"
 
 //  we have to tell the hook what it is returning to be typesafe
-const ImageUploadHook = async (image : File): Promise<string | undefined> => {
+const useImageUploadHook = async (image : File): Promise<string | undefined> => {
 
     const data = new FormData()
     data.append('file', image)
@@ -35,4 +35,4 @@ const ImageUploadHook = async (image : File): Promise<string | undefined> => {
     }
 }
 
-export default  ImageUploadHook;
+export default  useImageUploadHook;
