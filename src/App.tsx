@@ -8,7 +8,7 @@ import NewSingleBlog from './components/NewSingleBlog'
 import LatestSignupPage from './pages/LatestSignUpPage'
 import LatestSignin from './components/LatestSignin'
 // Implementing lazy loading
-const Signup = React.lazy(() => import('./pages/Signup'))
+// const Signup = React.lazy(() => import('./pages/Signup'))
 const Signin = React.lazy(() => import('./pages/Signin'))
 const Blogs = React.lazy(() => import('./pages/Blogs'))
 const Blog = React.lazy(() => import('./pages/Blog'))
