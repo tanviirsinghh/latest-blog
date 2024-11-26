@@ -3,6 +3,8 @@ import SavedBlogs from '../components/UserProfile.tsx/SavedBlogs'
 import MyActivities from '../components/UserProfile.tsx/MyActivities'
 import Navbar from '../components/Navbar'
 // import NewLikeComments from '../components/UserProfile.tsx/NewLikeComment';
+import { useUserDetails } from '../hooks/index';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // Simple Avatar component
 
@@ -63,13 +65,38 @@ import Navbar from '../components/Navbar'
 // }
 
 export default function UserProfile () {
+
+
+  const navigate = useNavigate();
+  // useParams will get all the data related to the parameter, it will provide the params to us
+   const {id} = useParams();
+    
+   const {loading, userDetails} = useUserDetails({
+    id: id || " "
+   })
+   if(!localStorage.getItem("token")){
+    navigate('/signin')
+    return 
+}
+if(loading){
+  return <div>
+      loading...
+  </div>
+ }
+ if (loading || !userDetails) {
+  return <div>
+     
+             loading...
+          </div>
+     
+}
   // const [isEditing, setIsEditing] = useState(false)
   // const [editedUser, setEditedUser] = useState(user)
   // const [avatarPreview, setAvatarPreview] = useState(user.avatar)
   // const fileInputRef = useRef<HTMLInputElement>(null)
   // const [showUserActivities, setShowUserActivities] = useState(true)
   // const [showLikes, setShowLikes] = useState(true)
-
+    
   // const handleEditToggle = () => {
   //   setIsEditing(!isEditing)
   //   if (isEditing) {
@@ -113,7 +140,7 @@ export default function UserProfile () {
           <h1 className='text-3xl font-bold font-sans  '>User Profile</h1>
         </div>
         <div className='h-3/4 w-3/4 flex justify-evenly items-center  '>
-          <ProfileInfo />
+          <ProfileInfo userDetails={userDetails!} />
           <SavedBlogs />
         </div>
       </div>

@@ -10,7 +10,7 @@ import UserInfoSide from '../components/UserInfoSide';
 
 export default function NewFullBlog({ blog }: { blog: Blog }) {
   const navigate = useNavigate()
-   
+
   const [user, setUser] = useState({
     name: 'John Doe',
     email: 'john.doe@example.com',

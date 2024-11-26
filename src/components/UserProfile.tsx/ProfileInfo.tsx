@@ -1,16 +1,20 @@
 import React, { useState, useRef } from 'react'
 import { PencilIcon, UploadIcon } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { useUserDetails } from '../../hooks/index';
+import { User } from '../../hooks/index';
 
 interface Userinfo {
   name: string
   email: string
   bio: string
 }
-export default function ProfileInfo () {
-  // const[ loading, userDetails] = useUserDetails('')
+export default function ProfileInfo ({userDetails} : {userDetails: User }) {
+  // const { id } = useParams();
+
+  // const[ loading, userDetails] = useUserDetails({
+  //   id:id || " "
+  // })
   const [isEditing, setIsEditing] = useState(false)
   const [editedUser, setEditedUser] = useState<Userinfo>({
     name: '',
@@ -148,7 +152,7 @@ export default function ProfileInfo () {
                 htmlFor='bio'
                 className='block text-sm font-medium text-gray-700'
               >
-                Bio
+                bio
               </label>
               <textarea
                 id='bio'

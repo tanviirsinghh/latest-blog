@@ -39,6 +39,7 @@ export default function  Blog  () {
     }
     return <div>
    {/* <FullBlog blog={blog!} /> */}
+   {/*  in blog! we are telling the typescript that blog object is not null, trust me and render, */}
    <NewFullBlog blog={blog!}/>
      
     </div>
