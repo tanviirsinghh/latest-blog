@@ -18,7 +18,6 @@ export function Photo({ name, size = "small" }: { name: string, size?: "small" |
 </div>
 }
 export default function ProfileInfo ({user} : {user: User }) {
-  // const { id } = useParams();
   const [isEditing, setIsEditing] = useState(false)
   const [editedUser, setEditedUser] = useState<Userinfo>({
     name: '',
