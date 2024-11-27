@@ -32,9 +32,17 @@ export default function ProfileInfo ({user} : {user: User }) {
     navigate('/signin')
 }
   //   const [avatarPreview, setAvatarPreview] = useState(user.avatar)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  //   const [showUserActivities, setShowUserActivities] = useState(true)
+//   const [showUserActivities, setShowUserActivities] = useState(true)
   //   const [showLikes, setShowLikes] = useState(true)
+
+
+  // If you used state to manage this functionality,
+  //  each interaction with the file input could trigger a re-render. Using useRef, 
+  // you can interact with the DOM element without affecting React's rendering cycle.
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click()
+  }
 
   const handleEditToggle = () => {
 
@@ -56,9 +64,7 @@ export default function ProfileInfo ({user} : {user: User }) {
     setEditedUser(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleAvatarClick = () => {
-    fileInputRef.current?.click()
-  }
+  
   const handleOnClick= ()=>{
        setIsEditing(false)
   }
