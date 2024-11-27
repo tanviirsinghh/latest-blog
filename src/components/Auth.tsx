@@ -23,6 +23,7 @@ export const Auth =({type}: {type:"signup" | "signin"}) =>{
         // localStorage.setItem("token", jwt)
         // console.log(token)
         localStorage.setItem("token", token)
+        console.log(token)
             navigate('/blogs')
 
 }catch (e : unknown ){

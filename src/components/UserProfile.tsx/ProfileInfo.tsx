@@ -3,6 +3,7 @@ import { PencilIcon, UploadIcon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { User } from '../../hooks/index'
+import axios from 'axios'
 // import { Avatar } from '../BlogCard';
 
 interface Userinfo {
@@ -55,8 +56,10 @@ export default function ProfileInfo ({ user }: { user: User }) {
   const navigate = useNavigate()
   const Logout = () => {
     localStorage.removeItem('token')
-    toast.done('Account Logout')
-
+    // toast.success('Account Logout')
+    delete axios.defaults.headers.common['Authorization']; // Clear the default header
+    toast.success('Logged out successfully!');
+  
     navigate('/signin')
   }
   // const [avatarPreview, setAvatarPreview] = useState(user.profilePicture)
@@ -127,7 +130,7 @@ export default function ProfileInfo ({ user }: { user: User }) {
     name={user.name}
     alt={user.name}
     fallback={user.name.charAt(0)}
-    src={user.profilePicture}
+    src={imagePreview || user.profilePicture}
     className="w-20 h-20 cursor-pointer"
     onClick={handleAvatarClick}
   />
