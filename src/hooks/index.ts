@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { BACKEND_URL } from '../config'
+import { toast } from 'react-toastify'
 
 export interface Blog {
   content: string
@@ -25,6 +26,7 @@ export interface User {
 export function useUserDetails () {
   const [userDetails, setUserDetails] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  try{
   useEffect(() => {
     const getUserDetails = async () => {
       console.log('start fetching user details')
@@ -41,6 +43,9 @@ export function useUserDetails () {
     }
     getUserDetails()
   }, [])
+}catch(e){
+  toast.error("Internal server error / Try Again Please!")
+}
   return {
     loading,
     userDetails
