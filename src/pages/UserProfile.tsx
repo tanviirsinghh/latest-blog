@@ -4,7 +4,7 @@ import MyActivities from '../components/UserProfile.tsx/MyActivities'
 import Navbar from '../components/Navbar'
 // import NewLikeComments from '../components/UserProfile.tsx/NewLikeComment';
 import { useUserDetails } from '../hooks/index';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // Simple Avatar component
 
@@ -25,42 +25,42 @@ import { useNavigate, useParams } from 'react-router-dom';
 //   name: "Jane Doe",
 //   email: "jane.doe@example.com",
 //   bio: "Passionate blogger and tech enthusiast",
-//   avatar: "/placeholder.svg?height=100&width=100"
+//   avatar: "/placeholder.svg?height=100&wuserIdth=100"
 // }
 
 // Mock data for saved blogs
 // const savedBlogs = [
-//   { id: 1, title: "10 React Hooks You Should Know", author: "John Smith" },
-//   { id: 2, title: "The Future of AI in Web Development", author: "Emily Johnson" },
-//   { id: 3, title: "Mastering CSS Grid Layout", author: "Alex Lee" },
-//   { id: 4, title: "Understanding TypeScript Generics", author: "Sarah Brown" },
-//   { id: 5, title: "Building Scalable Node.js Applications", author: "Michael Chen" },
-//   { id: 6, title: "Responsive Design Best Practices", author: "Laura Martinez" },
-//   { id: 7, title: "Introduction to GraphQL", author: "David Wilson" },
-//   { id: 8, title: "Optimizing React Performance", author: "Emma Davis" },
+//   { userId: 1, title: "10 React Hooks You Should Know", author: "John Smith" },
+//   { userId: 2, title: "The Future of AI in Web Development", author: "Emily Johnson" },
+//   { userId: 3, title: "Mastering CSS GruserId Layout", author: "Alex Lee" },
+//   { userId: 4, title: "Understanding TypeScript Generics", author: "Sarah Brown" },
+//   { userId: 5, title: "Building Scalable Node.js Applications", author: "Michael Chen" },
+//   { userId: 6, title: "Responsive Design Best Practices", author: "Laura Martinez" },
+//   { userId: 7, title: "Introduction to GraphQL", author: "DavuserId Wilson" },
+//   { userId: 8, title: "Optimizing React Performance", author: "Emma Davis" },
 // ]
 
 // Mock data for user activities
 // const userActivities = {
 //   likes: [
-//     { id: 1, title: "The Art of Clean Code", author: "Robert C. Martin" },
-//     { id: 2, title: "JavaScript: The Good Parts", author: "Douglas Crockford" },
+//     { userId: 1, title: "The Art of Clean Code", author: "Robert C. Martin" },
+//     { userId: 2, title: "JavaScript: The Good Parts", author: "Douglas Crockford" },
 //   ],
 //   comments: [
-//     { id: 1, title: "Python for Data Science", author: "Jake VanderPlas", comment: "Great article! Very informative." },
-//     { id: 2, title: "Machine Learning Basics", author: "Andrew Ng", comment: "This helped me understand the concepts better." },
+//     { userId: 1, title: "Python for Data Science", author: "Jake VanderPlas", comment: "Great article! Very informative." },
+//     { userId: 2, title: "Machine Learning Basics", author: "Andrew Ng", comment: "This helped me understand the concepts better." },
 //   ]
 // }
 
 // Mock data for recent activities on user's posts
 // const recentActivities = {
 //   likes: [
-//     { id: 1, title: "Your Guide to React Hooks", user: "Alice Johnson" },
-//     { id: 2, title: "Understanding Async/Await", user: "Bob Williams" },
+//     { userId: 1, title: "Your GuuserIde to React Hooks", user: "Alice Johnson" },
+//     { userId: 2, title: "Understanding Async/Await", user: "Bob Williams" },
 //   ],
 //   comments: [
-//     { id: 1, title: "Your Guide to React Hooks", user: "Charlie Brown", comment: "This was exactly what I needed. Thanks!" },
-//     { id: 2, title: "Understanding Async/Await", user: "Diana Smith", comment: "Could you elaborate more on error handling?" },
+//     { userId: 1, title: "Your GuuserIde to React Hooks", user: "Charlie Brown", comment: "This was exactly what I needed. Thanks!" },
+//     { userId: 2, title: "Understanding Async/Await", user: "Diana Smith", comment: "Could you elaborate more on error handling?" },
 //   ]
 // }
 
@@ -68,13 +68,15 @@ export default function UserProfile () {
 
 
   const navigate = useNavigate();
-  // useParams will get all the data related to the parameter, it will provide the params to us
-   const {id} = useParams();
-    
-   const {loading, userDetails} = useUserDetails({
-    id: id || " "
-   })
-   if(!localStorage.getItem("token")){
+  // useParams will get all the data related to the parameter, it will provuserIde the params to us
+  //  const userId = localStorage.getItem('userId')
+  //  console.log(userId)
+   const {loading, userDetails} = useUserDetails(
+    // userId: userId || " "
+   )
+   const token = localStorage.getItem('token')
+   console.log(token)
+   if(!token){
     navigate('/signin')
     return 
 }
@@ -140,7 +142,7 @@ if(loading){
           <h1 className='text-3xl font-bold font-sans  '>User Profile</h1>
         </div>
         <div className='h-3/4 w-3/4 flex justify-evenly items-center  '>
-          <ProfileInfo userDetails={userDetails!} />
+          <ProfileInfo user={userDetails!} />
           <SavedBlogs />
         </div>
       </div>

@@ -22,24 +22,28 @@ export interface User{
     "blogName":string
 }
 
-export function useUserDetails({id} : {id : string}){
-    const [userDetails, setUserDetails] = useState<User>()
-    const [loading, setLoading] = useState(true);
+// export function useUserDetails({userId} : {userId : string}){
+export function useUserDetails(){
 
+    const [userDetails, setUserDetails] = useState<User| null>(null);
+    const [loading, setLoading] = useState(true);
     useEffect(()=>{
         const getUserDetails = async () =>{
-
+            console.log("start fetching user details")
         
-      const response = await axios.get(`${BACKEND_URL}/api/v1/user/${id}`,{
+      const response = await axios.get(`${BACKEND_URL}/api/v1/user/details`,{
         headers: {
             Authorization: localStorage.getItem("token")
         }
+        
       })
+      console.log('got respoonse of user details')
+      console.log(response.data)
       setUserDetails(response.data)
       setLoading(false)
     }
     getUserDetails()
-    },[id])
+    },[])
     return {
         loading, 
         userDetails

@@ -1,19 +1,26 @@
 import React, { useState, useRef } from 'react'
 import { PencilIcon, UploadIcon } from 'lucide-react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { User } from '../../hooks/index';
-import { Avatar } from '../BlogCard';
+// import { Avatar } from '../BlogCard';
 
 interface Userinfo {
   name: string
   email: string
   bio: string
 }
-export default function ProfileInfo ({userDetails} : {userDetails: User }) {
-  const { id } = useParams();
+export function Photo({ name, size = "small" }: { name: string, size?: "small" | "big" }) {
+  return <div className={`relative inline-flex items-center justify-center overflow-hidden bg-gray-600 rounded-full ${size === "small" ? "w-6 h-6" : "w-10 h-10"}`}>
+  <span className={`${size === "small" ? "text-xs" : "text-md"} font-extralight text-gray-600 dark:text-gray-300`}>
+      {name[0]}
+  </span>
+</div>
+}
+export default function ProfileInfo ({user} : {user: User }) {
+  // const { id } = useParams();
 
-  // const[ loading, userDetails] = useUserDetails({
+  // const[ loading, user] = useuser({
   //   id:id || " "
   // })
 
@@ -89,10 +96,10 @@ export default function ProfileInfo ({userDetails} : {userDetails: User }) {
         <h2 className='text-xl font-semibold mb-4'>Profile Information</h2>
         <div className='flex items-center space-x-4 mb-4'>
           <div className='relative'>
-            <Avatar
-                src={userDetails.profilePicture}
-                alt={editedUser.name}
-                fallback={editedUser.name.charAt(0)}
+            <img
+                src={user.profilePicture}
+                alt={user.name}
+                // fallback={user.name.charAt(0)}
                 className="w-20 h-20 cursor-pointer"
                 onClick={handleAvatarClick}
               />
@@ -101,8 +108,8 @@ export default function ProfileInfo ({userDetails} : {userDetails: User }) {
             </div>
           </div>
           <div>
-            <h2 className='text-2xl font-bold'>{userDetails.name}</h2>
-            <p className='text-gray-500'>{userDetails.email}</p>
+            <h2 className='text-2xl font-bold'>{user.name}</h2>
+            <p className='text-gray-500'>{user.email}</p>
           </div>
         </div>
         <input
