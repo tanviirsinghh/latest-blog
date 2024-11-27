@@ -22,7 +22,7 @@ export default function ProfileInfo ({user} : {user: User }) {
 
   // const[ loading, user] = useuser({
   //   id:id || " "
-  // })
+ 
 
   const [isEditing, setIsEditing] = useState(false)
   const [editedUser, setEditedUser] = useState<Userinfo>({
