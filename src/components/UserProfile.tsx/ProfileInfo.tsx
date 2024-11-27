@@ -10,32 +10,35 @@ interface Userinfo {
   email: string
   bio: string
 }
-export function Photo ({
-  alt,
-
-  fallback,
+export function Photo({
+  name,
   src,
-  className = ''
+  alt,
+  fallback,
+  className = "",
+  onClick,
 }: {
-  name: string
-  profilePicture?: string // Optional if not always passed
-  src: string
-  alt: string
-  fallback: string
-  className?: string
-  onClick: () => void // Allow className for additional styling
+  name: string;
+  src?: string;
+  alt: string;
+  fallback: string;
+  className?: string;
+  onClick?: () => void;
 }) {
   return (
     <div
-      className={`relative inline-flex items-center justify-center overflow-hidden bg-gray-600 rounded-full ${className}`}
+      className={`relative inline-flex items-center justify-center overflow-hidden bg-gray-300 rounded-full ${className}`}
+      onClick={onClick}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
     >
       {src ? (
-        <img src={src} alt={alt} className='w-full h-full object-cover' />
+        <img src={src} alt={alt} className="w-full h-full object-cover rounded-full" />
       ) : (
-        <span className='text-white font-bold'>{fallback}</span>
+        <span className="text-white font-bold">{fallback}</span>
       )}
     </div>
-  )
+  );
 }
 export default function ProfileInfo ({ user }: { user: User }) {
   const [isEditing, setIsEditing] = useState(false)
@@ -106,19 +109,19 @@ export default function ProfileInfo ({ user }: { user: User }) {
       <div className='overflow-y-auto h-full w-full  shadow rounded-lg p-6'>
         <h2 className='text-xl font-semibold mb-4'>Profile Information</h2>
         <div className='flex items-center space-x-4 mb-4'>
-          <div className='relative'>
-            <Photo
-              name={user.name}
-              alt={user.name}
-              fallback={user.name.charAt(0)}
-              src={user.profilePicture}
-              className='w-20 h-20 cursor-pointer'
-              onClick={handleAvatarClick}
-            />
-            <div className='absolute bottom-0 right-0  text-white rounded-full p-1'>
-              <UploadIcon className='h-4 w-4' />
-            </div>
-          </div>
+        <div className="relative">
+  <Photo
+    name={user.name}
+    alt={user.name}
+    fallback={user.name.charAt(0)}
+    src={user.profilePicture}
+    className="w-20 h-20 cursor-pointer"
+    onClick={handleAvatarClick}
+  />
+  <div className="absolute bottom-0 right-0 bg-white text-black rounded-full p-1 shadow-md cursor-pointer">
+    <UploadIcon className="h-4 w-4 text-gray-600" />
+  </div>
+</div>
           <div>
             <h2 className='text-2xl font-bold'>{user.name}</h2>
             <p className='text-gray-500'>{user.email}</p>
@@ -131,12 +134,12 @@ export default function ProfileInfo ({ user }: { user: User }) {
           accept='image/*'
           onChange={handleFileChange}
         />
-        <button
+        {/* <button
           className='mb-4 px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors'
           onClick={handleAvatarClick}
         >
           Change Profile Picture
-        </button>
+        </button> */}
         {isEditing ? (
           <form className=' space-y-4'>
             <div>
