@@ -21,7 +21,6 @@ export default function ProfileInfo ({user} : {user: User }) {
   // const { id } = useParams();
 
   // const[ loading, user] = useuser({
-  //   id:id || " "
  
 
   const [isEditing, setIsEditing] = useState(false)
