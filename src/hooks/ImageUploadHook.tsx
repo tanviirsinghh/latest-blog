@@ -20,7 +20,6 @@ const useImageUploadHook = async (image : File): Promise<string | undefined> => 
       })
     //   inside the imageUpload hook
     console.log("inside the imageUploadhook")
-    //   console.log(response.data.secure_url)
       console.log('complete')
       
       const imgurl = response.data.secure_url
