@@ -65,7 +65,6 @@ export const useBlog =  ({ id }: { id: string }) => {
             }
         })
                 setBlog(response.data);
-                // console.log("data fetched from backend " + blogData)
                 setLoading(false);
            
         }
