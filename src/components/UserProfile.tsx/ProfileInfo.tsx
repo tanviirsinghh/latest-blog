@@ -54,17 +54,14 @@ export default function ProfileInfo ({ user }: { user: User }) {
 
     navigate('/signin')
   }
-  const [avatarPreview, setAvatarPreview] = useState(user.profilePicture)
+  // const [avatarPreview, setAvatarPreview] = useState(user.profilePicture)
   //   const [showUserActivities, setShowUserActivities] = useState(true)
   //   const [showLikes, setShowLikes] = useState(true)
 
   // If you used state to manage this functionality,
   //  each interaction with the file input could trigger a re-render. Using useRef,
   // you can interact with the DOM element without affecting React's rendering cycle.
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const handleAvatarClick = () => {
-    fileInputRef.current?.click()
-  }
+ 
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing)
@@ -87,7 +84,10 @@ export default function ProfileInfo ({ user }: { user: User }) {
   const handleOnClick = () => {
     setIsEditing(false)
   }
-
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click()
+  }
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -129,6 +129,9 @@ export default function ProfileInfo ({ user }: { user: User }) {
         </div>
         <input
           type='file'
+          // If the file input was visible, you could just click on it directly, 
+          // and the file picker would open. But since the input is hidden (className='hidden') for styling purposes, 
+          // we need a way to trigger it programmatically. That's where useRef comes in.
           ref={fileInputRef}
           className='hidden'
           accept='image/*'
