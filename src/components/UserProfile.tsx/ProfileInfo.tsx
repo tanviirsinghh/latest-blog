@@ -24,9 +24,6 @@ export default function ProfileInfo ({user} : {user: User }) {
   //   id:id || " "
   // })
 
-
-
-
   const [isEditing, setIsEditing] = useState(false)
   const [editedUser, setEditedUser] = useState<Userinfo>({
     name: '',
