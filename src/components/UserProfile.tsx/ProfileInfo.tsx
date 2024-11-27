@@ -47,6 +47,11 @@ export default function ProfileInfo ({ user }: { user: User }) {
     email: '',
     bio: ''
   })
+  const [image, setImage] = useState<File | null>(null)
+  // storing the temporary url here to show on frontend when user select the picture
+  const [imagePreview, setImagePreview] = useState<string | undefined>(
+    undefined
+  )
   const navigate = useNavigate()
   const Logout = () => {
     localStorage.removeItem('token')
@@ -88,19 +93,26 @@ export default function ProfileInfo ({ user }: { user: User }) {
   const handleAvatarClick = () => {
     fileInputRef.current?.click()
   }
+  
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        // setAvatarPreview(reader.result as string)
-        // Here you would typically upload the file to your backend
-        console.log('Uploading new avatar:', file)
+    if (e.target && e.target.files && e.target.files[0]) {
+      const file = e.target.files[0]
+      // storing the image url for quick preview
+      // When you create an object URL using URL.createObjectURL(), 
+      //it occupies memory in the browser until it's manually released. 
+      //If you create multiple object URLs without revoking them, 
+      //it can lead to a memory leak, as the URLs remain allocated even if they are no longer needed.
+      // if old img present and new image is getting update the revoke the first image
+      if(imagePreview){
+        URL.revokeObjectURL(imagePreview)
+     
       }
-      reader.readAsDataURL(file)
-      alert(
-        'Photo Uploaded: Your new profile photo has been uploaded successfully.'
-      )
+      const newPreviewURL = URL.createObjectURL(file)
+      setImagePreview(newPreviewURL)
+
+      // storing the img file to send it to the cloudinary server
+      setImage(file)
+      console.log("img stored in the state")
     }
   }
 
