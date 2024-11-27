@@ -64,7 +64,6 @@ export const useBlog =  ({ id }: { id: string }) => {
                 Authorization: localStorage.getItem("token")
             }
         })
-                // const blogData = response.data.data;
                 // console.log("getting url from the get api "+ blogData) // getting undefined
                 setBlog(response.data);
                 // console.log("data fetched from backend " + blogData)
