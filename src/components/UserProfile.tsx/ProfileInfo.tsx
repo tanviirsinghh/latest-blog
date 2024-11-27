@@ -86,14 +86,12 @@ export default function ProfileInfo ({ user }: { user: User }) {
     setEditedUser(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleOnClick = () => {
-    setIsEditing(false)
-  }
+ 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const handleAvatarClick = () => {
     fileInputRef.current?.click()
   }
-  
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target && e.target.files && e.target.files[0]) {
       const file = e.target.files[0]
@@ -114,6 +112,9 @@ export default function ProfileInfo ({ user }: { user: User }) {
       setImage(file)
       console.log("img stored in the state")
     }
+  }
+  const handleOnClick = () => {
+    setIsEditing(false)
   }
 
   return (
