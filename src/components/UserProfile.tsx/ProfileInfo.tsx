@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { PencilIcon, UploadIcon } from 'lucide-react'
-import {  useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { User } from '../../hooks/index'
 import axios from 'axios'
@@ -12,35 +12,39 @@ interface Userinfo {
   email: string
   bio: string
 }
-export function Photo({
+export function Photo ({
   name,
   src,
   alt,
   fallback,
-  className = "",
-  onClick,
+  className = '',
+  onClick
 }: {
-  name: string;
-  src?: string;
-  alt: string;
-  fallback: string;
-  className?: string;
-  onClick?: () => void;
+  name: string
+  src?: string
+  alt: string
+  fallback: string
+  className?: string
+  onClick?: () => void
 }) {
   return (
     <div
       className={`relative inline-flex items-center justify-center overflow-hidden bg-gray-300 rounded-full ${className}`}
       onClick={onClick}
-      role={onClick ? "button" : undefined}
+      role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
     >
       {src ? (
-        <img src={src} alt={alt} className="w-full h-full object-cover rounded-full" />
+        <img
+          src={src}
+          alt={alt}
+          className='w-full h-full object-cover rounded-full'
+        />
       ) : (
-        <span className="text-white font-bold">{fallback}</span>
+        <span className='text-white font-bold'>{fallback}</span>
       )}
     </div>
-  );
+  )
 }
 export default function ProfileInfo ({ user }: { user: User }) {
   const [isEditing, setIsEditing] = useState(false)
@@ -54,14 +58,14 @@ export default function ProfileInfo ({ user }: { user: User }) {
   const [imagePreview, setImagePreview] = useState<string | undefined>(
     undefined
   )
-  const[confirm, setConfirm] = useState(false)
+  const [confirm, setConfirm] = useState(false)
   const [url, setUrl] = useState<string | undefined>(undefined)
   const navigate = useNavigate()
   const Logout = () => {
     localStorage.removeItem('token')
-    delete axios.defaults.headers.common['Authorization']; // Clear the default header
-    toast.success('Logged out successfully!');
-  
+    delete axios.defaults.headers.common['Authorization'] // Clear the default header
+    toast.success('Logged out successfully!')
+
     navigate('/signin')
   }
   // const [avatarPreview, setAvatarPreview] = useState(user.profilePicture)
@@ -71,7 +75,6 @@ export default function ProfileInfo ({ user }: { user: User }) {
   // If you used state to manage this functionality,
   //  each interaction with the file input could trigger a re-render. Using useRef,
   // you can interact with the DOM element without affecting React's rendering cycle.
- 
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing)
@@ -91,7 +94,6 @@ export default function ProfileInfo ({ user }: { user: User }) {
     setEditedUser(prev => ({ ...prev, [name]: value }))
   }
 
- 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const handleAvatarClick = () => {
     fileInputRef.current?.click()
@@ -101,14 +103,13 @@ export default function ProfileInfo ({ user }: { user: User }) {
     if (e.target && e.target.files && e.target.files[0]) {
       const file = e.target.files[0]
       // storing the image url for quick preview
-      // When you create an object URL using URL.createObjectURL(), 
-      //it occupies memory in the browser until it's manually released. 
-      //If you create multiple object URLs without revoking them, 
+      // When you create an object URL using URL.createObjectURL(),
+      //it occupies memory in the browser until it's manually released.
+      //If you create multiple object URLs without revoking them,
       //it can lead to a memory leak, as the URLs remain allocated even if they are no longer needed.
       // if old img present and new image is getting update the revoke the first image
-      if(imagePreview){
+      if (imagePreview) {
         URL.revokeObjectURL(imagePreview)
-     
       }
       const newPreviewURL = URL.createObjectURL(file)
       setImagePreview(newPreviewURL)
@@ -117,58 +118,55 @@ export default function ProfileInfo ({ user }: { user: User }) {
 
       // storing the img file to send it to the cloudinary server
       setImage(file)
-      console.log("img stored in the state")
+      console.log('img stored in the state')
     }
   }
 
   const handleUploadConfirm = async () => {
-    if (!image) return;
-  
+    if (!image) return
+
     try {
-      const imgUrl = await ImageUploadHook(image) ;
+      const imgUrl = await ImageUploadHook(image)
       if (!imgUrl && image) {
         // If image is present but upload failed
-        toast.error('Image upload failed. Cannot proceed.');
-        return;
+        toast.error('Image upload failed. Cannot proceed.')
+        return
       }
-      console.log("image uploaded successfully and here is your url" + imgUrl)
-   
-  
+      console.log('image uploaded successfully and here is your url' + imgUrl)
+
       // const uploadedImageUrl = response.data.secure_url;
       // console.log("Image uploaded to Cloudinary:", imgUrl);
-  
+
       // Update user profile picture with the uploaded image URL
       // You can now use this URL for user.profilePicture or save it in the database
       const Url = imgUrl
-      setUrl(Url);
+      setUrl(Url)
 
-      toast.success("Profile picture updated!");
+      toast.success('Profile picture updated!')
       // set to false to for next use
       setConfirm(false)
-      if(imagePreview){
+      if (imagePreview) {
         URL.revokeObjectURL(imagePreview)
-     
       }
-      
+
       setImagePreview(Url)
-    
     } catch (error) {
-      console.error("Error uploading image:", error);
-      toast.error("Failed to upload image. Please try again.");
+      console.error('Error uploading image:', error)
+      toast.error('Failed to upload image. Please try again.')
     } finally {
-      setConfirm(false); // Close confirmation UI
+      setConfirm(false) // Close confirmation UI
     }
-  };
-  
+  }
+
   const handleUploadCancel = () => {
     // Revoke preview and reset state
     if (imagePreview) {
-      URL.revokeObjectURL(imagePreview);
+      URL.revokeObjectURL(imagePreview)
     }
-    setImage(null);
-    setImagePreview(undefined);
-    setConfirm(false); // Close confirmation UI
-  };
+    setImage(null)
+    setImagePreview(undefined)
+    setConfirm(false) // Close confirmation UI
+  }
 
   const handleOnClick = () => {
     setIsEditing(false)
@@ -179,19 +177,19 @@ export default function ProfileInfo ({ user }: { user: User }) {
       <div className='overflow-y-auto h-full w-full  shadow rounded-lg p-6'>
         <h2 className='text-xl font-semibold mb-4'>Profile Information</h2>
         <div className='flex items-center space-x-4 mb-4'>
-        <div className="relative">
-  <Photo
-    name={user.name}
-    alt={user.name}
-    fallback={user.name.charAt(0)}
-    src={imagePreview || user.profilePicture}
-    className="w-20 h-20 cursor-pointer"
-    onClick={handleAvatarClick}
-  />
-  <div className="absolute bottom-0 right-0 bg-white text-black rounded-full p-1 shadow-md cursor-pointer">
-    <UploadIcon className="h-4 w-4 text-gray-600" />
-  </div>
-</div>
+          <div className='relative'>
+            <Photo
+              name={user.name}
+              alt={user.name}
+              fallback={user.name.charAt(0)}
+              src={imagePreview || user.profilePicture}
+              className='w-20 h-20 cursor-pointer'
+              onClick={handleAvatarClick}
+            />
+            <div className='absolute bottom-0 right-0 bg-white text-black rounded-full p-1 shadow-md cursor-pointer'>
+              <UploadIcon className='h-4 w-4 text-gray-600' />
+            </div>
+          </div>
           <div>
             <h2 className='text-2xl font-bold'>{user.name}</h2>
             <p className='text-gray-500'>{user.email}</p>
@@ -199,8 +197,8 @@ export default function ProfileInfo ({ user }: { user: User }) {
         </div>
         <input
           type='file'
-          // If the file input was visible, you could just click on it directly, 
-          // and the file picker would open. But since the input is hidden (className='hidden') for styling purposes, 
+          // If the file input was visible, you could just click on it directly,
+          // and the file picker would open. But since the input is hidden (className='hidden') for styling purposes,
           // we need a way to trigger it programmatically. That's where useRef comes in.
           ref={fileInputRef}
           className='hidden'
@@ -299,38 +297,32 @@ export default function ProfileInfo ({ user }: { user: User }) {
         )}
       </div>
       {confirm && (
-  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-    <div className="bg-white p-6 rounded shadow-lg">
-      <h2 className="text-lg font-bold mb-4">Confirm Upload</h2>
-      <p className="text-sm mb-4">
-        Do you want to upload this profile picture?
-      </p>
-      <div className="flex space-x-4">
-        <button
-          onClick={handleUploadConfirm}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-        >
-          Confirm
-        </button>
-        <button
-          onClick={handleUploadCancel}
-          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
-        >
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-)}
-
+        <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50'>
+          <div className='bg-white p-6 rounded shadow-lg'>
+            <h2 className='text-lg font-bold mb-4'>Confirm Upload</h2>
+            <p className='text-sm mb-4'>
+              Do you want to upload this profile picture?
+            </p>
+            <div className='flex space-x-4'>
+              <button
+                onClick={handleUploadConfirm}
+                className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition'
+              >
+                Confirm
+              </button>
+              <button
+                onClick={handleUploadCancel}
+                className='px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition'
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
     // confirmation from the user
-
-    
   )
 }
 
-export  const Confirmation  = () =>{
-       
-
-}
+export const Confirmation = () => {}
