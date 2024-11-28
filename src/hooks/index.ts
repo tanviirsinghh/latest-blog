@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { BACKEND_URL } from '../config'
 import { toast } from 'react-toastify'
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export interface Blog {
   content: string
@@ -34,8 +34,10 @@ export function useUserDetails () {
         console.log('start fetching user details');
         
         const token = localStorage.getItem('token');
+        console.log('checking if the token is present or not' + token )
         if (!token) {
-          throw new Error('Token not found'); // Handle the case where the token is missing
+          
+          throw new Error("Token Undefined")// Handle the case where the token is missing
         }
 
         const response = await axios.get(`${BACKEND_URL}/api/v1/user/details`, {
@@ -53,6 +55,8 @@ export function useUserDetails () {
             navigate('/signin'); // Redirect to sign-in page
           } else if (error.response?.status === 500) {
             toast.error('Internal server error. Please try again.');
+            navigate('/signin'); // Redirect to sign-in page
+
           }
           else if (error.response?.status === 404) {
           toast.error('User Not Found');
@@ -61,6 +65,8 @@ export function useUserDetails () {
         } else {
           console.error('Unexpected error:', error);
           toast.error('An unexpected error occurred.');
+          navigate('/signin'); // Redirect to sign-in page
+
         }
       } finally {
         setLoading(false); // Ensure loading state is updated
@@ -79,17 +85,26 @@ export function useUserDetails () {
 export const useBlog = ({ id }: { id: string }) => {
   const [loading, setLoading] = useState(true)
   const [blog, setBlog] = useState<Blog>()
-
+  const navigate = useNavigate();
   useEffect(() => {
     const getBlogData = async () => {
-      const response = await axios.get(`${BACKEND_URL}/api/v1/blog/${id}`, {
-        headers: {
-          Authorization: localStorage.getItem('token')
-        }
-      })
-      setBlog(response.data)
-      setLoading(false)
-    }
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found. Redirecting to login...');
+        navigate('/signin');
+        return;
+      }
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/v1/blog/${id}`, {
+          headers: { Authorization: token },
+        });
+        setBlog(response.data);
+      } catch (error) {
+        console.error('Error fetching blog data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
     getBlogData()
   }, [id])
 
@@ -102,20 +117,30 @@ export const useBlog = ({ id }: { id: string }) => {
 export const useBlogs = () => {
   const [loading, setLoading] = useState(true)
   const [blogs, setBlogs] = useState<Blog[]>([])
-
+  const navigate = useNavigate()
   useEffect(() => {
-    axios
-      .get(`${BACKEND_URL}/api/v1/blog/bulk`, {
-        headers: {
-          Authorization: localStorage.getItem('token')
-        }
-      })
-      .then(response => {
-        setBlogs(response.data.posts)
-        console.log('all posts fetching here')
+    const fetchBlogs = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found. Redirecting to login...');
+        navigate('/signin');
+        return;
+      }
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
+          headers: { Authorization: token },
+        });
+        setBlogs(response.data.posts);
         console.log(response.data.posts)
-        setLoading(false)
-      })
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+      } finally {
+        setLoading(false);
+      }
+     
+    };
+    fetchBlogs()
+
   }, [])
   return {
     loading,
