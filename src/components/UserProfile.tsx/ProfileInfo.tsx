@@ -1,10 +1,11 @@
 import React, { useState, useRef } from 'react'
 import { PencilIcon, UploadIcon } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { User } from '../../hooks/index'
 import axios from 'axios'
 // import { Avatar } from '../BlogCard';
+import ImageUploadHook from '../../hooks/ImageUploadHook'
 
 interface Userinfo {
   name: string
@@ -53,6 +54,7 @@ export default function ProfileInfo ({ user }: { user: User }) {
   const [imagePreview, setImagePreview] = useState<string | undefined>(
     undefined
   )
+  const[confirm, setConfirm] = useState(false)
   const navigate = useNavigate()
   const Logout = () => {
     localStorage.removeItem('token')
@@ -110,12 +112,53 @@ export default function ProfileInfo ({ user }: { user: User }) {
       }
       const newPreviewURL = URL.createObjectURL(file)
       setImagePreview(newPreviewURL)
+      // confirmation from the user to upload file
+      setConfirm(true)
 
       // storing the img file to send it to the cloudinary server
       setImage(file)
       console.log("img stored in the state")
     }
   }
+
+  const handleUploadConfirm = async () => {
+    if (!image) return;
+  
+    try {
+      const imgUrl = await ImageUploadHook(image) ;
+      if (!imgUrl && image) {
+        // If image is present but upload failed
+        toast.error('Image upload failed. Cannot proceed.');
+        return;
+      }
+      console.log("image uploaded successfully and here is your url" + imgUrl)
+   
+  
+      // const uploadedImageUrl = response.data.secure_url;
+      // console.log("Image uploaded to Cloudinary:", imgUrl);
+  
+      // Update user profile picture with the uploaded image URL
+      // You can now use this URL for user.profilePicture or save it in the database
+      setImagePreview(imgUrl);
+      toast.success("Profile picture updated!");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.error("Failed to upload image. Please try again.");
+    } finally {
+      setConfirm(false); // Close confirmation UI
+    }
+  };
+  
+  const handleUploadCancel = () => {
+    // Revoke preview and reset state
+    if (imagePreview) {
+      URL.revokeObjectURL(imagePreview);
+    }
+    setImage(null);
+    setImagePreview(undefined);
+    setConfirm(false); // Close confirmation UI
+  };
+
   const handleOnClick = () => {
     setIsEditing(false)
   }
@@ -244,6 +287,39 @@ export default function ProfileInfo ({ user }: { user: User }) {
           <span className=''></span>
         )}
       </div>
+      {confirm && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white p-6 rounded shadow-lg">
+      <h2 className="text-lg font-bold mb-4">Confirm Upload</h2>
+      <p className="text-sm mb-4">
+        Do you want to upload this profile picture?
+      </p>
+      <div className="flex space-x-4">
+        <button
+          onClick={handleUploadConfirm}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        >
+          Confirm
+        </button>
+        <button
+          onClick={handleUploadCancel}
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+        >
+          Cancel
+        </button>
+      </div>
     </div>
+  </div>
+)}
+
+    </div>
+    // confirmation from the user
+
+    
   )
+}
+
+export  const Confirmation  = () =>{
+       
+
 }
