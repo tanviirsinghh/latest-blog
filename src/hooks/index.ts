@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { BACKEND_URL } from '../config'
 import { toast } from 'react-toastify'
+import {  useNavigate } from 'react-router-dom';
 
 export interface Blog {
   content: string
@@ -24,28 +25,51 @@ export interface User {
 
 // export function useUserDetails({userId} : {userId : string}){
 export function useUserDetails () {
+  const navigate = useNavigate()
   const [userDetails, setUserDetails] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  try{
   useEffect(() => {
     const getUserDetails = async () => {
-      console.log('start fetching user details')
-
-      const response = await axios.get(`${BACKEND_URL}/api/v1/user/details`, {
-        headers: {
-          Authorization: localStorage.getItem('token')
+      try {
+        console.log('start fetching user details');
+        
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('Token not found'); // Handle the case where the token is missing
         }
-      })
-      console.log('got respoonse of user details')
-      console.log(response.data)
-      setUserDetails(response.data)
-      setLoading(false)
-    }
-    getUserDetails()
-  }, [])
-}catch(e){
-  toast.error("Internal server error / Try Again Please!")
-}
+
+        const response = await axios.get(`${BACKEND_URL}/api/v1/user/details`, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Ensure the token format is correct
+          },
+        });
+        
+        console.log('got response of user details', response.data);
+        setUserDetails(response.data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          if (error.response?.status === 401) {
+            toast.error('Unauthorized. Please sign in again.');
+            navigate('/signin'); // Redirect to sign-in page
+          } else if (error.response?.status === 500) {
+            toast.error('Internal server error. Please try again.');
+          }
+          else if (error.response?.status === 404) {
+          toast.error('User Not Found');
+          navigate('/signin'); // Redirect to sign-in page
+        }
+        } else {
+          console.error('Unexpected error:', error);
+          toast.error('An unexpected error occurred.');
+        }
+      } finally {
+        setLoading(false); // Ensure loading state is updated
+      }
+    };
+
+    getUserDetails();
+  }, [navigate]); // for safety
+  
   return {
     loading,
     userDetails
