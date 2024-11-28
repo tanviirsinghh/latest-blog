@@ -59,7 +59,6 @@ export default function ProfileInfo ({ user }: { user: User }) {
   const navigate = useNavigate()
   const Logout = () => {
     localStorage.removeItem('token')
-    // toast.success('Account Logout')
     delete axios.defaults.headers.common['Authorization']; // Clear the default header
     toast.success('Logged out successfully!');
   
