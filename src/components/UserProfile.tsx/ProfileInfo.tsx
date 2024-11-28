@@ -55,6 +55,7 @@ export default function ProfileInfo ({ user }: { user: User }) {
     undefined
   )
   const[confirm, setConfirm] = useState(false)
+  const [url, setUrl] = useState<string | undefined>(undefined)
   const navigate = useNavigate()
   const Logout = () => {
     localStorage.removeItem('token')
@@ -139,8 +140,19 @@ export default function ProfileInfo ({ user }: { user: User }) {
   
       // Update user profile picture with the uploaded image URL
       // You can now use this URL for user.profilePicture or save it in the database
-      setImagePreview(imgUrl);
+      const Url = imgUrl
+      setUrl(Url);
+
       toast.success("Profile picture updated!");
+      // set to false to for next use
+      setConfirm(false)
+      if(imagePreview){
+        URL.revokeObjectURL(imagePreview)
+     
+      }
+      
+      setImagePreview(Url)
+    
     } catch (error) {
       console.error("Error uploading image:", error);
       toast.error("Failed to upload image. Please try again.");
