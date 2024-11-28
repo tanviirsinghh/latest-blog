@@ -6,6 +6,7 @@ import { User } from '../../hooks/index'
 import axios from 'axios'
 // import { Avatar } from '../BlogCard';
 import ImageUploadHook from '../../hooks/ImageUploadHook'
+import { BACKEND_URL } from '../../config'
 
 interface Userinfo {
   name: string
@@ -145,6 +146,28 @@ export default function ProfileInfo ({ user }: { user: User }) {
       toast.success('Profile picture updated!')
       // set to false to for next use
       setConfirm(false)
+
+      if(!url){
+        toast.error("Error Uploading Image / Try Again")
+        return
+      }
+
+
+
+
+const response = await axios.put(`${BACKEND_URL}/api/v1/user/update-profile-picture`,{
+        profilePicture: imgUrl
+      },
+      {
+        headers:{
+          Authorization: localStorage.getItem('token')
+        }
+      })
+      console.log(response.data)
+      // const token = response.data.token
+      // localStorage.setItem('token', token)
+      // navigate('/blogs')
+
       if (imagePreview) {
         URL.revokeObjectURL(imagePreview)
       }
