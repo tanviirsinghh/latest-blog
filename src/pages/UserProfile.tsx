@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar'
 // import NewLikeComments from '../components/UserProfile.tsx/NewLikeComment';
 import { useUserDetails } from '../hooks/index';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 // Simple Avatar component
 
@@ -74,6 +75,7 @@ export default function UserProfile () {
    const {loading, userDetails} = useUserDetails(
     // userId: userId || " "
    )
+  //  const {refreshData, setRefreshData} = useState(null)
    const token = localStorage.getItem('token')
    console.log(token)
    if(!token){
@@ -142,7 +144,7 @@ if(loading){
           <h1 className='text-3xl font-bold font-sans  '>User Profile</h1>
         </div>
         <div className='h-3/4 w-3/4 flex justify-evenly items-center  '>
-          <ProfileInfo user={userDetails!} />
+          <ProfileInfo user={userDetails!}  />
           <SavedBlogs />
         </div>
       </div>
