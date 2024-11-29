@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar'
 // import NewLikeComments from '../components/UserProfile.tsx/NewLikeComment';
 import { useUserDetails } from '../hooks/index';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+// import { useState } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '@/config';
 
@@ -89,7 +89,7 @@ export default function UserProfile () {
       });
       
       console.log('got response of user details', response.data);
-      return setUserDetails(response.data);
+       setUserDetails(response.data);
    }
   //  const {refreshData, setRefreshData} = useState(null)
    const token = localStorage.getItem('token')

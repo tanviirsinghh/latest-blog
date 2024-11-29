@@ -188,7 +188,7 @@
 
 
 
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { PencilIcon } from 'lucide-react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -196,7 +196,12 @@ import ImageUploadHook from '../../hooks/ImageUploadHook';
 import { BACKEND_URL } from '../../config';
 import { User } from '@/hooks';
 
-export default function ProfileInfo({ user }: { user: User },refreshUserDetails: () => Promise<void> ) {
+
+interface ProfileInfoProps {
+  user: User;
+  refreshUserDetails: () => Promise<void>;
+}
+export default function ProfileInfo({ user ,refreshUserDetails} : ProfileInfoProps ) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState({
     name: user?.name || '',
