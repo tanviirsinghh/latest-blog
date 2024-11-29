@@ -6,6 +6,8 @@ import Navbar from '../components/Navbar'
 import { useUserDetails } from '../hooks/index';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import axios from 'axios';
+import { BACKEND_URL } from '@/config';
 
 // Simple Avatar component
 
@@ -72,9 +74,23 @@ export default function UserProfile () {
   // useParams will get all the data related to the parameter, it will provuserIde the params to us
   //  const userId = localStorage.getItem('userId')
   //  console.log(userId)
-   const {loading, userDetails} = useUserDetails(
+   const {loading, userDetails,setUserDetails} = useUserDetails(
     // userId: userId || " "
    )
+  //  const {refreshData, setRefreshData}= useState('')
+
+    const getRefreshData = async () => {
+       const token = localStorage.getItem('token')
+      const response = await axios.get(`${BACKEND_URL}/api/v1/user/details`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Ensure the token format is correct
+        },
+        
+      });
+      
+      console.log('got response of user details', response.data);
+      return setUserDetails(response.data);
+   }
   //  const {refreshData, setRefreshData} = useState(null)
    const token = localStorage.getItem('token')
    console.log(token)
@@ -144,7 +160,7 @@ if(loading){
           <h1 className='text-3xl font-bold font-sans  '>User Profile</h1>
         </div>
         <div className='h-3/4 w-3/4 flex justify-evenly items-center  '>
-          <ProfileInfo user={userDetails!}  />
+          <ProfileInfo user={userDetails!}  refreshUserDetails={getRefreshData}/>
           <SavedBlogs />
         </div>
       </div>

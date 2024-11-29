@@ -37,7 +37,8 @@ export function useUserDetails () {
         console.log('checking if the token is present or not' + token )
         if (!token) {
           
-          throw new Error("Token Undefined")// Handle the case where the token is missing
+          throw new Error("Token Undefined")
+          // Handle the case where the token is missing
         }
 
         const response = await axios.get(`${BACKEND_URL}/api/v1/user/details`, {
@@ -78,7 +79,8 @@ export function useUserDetails () {
   
   return {
     loading,
-    userDetails
+    userDetails,
+    setUserDetails,
   }
 }
 

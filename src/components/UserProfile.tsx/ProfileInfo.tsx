@@ -188,7 +188,7 @@
 
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PencilIcon } from 'lucide-react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -196,7 +196,7 @@ import ImageUploadHook from '../../hooks/ImageUploadHook';
 import { BACKEND_URL } from '../../config';
 import { User } from '@/hooks';
 
-export default function ProfileInfo({ user }: { user: User }) {
+export default function ProfileInfo({ user }: { user: User },refreshUserDetails: () => Promise<void> ) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState({
     name: user?.name || '',
@@ -234,6 +234,8 @@ export default function ProfileInfo({ user }: { user: User }) {
     setIsEditing((prev) => !prev);
   };
 
+
+  
   const handleImageUpload = async () => {
     if (!image) {
       toast.error('Please select an image before confirming.');
@@ -254,7 +256,7 @@ export default function ProfileInfo({ user }: { user: User }) {
         }
       );
         toast.success('Image uploaded successfully!');
-
+        refreshUserDetails()
       } else {
         toast.error('Image upload failed. Please try again.');
         return
