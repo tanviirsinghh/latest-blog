@@ -13,7 +13,7 @@
 //   const [userData, setUserData] = useState({
 //     name: '',
 //     email: '',
-//     bio: '',
+//     blogName: '',
 //   });
 //   const [image, setImage] = useState<File | null>(null);
 //   const [imagePreview, setImagePreview] = useState<string | undefined>();
@@ -149,10 +149,10 @@
 //         />
 //       </div>
 //       <div className="mb-4">
-//         <label className="block text-gray-700">Bio</label>
+//         <label className="block text-gray-700">blogName</label>
 //         <textarea
-//           name="bio"
-//           value={userData.bio}
+//           name="blogName"
+//           value={userData.blogName}
 //           onChange={handleInputChange}
 //           disabled={!edit}
 //           className={`w-full px-3 py-1 border rounded-md ${
@@ -208,7 +208,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
   const [editedUser, setEditedUser] = useState({
     name: user?.name || '',
     email: user?.email || '',
-    bio: user?.blogName || '',
+    blogName: user?.blogName || '',
   });
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState(user?.profilePicture || '');
@@ -228,7 +228,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
 
   const toggleEditMode = () => {
     if (isEditing) {
-      if (!editedUser.name || !editedUser.email || !editedUser.bio) {
+      if (!editedUser.name || !editedUser.email || !editedUser.blogName) {
         toast.error('All fields are required!');
         return;
       }
@@ -263,7 +263,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
         }
       );
          await getRefreshData()
-        //  toast.success('get refresh error solved')
+         toast.success('Funtion running successfully')
          toast.success('Image uploaded successfully!');
 
       } else {
@@ -281,7 +281,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
   };
 
   const hasChanges =
-    editedUser.name !== user?.name || editedUser.email !== user?.email || editedUser.bio !== user?.blogName;
+    editedUser.name !== user?.name || editedUser.email !== user?.email || editedUser.blogName !== user?.blogName;
 
   return (
     <div className="flex flex-col items-center justify-center p-4 bg-white rounded-md shadow-md">
@@ -340,7 +340,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
         <input
           type="text"
           name="name"
-          value={editedUser.name}
+          value={user.name}
           onChange={handleInputChange}
           disabled={!isEditing}
           className={`w-full mt-1 p-2 border rounded ${
@@ -354,7 +354,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
         <input
           type="email"
           name="email"
-          value={editedUser.email}
+          value={user.email}
           onChange={handleInputChange}
           disabled={!isEditing}
           className={`w-full mt-1 p-2 border rounded ${
@@ -364,10 +364,10 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
       </div>
 
       <div className="w-full mt-4">
-        <label className="block text-sm font-semibold">Bio</label>
+        <label className="block text-sm font-semibold">Blog Name</label>
         <textarea
-          name="bio"
-          value={editedUser.bio}
+          name="blogName"
+          value={user.blogName}
           onChange={handleInputChange}
           disabled={!isEditing}
           className={`w-full mt-1 p-2 border rounded ${
@@ -380,7 +380,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
         <button
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           onClick={toggleEditMode}
-          disabled={isEditing && (!hasChanges || !editedUser.name || !editedUser.email || !editedUser.bio)}
+          disabled={isEditing && (!hasChanges || !editedUser.name || !editedUser.email || !editedUser.blogName)}
         >
           {isEditing ? 'Save Changes' : 'Edit Profile'}
         </button>
@@ -436,7 +436,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
 // interface Userinfo {
 //   name: string
 //   email: string
-//   bio: string
+//   blogName: string
 // }
 // export function Photo ({
 //   name,
@@ -477,7 +477,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
 //   const [editedUser, setEditedUser] = useState<Userinfo>({
 //     name: '',
 //     email: '',
-//     bio: ''
+//     blogName: ''
 //   })
 //   const [image, setImage] = useState<File | null>(null)
 //   // storing the temporary url here to show on frontend when user select the picture
@@ -688,14 +688,14 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
 //             </div>
 //             <div>
 //               <label
-//                 htmlFor='bio'
+//                 htmlFor='blogName'
 //                 className='block text-sm font-medium text-gray-700'
 //               >
-//                 bio
+//                 blogName
 //               </label>
 //               <textarea
-//                 id='bio'
-//                 name='bio'
+//                 id='blogName'
+//                 name='blogName'
 //                 onChange={handleInputChange}
 //                 className='mt-1 block w-full  rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'
 //                 rows={3}
