@@ -7,7 +7,8 @@ import { useUserDetails } from '../hooks/index';
 import { useNavigate } from 'react-router-dom';
 // import { useState } from 'react';
 import axios from 'axios';
-import { BACKEND_URL } from '@/config';
+import { BACKEND_URL } from '../config';
+import { toast } from 'react-toastify';
 
 // Simple Avatar component
 
@@ -78,19 +79,26 @@ export default function UserProfile () {
     // userId: userId || " "
    )
   //  const {refreshData, setRefreshData}= useState('')
-
-    const getRefreshData = async () => {
-       const token = localStorage.getItem('token')
+  const getRefreshData = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      toast.error('Sign In first');
+      navigate('/signin');
+      return;
+    }
+    try {
       const response = await axios.get(`${BACKEND_URL}/api/v1/user/details`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Ensure the token format is correct
+          Authorization: ` ${token}`, // Ensure token format is correct
         },
-        
       });
-      
-      console.log('got response of user details', response.data);
-       setUserDetails(response.data);
-   }
+      console.log('Got refresh response of user details', response.data);
+      setUserDetails(response.data);
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+      toast.error('Failed to refresh user details.');
+    }
+  };
   //  const {refreshData, setRefreshData} = useState(null)
    const token = localStorage.getItem('token')
    console.log(token)
@@ -160,7 +168,9 @@ if(loading){
           <h1 className='text-3xl font-bold font-sans  '>User Profile</h1>
         </div>
         <div className='h-3/4 w-3/4 flex justify-evenly items-center  '>
-          <ProfileInfo user={userDetails!}  refreshUserDetails={getRefreshData}/>
+          <ProfileInfo
+           user={userDetails!} 
+            getRefreshData={getRefreshData}/>
           <SavedBlogs />
         </div>
       </div>

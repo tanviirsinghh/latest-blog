@@ -194,14 +194,16 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import ImageUploadHook from '../../hooks/ImageUploadHook';
 import { BACKEND_URL } from '../../config';
-import { User } from '@/hooks';
+import { User } from '../../hooks';
+// import { User } from '@/hooks';
 
 
 interface ProfileInfoProps {
   user: User;
-  refreshUserDetails: () => Promise<void>;
+  getRefreshData: () => Promise<void>;
 }
-export default function ProfileInfo({ user ,refreshUserDetails} : ProfileInfoProps ) {
+
+export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState({
     name: user?.name || '',
@@ -260,8 +262,10 @@ export default function ProfileInfo({ user ,refreshUserDetails} : ProfileInfoPro
             headers: { Authorization: ` ${localStorage.getItem('token')}` }, // Assuming token is stored in localStorage
         }
       );
-        toast.success('Image uploaded successfully!');
-        refreshUserDetails()
+         await getRefreshData()
+        //  toast.success('get refresh error solved')
+         toast.success('Image uploaded successfully!');
+
       } else {
         toast.error('Image upload failed. Please try again.');
         return
