@@ -27,8 +27,7 @@ import { toast } from 'react-toastify';
 //   email: "jane.doe@example.com",
 //   bio: "Passionate blogger and tech enthusiast",
 //   avatar: "/placeholder.svg?height=100&wuserIdth=100"
-// }
-
+// }\
 // Mock data for saved blogs
 // const savedBlogs = [
 //   { userId: 1, title: "10 React Hooks You Should Know", author: "John Smith" },
