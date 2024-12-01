@@ -152,7 +152,6 @@ if(loading){
   //     alert("Photo Uploaded: Your new profile photo has been uploaded successfully.")
   //   }
   // }
-
   return (
 <>
 <Navbar />
