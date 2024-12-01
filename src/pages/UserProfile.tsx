@@ -113,7 +113,6 @@ if(loading){
      
              loading...
           </div>
-     
 }
   // const [isEditing, setIsEditing] = useState(false)
   // const [editedUser, setEditedUser] = useState(user)
