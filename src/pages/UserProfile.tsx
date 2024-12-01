@@ -62,7 +62,6 @@ import { toast } from 'react-toastify';
 //     { userId: 2, title: "Understanding Async/Await", user: "Diana Smith", comment: "Could you elaborate more on error handling?" },
 //   ]
 // }
-
 export default function UserProfile () {
   const navigate = useNavigate();
   // useParams will get all the data related to the parameter, it will provuserIde the params to us
