@@ -39,7 +39,6 @@ import { toast } from 'react-toastify';
 //   { userId: 7, title: "Introduction to GraphQL", author: "DavuserId Wilson" },
 //   { userId: 8, title: "Optimizing React Performance", author: "Emma Davis" },
 // ]
-
 // Mock data for user activities
 // const userActivities = {
 //   likes: [
