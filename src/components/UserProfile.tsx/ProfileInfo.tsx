@@ -195,7 +195,6 @@ import axios from 'axios';
 import ImageUploadHook from '../../hooks/ImageUploadHook';
 import { BACKEND_URL } from '../../config';
 import { User } from '../../hooks';
-// import { User } from '@/hooks';
 
 
 interface ProfileInfoProps {
