@@ -122,7 +122,6 @@ if(loading){
   //     alert("Profile Updated: Your profile changes have been saved successfully.")
   //   }
   // }
-
   // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
   //   const { name, value } = e.target //refers to the DOM element that triggered the event(in this exammple it is Input element), it gives us the properties of the input like classname, src etc
   //   setEditedUser(prev => ({ ...prev, [name]: value }))
