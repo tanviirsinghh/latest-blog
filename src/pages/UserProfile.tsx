@@ -21,7 +21,6 @@ import { toast } from 'react-toastify';
 //     )}
 //   </div>
 // )
-
 // Mock data for the user
 // const user = {
 //   name: "Jane Doe",
