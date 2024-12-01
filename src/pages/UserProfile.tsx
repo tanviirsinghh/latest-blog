@@ -104,7 +104,6 @@ if(loading){
  }
  if (loading || !userDetails) {
   return <div>
-     
              loading...
           </div>
 }
