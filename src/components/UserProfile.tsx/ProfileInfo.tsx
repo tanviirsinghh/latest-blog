@@ -195,6 +195,7 @@ import axios from 'axios';
 import ImageUploadHook from '../../hooks/ImageUploadHook';
 import { BACKEND_URL } from '../../config';
 import { User } from '../../hooks';
+import { useNavigate } from 'react-router-dom';
 
 
 interface ProfileInfoProps {
@@ -209,6 +210,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
     email: user?.email || '',
     blogName: user?.blogName || '',
   });
+  const navigate = useNavigate();
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState(user?.profilePicture || '');
   const [confirm, setConfirm] = useState(false);
@@ -217,7 +219,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
   const handleLogout = () => {
     localStorage.removeItem('token');
     toast.success('Logged out successfully!');
-    window.location.href = '/signin';
+    navigate('/signin')
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
