@@ -10,7 +10,6 @@ import axios from 'axios';
 import { BACKEND_URL } from '../config';
 import { toast } from 'react-toastify';
 // Simple Avatar component
-
 // const Avatar = ({ src, alt, fallback, className = '', ...props }) => (
 //   <div className={`relative inline-block ${className}`} {...props}>
 //     {src ? (
