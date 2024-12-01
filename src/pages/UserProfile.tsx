@@ -97,7 +97,6 @@ export default function UserProfile () {
       toast.error('Failed to refresh user details.');
     }
   };
-  
    const token = localStorage.getItem('token')
    console.log(token)
    if(!token){
