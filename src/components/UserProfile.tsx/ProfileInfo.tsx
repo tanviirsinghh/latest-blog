@@ -187,16 +187,14 @@
 
 
 
-
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import { PencilIcon } from 'lucide-react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Update: Added navigate for navigation
 import ImageUploadHook from '../../hooks/ImageUploadHook';
 import { BACKEND_URL } from '../../config';
 import { User } from '../../hooks';
-import { useNavigate } from 'react-router-dom';
-
 
 interface ProfileInfoProps {
   user: User;
@@ -210,16 +208,16 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
     email: user?.email || '',
     blogName: user?.blogName || '',
   });
-  const navigate = useNavigate();
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState(user?.profilePicture || '');
   const [confirm, setConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // Update: Replacing window.location.href
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     toast.success('Logged out successfully!');
-    navigate('/signin')
+    navigate('/signin'); // Update: Use navigate instead of window.location.href
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -227,23 +225,34 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
     setEditedUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  const toggleEditMode = () => {
+  const toggleEditMode = async () => {
     if (isEditing) {
-      if (!editedUser.name || !editedUser.email || !editedUser.blogName) {
-        toast.error('All fields are required!');
-        return;
-      }
-      // Validation for email format
-      if (!/\S+@\S+\.\S+/.test(editedUser.email)) {
-        toast.error('Please provide a valid email address.');
-        return;
+      try {
+        // Simplified input check logic
+        const payload: Partial<typeof editedUser> = {};
+        if (editedUser.name !== user.name) payload.name = editedUser.name;
+        if (editedUser.email !== user.email) payload.email = editedUser.email;
+        if (editedUser.blogName !== user.blogName) payload.blogName = editedUser.blogName;
+               
+        console.log(payload)
+        console.log('pohonch gya,update send krn api kol')
+        if (Object.keys(payload).length > 0) {
+          await axios.put(`${BACKEND_URL}/api/v1/user/update-profile`, payload, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+          });
+          toast.success('Profile updated successfully!');
+          await getRefreshData(); // Fetch updated data to refresh the component
+        } else {
+          toast.info('No changes detected.');
+        }
+      } catch (err) {
+        toast.error('Failed to update profile. Please try again.');
       }
     }
-    setIsEditing((prev) => !prev);
+
+    setIsEditing((prev) => !prev); // Toggle edit mode
   };
 
-
-  
   const handleImageUpload = async () => {
     if (!image) {
       toast.error('Please select an image before confirming.');
@@ -254,35 +263,26 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
       const imageUrl = await ImageUploadHook(image);
       if (imageUrl) {
         setImagePreview(imageUrl);
-        console.log(imageUrl)
-        // Update profile picture in the backend
-        await axios.put(`${BACKEND_URL}/api/v1/user/update-profile-picture`, {
-           profilePicture: imageUrl 
-          },
-          {
-            headers: { Authorization: ` ${localStorage.getItem('token')}` }, // Assuming token is stored in localStorage
-        }
-      );
-         await getRefreshData()
-         toast.success('Funtion running successfully')
-         toast.success('Image uploaded successfully!');
 
+        // Update profile picture in the backend
+        await axios.put(
+          `${BACKEND_URL}/api/v1/user/update-profile-picture`,
+          { profilePicture: imageUrl },
+          { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
+        );
+        await getRefreshData();
+        toast.success('Image uploaded successfully!');
       } else {
         toast.error('Image upload failed. Please try again.');
-        return
       }
     } catch (err) {
       console.error('Image upload error:', err);
       toast.error('An error occurred during image upload.');
-      return
     } finally {
       setLoading(false);
       setConfirm(false);
     }
   };
-
-  const hasChanges =
-    editedUser.name !== user?.name || editedUser.email !== user?.email || editedUser.blogName !== user?.blogName;
 
   return (
     <div className="flex flex-col items-center justify-center p-4 bg-white rounded-md shadow-md">
@@ -341,7 +341,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
         <input
           type="text"
           name="name"
-          value={user.name}
+          value={editedUser.name}
           onChange={handleInputChange}
           disabled={!isEditing}
           className={`w-full mt-1 p-2 border rounded ${
@@ -355,7 +355,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
         <input
           type="email"
           name="email"
-          value={user.email}
+          value={editedUser.email}
           onChange={handleInputChange}
           disabled={!isEditing}
           className={`w-full mt-1 p-2 border rounded ${
@@ -368,7 +368,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
         <label className="block text-sm font-semibold">Blog Name</label>
         <textarea
           name="blogName"
-          value={user.blogName}
+          value={editedUser.blogName}
           onChange={handleInputChange}
           disabled={!isEditing}
           className={`w-full mt-1 p-2 border rounded ${
@@ -381,7 +381,6 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
         <button
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           onClick={toggleEditMode}
-          disabled={isEditing && (!hasChanges || !editedUser.name || !editedUser.email || !editedUser.blogName)}
         >
           {isEditing ? 'Save Changes' : 'Edit Profile'}
         </button>
@@ -395,6 +394,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
     </div>
   );
 }
+
 
 
 
