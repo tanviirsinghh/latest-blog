@@ -417,7 +417,6 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
 
 
 
-
 // import React, { useState, useRef } from 'react'
 // import { PencilIcon, UploadIcon } from 'lucide-react'
 // import { useNavigate } from 'react-router-dom'
