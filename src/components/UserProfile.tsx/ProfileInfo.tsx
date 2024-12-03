@@ -226,6 +226,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
   };
 
   const toggleEditMode = async () => {
+    const token = localStorage.getItem('token')
     if (isEditing) {
       try {
         // Simplified input check logic
@@ -237,8 +238,8 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
         console.log(payload)
         console.log('pohonch gya,update send krn api kol')
         if (Object.keys(payload).length > 0) {
-          await axios.put(`${BACKEND_URL}/api/v1/user/update-profile`, payload, {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+          await axios.put(`${BACKEND_URL}/api/v1/user/update-user-info`, payload, {
+            headers: { Authorization: token },
           });
           toast.success('Profile updated successfully!');
           await getRefreshData(); // Fetch updated data to refresh the component
@@ -258,6 +259,7 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
       toast.error('Please select an image before confirming.');
       return;
     }
+    const token = localStorage.getItem('token')
     try {
       setLoading(true);
       const imageUrl = await ImageUploadHook(image);
@@ -265,10 +267,10 @@ export default function ProfileInfo({ user, getRefreshData }: ProfileInfoProps) 
         setImagePreview(imageUrl);
 
         // Update profile picture in the backend
-        await axios.put(
+          await axios.put(
           `${BACKEND_URL}/api/v1/user/update-profile-picture`,
           { profilePicture: imageUrl },
-          { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
+          { headers: { Authorization: token } }
         );
         await getRefreshData();
         toast.success('Image uploaded successfully!');
