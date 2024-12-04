@@ -33,7 +33,6 @@ function onClick():void {
         }
      
       navigate('/publish')
-  
 }
       const [selectedCategory, setSelectedCategory] = useState('For you')
     return(   
