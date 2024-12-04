@@ -23,7 +23,6 @@ export const Navbar = () => {
     
    
   }
-  
 function onClick():void {
         const token = localStorage.getItem('token')
         if(!token){
