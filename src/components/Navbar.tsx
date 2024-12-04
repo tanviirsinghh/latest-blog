@@ -94,7 +94,6 @@ function onClick():void {
           
       
     
-
     )
 }
 export default Navbar
