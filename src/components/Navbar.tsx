@@ -31,7 +31,6 @@ function onClick():void {
             position: "top-right"
           });
         }
-     
       navigate('/publish')
 }
       const [selectedCategory, setSelectedCategory] = useState('For you')
