@@ -9,6 +9,8 @@ import { toast } from 'react-toastify'
 import ImageUpload from '../components/ImageUpload'
 import ImageUploadHook from '../hooks/ImageUploadHook'
 
+
+//  we are using this
 export default function TextEditor () {
   const editorRef = useRef<TinyMCEEditor | null>(null)
   const navigate = useNavigate()
@@ -111,7 +113,7 @@ export default function TextEditor () {
   //     if (editorRef.current) {
   //       console.log(editorRef.current.getContent());
   //     }
-  //   };
+  //   };rre
 
   return (
     <div className='h-screen w-full  flex-col justify-center items-center'>
