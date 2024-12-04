@@ -10,7 +10,6 @@ const categories = ['For you', 'Following', 'React', 'JavaScript', 'Design', 'So
 
 export const Navbar = () => {
   const navigate = useNavigate();
-
   function OpenUserProfile(){
     const token = localStorage.getItem('token')
         if(!token){
