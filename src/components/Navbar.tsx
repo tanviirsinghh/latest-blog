@@ -7,7 +7,6 @@ import {  toast } from 'react-toastify';
 const categories = ['For you', 'Following', 'React', 'JavaScript', 'Design', 'Software Development']
 
 
-
 export const Navbar = () => {
   const navigate = useNavigate();
   function OpenUserProfile(){
