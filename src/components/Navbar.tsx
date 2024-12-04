@@ -5,7 +5,6 @@ import {  toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
 // import { Blog } from '../pages/Blog';
 const categories = ['For you', 'Following', 'React', 'JavaScript', 'Design', 'Software Development']
-
 export const Navbar = () => {
   const navigate = useNavigate();
   function OpenUserProfile(){
