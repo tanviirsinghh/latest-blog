@@ -18,7 +18,6 @@ export const Navbar = () => {
             position: "top-right"
           });
         }
-     
       navigate('/userprofile')
   }
 function onClick():void {
