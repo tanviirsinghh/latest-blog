@@ -20,7 +20,6 @@ export const Navbar = () => {
         }
      
       navigate('/userprofile')
-    
   }
 function onClick():void {
         const token = localStorage.getItem('token')
