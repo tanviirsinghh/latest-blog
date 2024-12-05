@@ -14,18 +14,18 @@ import { toast } from 'react-toastify';
 export default function NewFullBlog({ blog }: { blog: Blog }) {
   const navigate = useNavigate()
   // fetch the save blog condition to render  on the save button
-  
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    async function fetchBookmarkState() {
-      const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bookmarkstatus`, {
-        params: { postId: blog.id },
-        headers: { Authorization: token }
-      });
-      setIsBookmarked(response.data.isBookmarked);
-    }
-    fetchBookmarkState();
-  }, [blog.id]);
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token')
+  //   async function fetchBookmarkState() {
+  //     const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bookmarkstatus`, {
+  //       params: { postId: blog.id },
+  //       headers: { Authorization: token }
+  //     });
+  //     setIsBookmarked(response.data.isBookmarked);
+  //   }
+  //   fetchBookmarkState();
+  // }, [blog.id]);
 
   const [user, setUser] = useState({
     name: 'John Doe',
