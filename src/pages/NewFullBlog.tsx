@@ -24,7 +24,7 @@ export default function NewFullBlog({ blog }: { blog: Blog }) {
   //     });
   //     setIsBookmarked(response.data.isBookmarked);
   //   }
-  //   fetchBookmarkSta
+  //   fetchBookmarkSt
   
 
   const [user, setUser] = useState({
