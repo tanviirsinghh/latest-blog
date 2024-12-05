@@ -4,6 +4,11 @@ import DOMPurify from 'dompurify'
 import { useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'
 
+
+
+// Not using this
+
+
 export const FullBlog = ({ blog }: { blog: Blog }) => {
   const navigate = useNavigate()
 

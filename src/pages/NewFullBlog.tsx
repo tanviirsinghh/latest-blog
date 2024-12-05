@@ -1,15 +1,31 @@
 
-import  { useState } from 'react';
+import  { useEffect, useRef, useState } from 'react';
 import { Heart, MessageCircle,  Bookmark, } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import {Blog} from '../hooks/index';
 import UserInfoSide from '../components/UserInfoSide';
+import axios, { AxiosHeaders, isAxiosError } from 'axios';
+import { BACKEND_URL } from '../config';
+import { toast } from 'react-toastify';
 
 
 export default function NewFullBlog({ blog }: { blog: Blog }) {
   const navigate = useNavigate()
+  // fetch the save blog condition to render  on the save button
+  
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    async function fetchBookmarkState() {
+      const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bookmarkstatus`, {
+        params: { postId: blog.id },
+        headers: { Authorization: token }
+      });
+      setIsBookmarked(response.data.isBookmarked);
+    }
+    fetchBookmarkState();
+  }, [blog.id]);
 
   const [user, setUser] = useState({
     name: 'John Doe',
@@ -22,7 +38,7 @@ export default function NewFullBlog({ blog }: { blog: Blog }) {
       github: 'https://github.com/johndoe',
     },
   });
-
+  
   const [tempBlog, settempBlog] = useState({
     title: 'The Future of Artificial Intelligence in Web Development',
     description: 'Explore how AI is revolutionizing the way we build and interact with websites, and what this means for developers and users alike.',
@@ -46,7 +62,7 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
   });
 
   const [relatedtempBlogs, setRelatedtempBlogs] = useState([
-    {
+    {   
       id: 1,
       title: 'Machine Learning in Frontend Development',
       author: 'Jane Smith',
@@ -76,6 +92,8 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
+  const prevBookmarkState = useRef(isBookmarked)
+  const [savedBlogId, setSavedBlogId] = useState(null); // store the blogId here when stored in the database  
   // const [showShareModal, setShowShareModal] = useState(false);
 
   if(!localStorage.getItem('token')){
@@ -89,9 +107,69 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
       likes: isLiked ? prevtempBlog.likes - 1 : prevtempBlog.likes + 1
     }));
   };
+  
+  const handleBookmark = async () => {
+    
+    prevBookmarkState.current = isBookmarked  // true
 
-  const handleBookmark = () => {
-    setIsBookmarked(!isBookmarked);
+     // isBookmarked true
+
+
+    const postId = blog.id;
+
+    const token = localStorage.getItem('token')
+
+   
+    if(!prevBookmarkState.current  ){   // check krda pya ke purani value ki aa - false es da mtlb handleBookmark true layi trigger hoeya 
+       // it means blog got saved
+       try{
+       const response = await axios.post(`${BACKEND_URL}/api/v1/blog/saveblog`,{
+        postId
+      },{
+        headers:{
+          Authorization: token
+        }
+      })
+         toast.success("Blog Saved")
+         
+         setSavedBlogId(response.data.id)
+
+         console.log("Blog saved, Here is the response " +  JSON.stringify(response))
+         setIsBookmarked(!isBookmarked)
+    }
+  
+  catch(e){
+    if(isAxiosError(e)){
+      
+      toast.error('Internal server error / Try Again')
+      setIsBookmarked(prevBookmarkState.current);
+      
+    }
+  }
+}
+
+if(prevBookmarkState.current){
+  // it means blog got saved
+  try{
+    const response = await axios.delete(`${BACKEND_URL}/api/v1/blog/removesavedblog`, {
+      data: {
+        id: savedBlogId, // Include the postId in the request body
+      },
+      headers: {
+        Authorization: token, // Add authorization token if needed
+      },
+    });
+    toast.success("Blog Removed")
+    console.log('Saved Blog Deleted' + response)
+    prevBookmarkState.current = isBookmarked
+}
+
+catch(e){
+if(isAxiosError(411)){
+ toast.error('Internal server error / Try Again')
+}
+}
+}
   };
 
   const handleCommentSubmit = (e:React.FormEvent<HTMLFormElement>) => {
