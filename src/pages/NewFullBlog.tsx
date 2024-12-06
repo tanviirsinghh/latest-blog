@@ -45,7 +45,6 @@ export default function NewFullBlog ({ blog }: { blog: Blog }) {
           // localStorage.removeItem('token');
           setIsBookmarked(false)
         } else if (axios.isAxiosError(e) && e.response?.status === 500) {
-          // localStorage.removeItem('token');
           toast.error('Error while fetching blog post / Try Again')
         } else {
           // Default to unbookmarked state on other errors
