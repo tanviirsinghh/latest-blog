@@ -227,11 +227,7 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
         toast.error('Blog not found')
       } else if (axios.isAxiosError(e) && e.response?.status === 411) {
         toast.error('No response from server. Check your internet connection.')
-        // } else if (axios.isAxiosError(e) && e.request) {
-        //     // The request was made but no response was received
-        //     toast.error('No response from server. Check your internet connection.');
-        // } else {
-        // Something happened in setting up the request
+      
         toast.error('Failed to update bookmark')
       }
     } finally {
