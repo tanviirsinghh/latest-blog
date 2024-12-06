@@ -289,7 +289,6 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
   //     toast.success("Blog Removed")
   //     console.log('Saved Blog Deleted' + response)
 
-  //     prevBookmarkState.current = isBookmarked
  
   
   
