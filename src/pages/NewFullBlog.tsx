@@ -2,29 +2,101 @@
 import  { useEffect, useRef, useState } from 'react';
 import { Heart, MessageCircle,  Bookmark, } from 'lucide-react';
 import Navbar from '../components/Navbar';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import {Blog} from '../hooks/index';
 import UserInfoSide from '../components/UserInfoSide';
-import axios, { AxiosHeaders, isAxiosError } from 'axios';
+import axios from 'axios';
 import { BACKEND_URL } from '../config';
 import { toast } from 'react-toastify';
+import Loading from '../components/Loading';
+// import Loading from '@/components/Loading';
 
 
 export default function NewFullBlog({ blog }: { blog: Blog }) {
   const navigate = useNavigate()
   // fetch the save blog condition to render  on the save button
 
+  const {id} = useParams()
+  console.log("jehda open heoya blog ohdi id "+ id)
+
+
+
+
+  useEffect(() => {
+    // Persistent bookmark status check across page refreshes
+    const fetchBookmarkStatus = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+      
+      setIsLoading(true);
+      
+      try {
+        const response = await axios.get(
+          `${BACKEND_URL}/api/v1/blog/bookmarkstatus/${blog.id}`,
+          
+          { headers: { Authorization: token } }
+        );
+        
+        // More robust status checking
+        if (response && response.data) {
+          const bookmarkStatus = response.data.isBookmarked;
+          const savedId = response.data.savedBlogId || null;
+          
+          setIsBookmarked(!!bookmarkStatus);
+          setSavedBlogId(savedId);
+        }
+      } catch (e : unknown) {
+        console.error('Error fetching bookmark status:');
+        
+        // Handle specific error scenarios
+        if(axios.isAxiosError(e) && e.response?.status === 404){
+          // localStorage.removeItem('token');
+          // toast.error('Blog not found');
+          setIsBookmarked(false);
+
+       } else if(axios.isAxiosError(e) && e.response?.status === 500){
+        // localStorage.removeItem('token');
+        toast.error('Error while fetching blog post / Try Again');
+     } 
+        else {
+          // Default to unbookmarked state on other errors
+          setIsBookmarked(false);
+          setSavedBlogId(null);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchBookmarkStatus();
+ }, [blog.id]); // Ensures check happens on blog change
+ 
+ // Optional: Add a loading state to UI
+
+
+
+
+
+
+
+
+
   // useEffect(() => {
-  //   const token = localStorage.getItem('token')
+  //   setIsBookmarked(false); // Reset before fetching
   //   async function fetchBookmarkState() {
-  //     const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bookmarkstatus`, {
-  //       params: { postId: blog.id },
-  //       headers: { Authorization: token }
-  //     });
-  //     setIsBookmarked(response.data.isBookmarked);
+  //     const token = localStorage.getItem('token');
+  //     try {
+  //       const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bookmarkstatus/${id}`, {
+  //         headers: { Authorization: token },
+  //       });
+  //       setIsBookmarked(response.data.isBookmarked || false);
+  //     } catch (error) {
+  //       console.error('Error fetching bookmark status:', error);
+  //     }
   //   }
-  //   fetchBook
+  //   fetchBookmarkState();
+  // }, [id]);
   
 
   const [user, setUser] = useState({
@@ -92,8 +164,12 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
-  const prevBookmarkState = useRef(isBookmarked)
-  const [savedBlogId, setSavedBlogId] = useState(null); // store the blogId here when stored in the database  
+  // const prevBookmarkState = useRef(isBookmarked)
+  
+  const [savedBlogId, setSavedBlogId] = useState(null);
+//   onst [isBookmarked, setIsBookmarked] = useState(false);
+// const [savedBlogId, setSavedBlogId] = useState(null);
+const [isLoading, setIsLoading] = useState(false); // store the blogId here when stored in the database  
   // const [showShareModal, setShowShareModal] = useState(false);
 
   if(!localStorage.getItem('token')){
@@ -107,70 +183,140 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
       likes: isLiked ? prevtempBlog.likes - 1 : prevtempBlog.likes + 1
     }));
   };
-  
+
+
+
+
   const handleBookmark = async () => {
+    // Retrieve the authentication token from local storage
+    const token = localStorage.getItem('token');
     
-    prevBookmarkState.current = isBookmarked  // true
+    // Check if user is authenticated
+    if (!token) {
+      toast.error('Please sign in');
+      return;
+    }
+    
+    // Prevent multiple simultaneous bookmark actions
+    if (isLoading) return;
+    
+    setIsLoading(true);
+    
+    try {
+      if (!isBookmarked) {
+        // Saving blog
+        const response = await axios.post(
+          `${BACKEND_URL}/api/v1/blog/saveblog`,
+          { postId: blog.id },
+          { headers: { Authorization: token } }
+        );
+        
+        // Ensure response and data exist before setting
+        if (response && response.data && response.data.id) {
+          setSavedBlogId(response.data.id);
+          setIsBookmarked(true);
+          toast.success("Blog Saved");
+        } else {
+          throw new Error('Invalid server response');
+        }
+      } else {
+        // Removing saved blog
+        // Use savedBlogId if available, otherwise use blog.id as fallback
+        const blogToRemove = blog.id;
+        
+        await axios.delete(
+          `${BACKEND_URL}/api/v1/blog/removesavedblog/${blogToRemove}`,
+          { headers: { Authorization: token } }
+        );
+        
+        setIsBookmarked(false);
+        setSavedBlogId(null);
+        toast.success("Blog Removed");
+      }
+    } catch (e: unknown) {
+      console.log('Bookmark error:');
+  
+      if (axios.isAxiosError(e) && e.response?.status === 404) {
+          toast.error('Blog not found');
+      } else if (axios.isAxiosError(e) && e.response?.status === 411) {
+          toast.error('No response from server. Check your internet connection.');
+      // } else if (axios.isAxiosError(e) && e.request) {
+      //     // The request was made but no response was received
+      //     toast.error('No response from server. Check your internet connection.');
+      // } else {
+          // Something happened in setting up the request
+          toast.error('Failed to update bookmark');
+      }
+  } finally {
+      // Always reset loading state
+      setIsLoading(false);
+  }
+ 
+  }
 
-     // isBookmarked true
+
+  
+//   const handleBookmark = async () => {
+    
+//     prevBookmarkState.current = isBookmarked  // true
+
+//      // isBookmarked true
 
 
-    const postId = blog.id;
+//     const postId = blog.id;
 
-    const token = localStorage.getItem('token')
+//     const token = localStorage.getItem('token')
 
    
-    if(!prevBookmarkState.current  ){   // check krda pya ke purani value ki aa - false es da mtlb handleBookmark true layi trigger hoeya 
-       // it means blog got saved
-       try{
-       const response = await axios.post(`${BACKEND_URL}/api/v1/blog/saveblog`,{
-        postId
-      },{
-        headers:{
-          Authorization: token
-        }
-      })
-         toast.success("Blog Saved")
+//     if(!prevBookmarkState.current  ){   // check krda pya ke purani value ki aa - false es da mtlb handleBookmark true layi trigger hoeya 
+//        // it means blog got saved
+//        try{
+//        const response = await axios.post(`${BACKEND_URL}/api/v1/blog/saveblog`,{
+//         postId
+//       },{
+//         headers:{
+//           Authorization: token
+//         }
+//       })
+//          toast.success("Blog Saved")
          
-         setSavedBlogId(response.data.id)
+//          setSavedBlogId(response.data.id)
 
-         console.log("Blog saved, Here is the response " +  JSON.stringify(response))
-         setIsBookmarked(!isBookmarked)
-    }
+//          console.log("Blog saved, Here is the response " +  JSON.stringify(response))
+//          setIsBookmarked(!isBookmarked)
+//     }
   
-  catch(e){
-    if(isAxiosError(e)){
+//   catch(e){
+//     if(isAxiosError(e)){
       
-      toast.error('Internal server error / Try Again')
-      setIsBookmarked(prevBookmarkState.current);
+//       toast.error('Internal server error / Try Again')
+//       setIsBookmarked(prevBookmarkState.current);
       
-    }
-  }
-}
+//     }
+//   }
+// }
 
-if(prevBookmarkState.current){
-  // it means blog got saved
-  try{
-    const response = await axios.delete(`${BACKEND_URL}/api/v1/blog/removesavedblog`, {
-      data: {
-        id: savedBlogId, // Include the postId in the request body
-      },
-      headers: {
-        Authorization: token, // Add authorization token if needed
-      },
-    });
-    toast.success("Blog Removed")
-    console.log('Saved Blog Deleted' + response)
-    prevBookmarkState.current = isBookmarked
-}
+// if(prevBookmarkState.current){
+//   // it means blog got saved
+//   try{
+//     const response = await axios.delete(`${BACKEND_URL}/api/v1/blog/removesavedblog/${id}`, {
+//       headers: {
+//         Authorization: token, // Add authorization token if needed
+//       },
+//     });
+//     toast.success("Blog Removed")
+//     console.log('Saved Blog Deleted' + response)
+   
+//     prevBookmarkState.current = isBookmarked
+// }
 
-catch(e){
-if(isAxiosError(411)){
- toast.error('Internal server error / Try Again')
-}
-}
-}
-  };
+// catch(e){
+// if(isAxiosError(411)){
+//  toast.error('Internal server error / Try Again')
+// }
+// }
+// }
+//   };
 
   const handleCommentSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -196,7 +342,9 @@ if(isAxiosError(411)){
   // const closeShareModal = () => {
   //   setShowShareModal(false);
   // };
-
+  if (isLoading) {
+    return <Loading/>;
+  }
    
   
 
@@ -273,6 +421,8 @@ if(isAxiosError(411)){
           )}
         </div>
 
+
+{/* eh nhi comment out rkna */}
         {/* Right side - User Profile and Related tempBlogs */}
       <UserInfoSide/>
       </div>
@@ -304,7 +454,9 @@ if(isAxiosError(411)){
           </div>
         </div>
       )} */}
+
+      {/* ethe uper tak */}
     </div>
     </>
   );
-}
+  }

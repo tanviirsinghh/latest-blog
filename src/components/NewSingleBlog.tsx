@@ -4,14 +4,7 @@ import DOMPurify from 'dompurify'
 import { Link } from 'react-router-dom'
 
 
-//  this is the single blog page that is being used
-
-
-
-
-
-
-
+//we are using this but only for the all blogs template
 
 interface BlogCardProps {
   id: string
