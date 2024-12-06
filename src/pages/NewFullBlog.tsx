@@ -239,55 +239,6 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
       setIsLoading(false)
     }
   }
-
-  //   const handleBookmark = async () => {
-
-  //     prevBookmarkState.current = isBookmarked  // true
-
-  //      // isBookmarked true
-
-  //     const postId = blog.id;
-
-  //     const token = localStorage.getItem('token')
-
-  //     if(!prevBookmarkState.current  ){   // check krda pya ke purani value ki aa - false es da mtlb handleBookmark true layi trigger hoeya
-  //        // it means blog got saved
-  //        try{
-  //        const response = await axios.post(`${BACKEND_URL}/api/v1/blog/saveblog`,{
-  //         postId
-  //       },{
-  //         headers:{
-  //           Authorization: token
-  //         }
-  //       })
-  //          toast.success("Blog Saved")
-
-  //          setSavedBlogId(response.data.id)
-
-  //          console.log("Blog saved, Here is the response " +  JSON.stringify(response))
-  //          setIsBookmarked(!isBookmarked)
-  //     }
-
-  //   catch(e){
-  //     if(isAxiosError(e)){
-
-  //       toast.error('Internal server error / Try Again')
-  //       setIsBookmarked(prevBookmarkState.current);
-
-  //     }
-  //   }
-  // }
-
-  // if(prevBookmarkState.current){
-  //   // it means blog got saved
-  //   try{
-  //     const response = await axios.delete(`${BACKEND_URL}/api/v1/blog/removesavedblog/${id}`, {
-  //       headers: {
-  //         Authorization: token, // Add authorization token if needed
-  //       },
-  //     });
-
- 
   
   const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
