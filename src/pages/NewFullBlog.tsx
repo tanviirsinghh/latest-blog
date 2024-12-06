@@ -59,23 +59,7 @@ export default function NewFullBlog ({ blog }: { blog: Blog }) {
     fetchBookmarkStatus()
   }, [blog.id]) // Ensures check happens on blog change
 
-  // Optional: Add a loading state to UI
-
-  // useEffect(() => {
-  //   setIsBookmarked(false); // Reset before fetching
-  //   async function fetchBookmarkState() {
-  //     const token = localStorage.getItem('token');
-  //     try {
-  //       const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bookmarkstatus/${id}`, {
-  //         headers: { Authorization: token },
-  //       });
-  //       setIsBookmarked(response.data.isBookmarked || false);
-  //     } catch (error) {
-  //       console.error('Error fetching bookmark status:', error);
-  //     }
-  //   }
-  //   fetchBookmarkState();
-  // }, [id]);
+  
 
   const [user, setUser] = useState({
     name: 'John Doe',
