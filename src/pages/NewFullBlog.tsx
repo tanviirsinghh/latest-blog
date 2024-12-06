@@ -13,7 +13,6 @@ import Loading from '../components/Loading'
 export default function NewFullBlog ({ blog }: { blog: Blog }) {
   const navigate = useNavigate()
   // fetch the save blog condition to render  on the save button
-
   const { id } = useParams()
   console.log('jehda open heoya blog ohdi id ' + id)
 
