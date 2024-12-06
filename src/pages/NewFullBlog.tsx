@@ -291,9 +291,6 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
 
  
   
-  
-
-
   const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (newComment.trim()) {
