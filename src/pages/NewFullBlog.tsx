@@ -23,7 +23,6 @@ export default function NewFullBlog ({ blog }: { blog: Blog }) {
       if (!token) return
 
       setIsLoading(true)
-
       try {
         const response = await axios.get(
           `${BACKEND_URL}/api/v1/blog/bookmarkstatus/${blog.id}`,
