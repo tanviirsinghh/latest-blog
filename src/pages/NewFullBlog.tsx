@@ -52,7 +52,6 @@ export default function NewFullBlog({ blog }: { blog: Blog }) {
         // Handle specific error scenarios
         if(axios.isAxiosError(e) && e.response?.status === 404){
           // localStorage.removeItem('token');
-          // toast.error('Blog not found');
           setIsBookmarked(false);
 
        } else if(axios.isAxiosError(e) && e.response?.status === 500){
