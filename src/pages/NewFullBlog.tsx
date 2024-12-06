@@ -290,9 +290,7 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
   //     console.log('Saved Blog Deleted' + response)
 
   //     prevBookmarkState.current = isBookmarked
-  // }
-
-  // catch(e){
+ 
   
   
 
