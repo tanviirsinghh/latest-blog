@@ -286,7 +286,6 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
   //         Authorization: token, // Add authorization token if needed
   //       },
   //     });
-  //     toast.success("Blog Removed")
 
  
   
