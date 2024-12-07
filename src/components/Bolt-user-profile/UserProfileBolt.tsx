@@ -1,0 +1,972 @@
+import React, { FormEvent, FormEventHandler, useState } from 'react'
+// import { PencilIcon } from 'lucide-react'
+import { toast } from 'react-toastify'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom' // Update: Added navigate for navigation
+import ImageUploadHook from '../../hooks/ImageUploadHook'
+import { BACKEND_URL } from '../../config'
+import { User } from '../../hooks'
+import { Edit3, MapPin, Calendar, Twitter, Github, Linkedin, Camera, X, Award, Heart, MessageCircle, Bookmark, Share2, Clock, BarChart3, TrendingUp, dummyusers } from 'lucide-react';
+
+
+interface ProfileInfoProps {
+  user: User
+  getRefreshData: () => Promise<void>
+}
+
+export default function ProfileInfo ({
+  user,
+  getRefreshData
+}: ProfileInfoProps) {
+  const [isEditing, setIsEditing] = useState(false)
+  const [editedUser, setEditedUser] = useState({
+    name: user?.name || '',
+    email: user?.email || '',
+    bio: user?.bio || '',
+    location: user?.location || '',
+    blogName: user?.blogName || '',
+    coverpicture: user?.coverpicture || ''
+  })
+  // const handleUpdateProfile = (updatedData: typeof user) => {
+  //   setdummyuser(updatedData);
+  //   setIsEditModalOpen(false);
+  // };
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const [image, setImage] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState(user?.profilePicture || '')
+  const [confirm, setConfirm] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate() // Update: Replacing window.location.href
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    toast.success('Logged out successfully!')
+    navigate('/signin') // Update: Use navigate instead of window.location.href
+  }
+
+  const handleInputChange = (
+    e: FormEvent<HTMLFormElement>
+  ) => {
+    const { name, value } = e.target
+    setEditedUser(prev => ({ ...prev, [name]: value }))
+    // setdummyuser(updatedData);
+    setIsEditModalOpen(false);
+  }
+
+  const toggleEditMode = async () => {
+    const token = localStorage.getItem('token')
+    if (isEditing) {
+      try {
+        // Simplified input check logic
+        const payload: Partial<typeof editedUser> = {}
+        if (editedUser.name !== user.name) payload.name = editedUser.name
+        if (editedUser.email !== user.email) payload.email = editedUser.email
+        if (editedUser.blogName !== user.blogName)
+          payload.blogName = editedUser.blogName
+
+        console.log(payload)
+        console.log('pohonch gya,update send krn api kol')
+        if (Object.keys(payload).length > 0) {
+          await axios.put(
+            `${BACKEND_URL}/api/v1/user/update-user-info`,
+            payload,
+            {
+              headers: { Authorization: token }
+            }
+          )
+          toast.success('Profile updated successfully!')
+          await getRefreshData() // Fetch updated data to refresh the component
+        } else {
+          toast.info('No changes detected.')
+        }
+      } catch (err) {
+        toast.error('Failed to update profile. Please try again.')
+      }
+    }
+
+    setIsEditModalOpen(false)// Toggle edit mode
+  }
+
+  const handleImageUpload = async () => {
+    if (!image) {
+      toast.error('Please select an image before confirming.')
+      return
+    }
+    const token = localStorage.getItem('token')
+    try {
+      setLoading(true)
+      const imageUrl = await ImageUploadHook(image)
+      if (imageUrl) {
+        setImagePreview(imageUrl)
+
+        // Update profile picture in the backend
+        await axios.put(
+          `${BACKEND_URL}/api/v1/user/update-profile-picture`,
+          { profilePicture: imageUrl },
+          { headers: { Authorization: token } }
+        )
+        await getRefreshData()
+        toast.success('Image uploaded successfully!')
+      } else {
+        toast.error('Image upload failed. Please try again.')
+      }
+    } catch (err) {
+      console.error('Image upload error:', err)
+      toast.error('An error occurred during image upload.')
+    } finally {
+      setLoading(false)
+      setConfirm(false)
+    }
+  }
+
+
+
+  const [dummyuser, setdummyuser] = useState({
+    name: "Sarah Johnson",
+    blogName: "TechInsights",
+    email: "sarah.johnson@example.com",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    bio: "Senior Software Engineer | Tech Blogger | Cloud Architecture Enthusiast",
+    coverImage: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80",
+    location: "San Francisco, CA",
+    joinedDate: "January 2022",
+    social: {
+      twitter: "@sarahtechblog",
+      github: "sarahj",
+      linkedin: "sarahjohnson"
+    }
+  });
+
+  const stats = [
+    { label: 'Total Views', value: '238K', icon: BarChart3, change: '+12.5%', color: 'text-cyan-400' },
+    { label: 'Blog Posts', value: '47', icon: TrendingUp, change: '+5.2%', color: 'text-purple-400' },
+    { label: 'Followers', value: '12.5K', icon: dummyusers, change: '+18.3%', color: 'text-pink-400' },
+    { label: 'Comments', value: '1.2K', icon: MessageCircle, change: '+7.1%', color: 'text-amber-400' },
+  ];
+
+  const savedPosts = [
+    {
+      title: "The Future of Web Development",
+      author: "Mike Chen",
+      date: "2 days ago",
+      thumbnail: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+    },
+    {
+      title: "Understanding TypeScript Generics",
+      author: "Emily Rodriguez",
+      date: "1 week ago",
+      thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+    },
+    {
+      title: "Advanced Git Workflows",
+      author: "Alex Thompson",
+      date: "2 weeks ago",
+      thumbnail: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+    }
+  ];
+
+  const dummyuserPosts = [
+    {
+      title: "Understanding React 18's Concurrent Features",
+      excerpt: "An in-depth look at the new concurrent features in React 18 and how they improve application performance.",
+      thumbnail: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+      date: "2 days ago",
+      readTime: "5 min",
+      views: "1.2K",
+      likes: 234,
+      comments: 45,
+    },
+    {
+      title: "Building Scalable Applications with Next.js",
+      excerpt: "Learn how to leverage Next.js features to build performant and scalable web applications.",
+      thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+      date: "5 days ago",
+      readTime: "8 min",
+      views: "2.5K",
+      likes: 456,
+      comments: 78,
+    }
+  ];
+
+  
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+      {/* Profile Header */}
+      <div className="relative">
+        <div className="h-80 relative">
+          <img 
+            src={user.profilePicture} 
+            alt="Cover" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/90" />
+          <button className="absolute bottom-4 right-4 flex items-center gap-2 px-4 py-2 bg-gray-900/50 backdrop-blur-sm rounded-lg text-white hover:bg-gray-900/70 transition-colors">
+            <Camera size={18} />
+            <span>Change Cover</span>
+          </button>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-start md:items-end gap-6 -mt-20 relative">
+            <div className="relative group">
+              <img 
+                src={user.profilePicture} 
+                alt={user.name}
+                className="w-32 h-32 rounded-full border-4 border-gray-900 shadow-xl"
+              />
+              <button className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                <Camera size={24} className="text-white" />
+              </button>
+            </div>
+
+            <div className="flex-1">
+              <div className="flex items-start justify-start">
+                <div>
+                  <h1 className="text-3xl font-bold text-white">{user.name}</h1>
+                  <p className="text-cyan-400 font-medium">{user.blogName}</p>
+                </div>
+                <button
+                  onClick={() => setIsEditModalOpen(true)}
+                  className="flex items-center gap-2 px-4 ml-16 py-2 bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-medium rounded-lg transition-colors"
+                >
+                  <Edit3 size={18} />
+                  Edit Profile
+                </button>
+              </div>
+              
+              <p className="mt-2 text-gray-300 max-w-2xl">{user.bio}</p>
+              
+              <div className="mt-4 flex flex-wrap items-center gap-4 text-gray-400">
+                <div className="flex items-center gap-1">
+                  <MapPin size={16} />
+                  <span>{user.location}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Calendar size={16} />
+                  <span>Joined {user.joinedDate}</span>
+                </div>
+              </div>
+
+              <div className="mt-4 flex gap-4">
+                <a href={`https://twitter.com/${user.social.twitter}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
+                  <Twitter size={20} />
+                </a>
+                <a href={`https://github.com/${user.social.github}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
+                  <Github size={20} />
+                </a>
+                <a href={`https://linkedin.com/in/${user.social.linkedin}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
+                  <Linkedin size={20} />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-6">
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {stats.map((stat) => (
+                <div key={stat.label} className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50">
+                  <div className="flex items-center gap-3">
+                    <div className={`p-2 rounded-lg ${stat.color} bg-opacity-10`}>
+                      <stat.icon className={`h-6 w-6 ${stat.color}`} />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-400">{stat.label}</p>
+                      <p className="text-2xl font-bold text-white">{stat.value}</p>
+                    </div>
+                  </div>
+                  <div className="mt-2 flex items-center text-sm">
+                    <span className="text-green-400">{stat.change}</span>
+                    <span className="text-gray-500 ml-2">vs last month</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* dummyuser Posts */}
+            <div className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold text-white">Recent Posts</h2>
+                <div className="flex gap-2">
+                  <button className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors">
+                    Most Recent
+                  </button>
+                  <button className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors">
+                    Most Popular
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                {dummyuserPosts.map((post, index) => (
+                  <div key={index} className="group">
+                    <div className="flex gap-4 p-4 rounded-xl bg-gray-900/50 hover:bg-gray-900/70 transition-colors cursor-pointer">
+                      <img 
+                        src={post.thumbnail}
+                        alt={post.title}
+                        className="w-24 h-24 rounded-lg object-cover"
+                      />
+                      <div className="flex-1">
+                        <h3 className="font-medium text-lg text-white group-hover:text-cyan-400 transition-colors">
+                          {post.title}
+                        </h3>
+                        <p className="text-gray-400 text-sm mt-1 line-clamp-2">{post.excerpt}</p>
+                        
+                        <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+                          <span>{post.date}</span>
+                          <span>•</span>
+                          <span>{post.readTime} read</span>
+                          <span>•</span>
+                          <span>{post.views} views</span>
+                        </div>
+
+                        <div className="flex items-center gap-6 mt-3">
+                          <button className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors">
+                            <Heart size={18} />
+                            <span>{post.likes}</span>
+                          </button>
+                          <button className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors">
+                            <MessageCircle size={18} />
+                            <span>{post.comments}</span>
+                          </button>
+                          <button className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors">
+                            <Bookmark size={18} />
+                          </button>
+                          <button className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors">
+                            <Share2 size={18} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Saved Posts */}
+            <div className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-2">
+                  <Bookmark className="h-5 w-5 text-cyan-400" />
+                  <h2 className="text-lg font-semibold text-white">Saved Posts</h2>
+                </div>
+                <button className="text-sm text-cyan-400 hover:text-cyan-300">View All</button>
+              </div>
+
+              <div className="space-y-4">
+                {savedPosts.map((post, index) => (
+                  <div 
+                    key={index}
+                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-900/50 transition-colors cursor-pointer"
+                  >
+                    <img
+                      src={post.thumbnail}
+                      alt={post.title}
+                      className="w-12 h-12 rounded-lg object-cover"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-medium text-white truncate">{post.title}</h3>
+                      <div className="flex items-center gap-2 mt-1 text-sm">
+                        <span className="text-gray-400">{post.author}</span>
+                        <span className="text-gray-600">•</span>
+                        <div className="flex items-center gap-1 text-gray-500">
+                          <Clock size={14} />
+                          <span>{post.date}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Edit Profile Modal */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="bg-gray-800/90 rounded-2xl p-8 max-w-2xl w-full mx-4 shadow-xl border border-gray-700/50">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-semibold text-white">Edit Profile</h2>
+              <button onClick={() => setIsEditModalOpen(false)} className="text-gray-400 hover:text-white">
+                <X size={24} />
+              </button>
+            </div>
+
+            <form onSubmit={(    e: FormEvent<HTMLFormElement>
+) => {
+              e.preventDefault();
+              handleInputChange(editedUser);
+            }} className="space-y-6">
+              {/* Avatar Upload */}
+              <div className="flex items-center gap-4">
+                <div className="relative group">
+                  <img
+                    src={dummyuser.avatar}
+                    alt={dummyuser.name}
+                    className="w-20 h-20 rounded-full"
+                  />
+                  <label className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
+                    <Camera size={20} className="text-white" />
+                    <input type="file" className="hidden" accept="image/*" />
+                  </label>
+                </div>
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Profile Picture
+                  </label>
+                  <p className="text-sm text-gray-400">
+                    Recommended: Square image, at least 400x400px
+                  </p>
+                </div>
+              </div>
+
+              {/* Form Fields */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    value={dummyuser.name}
+                    onChange={(e) => setdummyuser({ ...dummyuser, name: e.target.value })}
+                    className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Blog Name
+                  </label>
+                  <input
+                    type="text"
+                    value={dummyuser.blogName}
+                    onChange={(e) => setdummyuser({ ...dummyuser, blogName: e.target.value })}
+                    className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={dummyuser.email}
+                    onChange={(e) => setdummyuser({ ...dummyuser, email: e.target.value })}
+                    className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Bio
+                  </label>
+                  <textarea
+                    value={dummyuser.bio}
+                    onChange={(e) => setdummyuser({ ...dummyuser, bio: e.target.value })}
+                    rows={3}
+                    className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Location
+                  </label>
+                  <input
+                    type="text"
+                    value={dummyuser.location}
+                    onChange={(e) => setdummyuser({ ...dummyuser, location: e.target.value })}
+                    className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Twitter dummyusername
+                  </label>
+                  <input
+                    type="text"
+                    value={dummyuser.social.twitter}
+                    onChange={(e) => setdummyuser({
+                      ...dummyuser,
+                      social: { ...dummyuser.social, twitter: e.target.value }
+                    })}
+                    className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
+                  />
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex justify-end gap-4 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setIsEditModalOpen(false)}
+                  className="px-6 py-2.5 text-gray-300 hover:text-white transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import  { useState } from 'react';
+// import { Edit3, MapPin, Calendar, Twitter, Github, Linkedin, Camera, X, Award, Heart, MessageCircle, Bookmark, Share2, Clock, BarChart3, TrendingUp, Users } from 'lucide-react';
+
+// export default function UserProfileBolt() {
+//   const [user, setUser] = useState({
+//     name: "Sarah Johnson",
+//     blogName: "TechInsights",
+//     email: "sarah.johnson@example.com",
+//     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//     bio: "Senior Software Engineer | Tech Blogger | Cloud Architecture Enthusiast",
+//     coverImage: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80",
+//     location: "San Francisco, CA",
+//     joinedDate: "January 2022",
+//     social: {
+//       twitter: "@sarahtechblog",
+//       github: "sarahj",
+//       linkedin: "sarahjohnson"
+//     }
+//   });
+
+//   const stats = [
+//     { label: 'Total Views', value: '238K', icon: BarChart3, change: '+12.5%', color: 'text-cyan-400' },
+//     { label: 'Blog Posts', value: '47', icon: TrendingUp, change: '+5.2%', color: 'text-purple-400' },
+//     { label: 'Followers', value: '12.5K', icon: Users, change: '+18.3%', color: 'text-pink-400' },
+//     { label: 'Comments', value: '1.2K', icon: MessageCircle, change: '+7.1%', color: 'text-amber-400' },
+//   ];
+
+//   const savedPosts = [
+//     {
+//       title: "The Future of Web Development",
+//       author: "Mike Chen",
+//       date: "2 days ago",
+//       thumbnail: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+//     },
+//     {
+//       title: "Understanding TypeScript Generics",
+//       author: "Emily Rodriguez",
+//       date: "1 week ago",
+//       thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+//     },
+//     {
+//       title: "Advanced Git Workflows",
+//       author: "Alex Thompson",
+//       date: "2 weeks ago",
+//       thumbnail: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+//     }
+//   ];
+
+//   const userPosts = [
+//     {
+//       title: "Understanding React 18's Concurrent Features",
+//       excerpt: "An in-depth look at the new concurrent features in React 18 and how they improve application performance.",
+//       thumbnail: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+//       date: "2 days ago",
+//       readTime: "5 min",
+//       views: "1.2K",
+//       likes: 234,
+//       comments: 45,
+//     },
+//     {
+//       title: "Building Scalable Applications with Next.js",
+//       excerpt: "Learn how to leverage Next.js features to build performant and scalable web applications.",
+//       thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+//       date: "5 days ago",
+//       readTime: "8 min",
+//       views: "2.5K",
+//       likes: 456,
+//       comments: 78,
+//     }
+//   ];
+
+//   const handleUpdateProfile = (updatedData: typeof user) => {
+//     setUser(updatedData);
+//     setIsEditModalOpen(false);
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+//       {/* Profile Header */}
+//       <div className="relative">
+//         <div className="h-80 relative">
+//           <img 
+//             src={user.coverImage} 
+//             alt="Cover" 
+//             className="w-full h-full object-cover"
+//           />
+//           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/90" />
+//           <button className="absolute bottom-4 right-4 flex items-center gap-2 px-4 py-2 bg-gray-900/50 backdrop-blur-sm rounded-lg text-white hover:bg-gray-900/70 transition-colors">
+//             <Camera size={18} />
+//             <span>Change Cover</span>
+//           </button>
+//         </div>
+
+//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//           <div className="flex flex-col md:flex-row items-start md:items-end gap-6 -mt-20 relative">
+//             <div className="relative group">
+//               <img 
+//                 src={user.avatar} 
+//                 alt={user.name}
+//                 className="w-32 h-32 rounded-full border-4 border-gray-900 shadow-xl"
+//               />
+//               <button className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+//                 <Camera size={24} className="text-white" />
+//               </button>
+//             </div>
+
+//             <div className="flex-1">
+//               <div className="flex items-start justify-start">
+//                 <div>
+//                   <h1 className="text-3xl font-bold text-white">{user.name}</h1>
+//                   <p className="text-cyan-400 font-medium">{user.blogName}</p>
+//                 </div>
+//                 <button
+//                   onClick={() => setIsEditModalOpen(true)}
+//                   className="flex items-center gap-2 px-4 ml-16 py-2 bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-medium rounded-lg transition-colors"
+//                 >
+//                   <Edit3 size={18} />
+//                   Edit Profile
+//                 </button>
+//               </div>
+              
+//               <p className="mt-2 text-gray-300 max-w-2xl">{user.bio}</p>
+              
+//               <div className="mt-4 flex flex-wrap items-center gap-4 text-gray-400">
+//                 <div className="flex items-center gap-1">
+//                   <MapPin size={16} />
+//                   <span>{user.location}</span>
+//                 </div>
+//                 <div className="flex items-center gap-1">
+//                   <Calendar size={16} />
+//                   <span>Joined {user.joinedDate}</span>
+//                 </div>
+//               </div>
+
+//               <div className="mt-4 flex gap-4">
+//                 <a href={`https://twitter.com/${user.social.twitter}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
+//                   <Twitter size={20} />
+//                 </a>
+//                 <a href={`https://github.com/${user.social.github}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
+//                   <Github size={20} />
+//                 </a>
+//                 <a href={`https://linkedin.com/in/${user.social.linkedin}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
+//                   <Linkedin size={20} />
+//                 </a>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Main Content */}
+//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 relative z-10">
+//         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+//           <div className="lg:col-span-2 space-y-6">
+//             {/* Stats Grid */}
+//             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+//               {stats.map((stat) => (
+//                 <div key={stat.label} className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50">
+//                   <div className="flex items-center gap-3">
+//                     <div className={`p-2 rounded-lg ${stat.color} bg-opacity-10`}>
+//                       <stat.icon className={`h-6 w-6 ${stat.color}`} />
+//                     </div>
+//                     <div>
+//                       <p className="text-sm text-gray-400">{stat.label}</p>
+//                       <p className="text-2xl font-bold text-white">{stat.value}</p>
+//                     </div>
+//                   </div>
+//                   <div className="mt-2 flex items-center text-sm">
+//                     <span className="text-green-400">{stat.change}</span>
+//                     <span className="text-gray-500 ml-2">vs last month</span>
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+
+//             {/* User Posts */}
+//             <div className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50">
+//               <div className="flex items-center justify-between mb-6">
+//                 <h2 className="text-xl font-semibold text-white">Recent Posts</h2>
+//                 <div className="flex gap-2">
+//                   <button className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors">
+//                     Most Recent
+//                   </button>
+//                   <button className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors">
+//                     Most Popular
+//                   </button>
+//                 </div>
+//               </div>
+
+//               <div className="space-y-6">
+//                 {userPosts.map((post, index) => (
+//                   <div key={index} className="group">
+//                     <div className="flex gap-4 p-4 rounded-xl bg-gray-900/50 hover:bg-gray-900/70 transition-colors cursor-pointer">
+//                       <img 
+//                         src={post.thumbnail}
+//                         alt={post.title}
+//                         className="w-24 h-24 rounded-lg object-cover"
+//                       />
+//                       <div className="flex-1">
+//                         <h3 className="font-medium text-lg text-white group-hover:text-cyan-400 transition-colors">
+//                           {post.title}
+//                         </h3>
+//                         <p className="text-gray-400 text-sm mt-1 line-clamp-2">{post.excerpt}</p>
+                        
+//                         <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+//                           <span>{post.date}</span>
+//                           <span>•</span>
+//                           <span>{post.readTime} read</span>
+//                           <span>•</span>
+//                           <span>{post.views} views</span>
+//                         </div>
+
+//                         <div className="flex items-center gap-6 mt-3">
+//                           <button className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors">
+//                             <Heart size={18} />
+//                             <span>{post.likes}</span>
+//                           </button>
+//                           <button className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors">
+//                             <MessageCircle size={18} />
+//                             <span>{post.comments}</span>
+//                           </button>
+//                           <button className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors">
+//                             <Bookmark size={18} />
+//                           </button>
+//                           <button className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors">
+//                             <Share2 size={18} />
+//                           </button>
+//                         </div>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+//           </div>
+          
+//           {/* Sidebar */}
+//           <div className="space-y-6">
+//             {/* Saved Posts */}
+//             <div className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50">
+//               <div className="flex items-center justify-between mb-6">
+//                 <div className="flex items-center gap-2">
+//                   <Bookmark className="h-5 w-5 text-cyan-400" />
+//                   <h2 className="text-lg font-semibold text-white">Saved Posts</h2>
+//                 </div>
+//                 <button className="text-sm text-cyan-400 hover:text-cyan-300">View All</button>
+//               </div>
+
+//               <div className="space-y-4">
+//                 {savedPosts.map((post, index) => (
+//                   <div 
+//                     key={index}
+//                     className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-900/50 transition-colors cursor-pointer"
+//                   >
+//                     <img
+//                       src={post.thumbnail}
+//                       alt={post.title}
+//                       className="w-12 h-12 rounded-lg object-cover"
+//                     />
+//                     <div className="flex-1 min-w-0">
+//                       <h3 className="font-medium text-white truncate">{post.title}</h3>
+//                       <div className="flex items-center gap-2 mt-1 text-sm">
+//                         <span className="text-gray-400">{post.author}</span>
+//                         <span className="text-gray-600">•</span>
+//                         <div className="flex items-center gap-1 text-gray-500">
+//                           <Clock size={14} />
+//                           <span>{post.date}</span>
+//                         </div>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Edit Profile Modal */}
+//       {isEditModalOpen && (
+//         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center">
+//           <div className="bg-gray-800/90 rounded-2xl p-8 max-w-2xl w-full mx-4 shadow-xl border border-gray-700/50">
+//             <div className="flex justify-between items-center mb-6">
+//               <h2 className="text-xl font-semibold text-white">Edit Profile</h2>
+//               <button onClick={() => setIsEditModalOpen(false)} className="text-gray-400 hover:text-white">
+//                 <X size={24} />
+//               </button>
+//             </div>
+
+//             <form onSubmit={(e) => {
+//               e.preventDefault();
+//               handleUpdateProfile(user);
+//             }} className="space-y-6">
+//               {/* Avatar Upload */}
+//               <div className="flex items-center gap-4">
+//                 <div className="relative group">
+//                   <img
+//                     src={user.avatar}
+//                     alt={user.name}
+//                     className="w-20 h-20 rounded-full"
+//                   />
+//                   <label className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
+//                     <Camera size={20} className="text-white" />
+//                     <input type="file" className="hidden" accept="image/*" />
+//                   </label>
+//                 </div>
+//                 <div className="flex-1">
+//                   <label className="block text-sm font-medium text-gray-300 mb-1">
+//                     Profile Picture
+//                   </label>
+//                   <p className="text-sm text-gray-400">
+//                     Recommended: Square image, at least 400x400px
+//                   </p>
+//                 </div>
+//               </div>
+
+//               {/* Form Fields */}
+//               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//                 <div>
+//                   <label className="block text-sm font-medium text-gray-300 mb-1">
+//                     Name
+//                   </label>
+//                   <input
+//                     type="text"
+//                     value={user.name}
+//                     onChange={(e) => setUser({ ...user, name: e.target.value })}
+//                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
+//                   />
+//                 </div>
+
+//                 <div>
+//                   <label className="block text-sm font-medium text-gray-300 mb-1">
+//                     Blog Name
+//                   </label>
+//                   <input
+//                     type="text"
+//                     value={user.blogName}
+//                     onChange={(e) => setUser({ ...user, blogName: e.target.value })}
+//                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
+//                   />
+//                 </div>
+
+//                 <div className="md:col-span-2">
+//                   <label className="block text-sm font-medium text-gray-300 mb-1">
+//                     Email
+//                   </label>
+//                   <input
+//                     type="email"
+//                     value={user.email}
+//                     onChange={(e) => setUser({ ...user, email: e.target.value })}
+//                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
+//                   />
+//                 </div>
+
+//                 <div className="md:col-span-2">
+//                   <label className="block text-sm font-medium text-gray-300 mb-1">
+//                     Bio
+//                   </label>
+//                   <textarea
+//                     value={user.bio}
+//                     onChange={(e) => setUser({ ...user, bio: e.target.value })}
+//                     rows={3}
+//                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
+//                   />
+//                 </div>
+
+//                 <div>
+//                   <label className="block text-sm font-medium text-gray-300 mb-1">
+//                     Location
+//                   </label>
+//                   <input
+//                     type="text"
+//                     value={user.location}
+//                     onChange={(e) => setUser({ ...user, location: e.target.value })}
+//                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
+//                   />
+//                 </div>
+
+//                 <div>
+//                   <label className="block text-sm font-medium text-gray-300 mb-1">
+//                     Twitter Username
+//                   </label>
+//                   <input
+//                     type="text"
+//                     value={user.social.twitter}
+//                     onChange={(e) => setUser({
+//                       ...user,
+//                       social: { ...user.social, twitter: e.target.value }
+//                     })}
+//                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
+//                   />
+//                 </div>
+//               </div>
+
+//               {/* Action Buttons */}
+//               <div className="flex justify-end gap-4 pt-4">
+//                 <button
+//                   type="button"
+//                   onClick={() => setIsEditModalOpen(false)}
+//                   className="px-6 py-2.5 text-gray-300 hover:text-white transition-colors"
+//                 >
+//                   Cancel
+//                 </button>
+//                 <button
+//                   type="submit"
+//                   className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
+//                 >
+//                   Save Changes
+//                 </button>
+//               </div>
+//             </form>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }

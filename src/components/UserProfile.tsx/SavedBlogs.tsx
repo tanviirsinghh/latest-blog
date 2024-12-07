@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import { BookmarkIcon } from 'lucide-react'
 
 export default function SavedBlogs() {
@@ -14,8 +14,8 @@ export default function SavedBlogs() {
                 <li  className="flex items-start space-x-2">
                   <BookmarkIcon className="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="font-medium"> ki haal ae</p>
-                    <p className="text-sm text-gray-500">by ustaad lokk</p>
+                    <p className="font-medium">saved blog title</p>
+                    <p className="text-sm text-gray-500">saved blog author name</p>
                   </div>
                 </li>
              

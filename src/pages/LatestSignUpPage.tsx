@@ -1,15 +1,26 @@
 import ImageUploadHook from '../hooks/ImageUploadHook'
 import { BACKEND_URL } from '../config'
 import axios from 'axios'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 const LatestSignupPage = () => {
+  const navigate = useNavigate()
+  const token = localStorage.getItem('token')
+
+  useEffect(()=>{
+    if(token){
+      navigate('/blogs')
+    }
+  })
+  
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [blogName, setBlogName] = useState('')
+  const [blogName, setBlogName] = useState('') 
+  const [bio, setBio] = useState('')
+  const [location, setLocation] = useState('')
   // const [url, setUrl] = useState('')
   // storing the img here
   const [image, setImage] = useState<File | null>(null)
@@ -17,7 +28,7 @@ const LatestSignupPage = () => {
   const [imagePreview, setImagePreview] = useState<string | undefined>(
     undefined
   )
-  const navigate = useNavigate()
+  
 
   // const handleChange = (
   //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -83,7 +94,9 @@ const LatestSignupPage = () => {
         email,
         password,
         blogName,
-        profilePicture: imgurl
+        profilePicture: imgurl,
+       bio,
+       location
       })
       toast.success('Signup Successfully')
       const token = response.data.token
@@ -265,12 +278,36 @@ const LatestSignupPage = () => {
               className='w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black'
               required
             />
+            <input
+            type='text'
+            name='Bio'
+            placeholder='Bio'
+            // value={formData.password}
+            onChange={e => {
+              setBio(e.target.value)
+            }}
+            className='w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black'
+            required
+          />
+          <input
+            type='text'
+            name='Location'
+            placeholder='Location'
+            // value={formData.password}
+            onChange={e => {
+              setLocation(e.target.value)
+            }}
+            className='w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black'
+            required
+          />
             {/* <input
               type="text"
               name="blogName"
               placeholder="Your Blog's Catchy Name"
-              value={formData.blogName}
-              onChange={handleChange}
+              
+              onChange={e => {
+                setBlogName(e.target.value)
+              }}
               className="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
               required
             /> */}

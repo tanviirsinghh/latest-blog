@@ -59,8 +59,6 @@ export default function NewFullBlog ({ blog }: { blog: Blog }) {
     fetchBookmarkStatus()
   }, [blog.id]) // Ensures check happens on blog change
 
-  
-
   const [user, setUser] = useState({
     name: 'John Doe',
     email: 'john.doe@example.com',
@@ -211,7 +209,7 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
         toast.error('Blog not found')
       } else if (axios.isAxiosError(e) && e.response?.status === 411) {
         toast.error('No response from server. Check your internet connection.')
-      
+
         toast.error('Failed to update bookmark')
       }
     } finally {
@@ -219,7 +217,7 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
       setIsLoading(false)
     }
   }
-  
+
   const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (newComment.trim()) {
