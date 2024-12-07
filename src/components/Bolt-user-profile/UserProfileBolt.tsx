@@ -1,31 +1,34 @@
-import React, { FormEvent, FormEventHandler, useState } from 'react'
+import React, { FormEvent, useCallback, useState } from 'react'
 // import { PencilIcon } from 'lucide-react'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom' // Update: Added navigate for navigation
-import ImageUploadHook from '../../hooks/ImageUploadHook'
+// import ImageUploadHook from '../../hooks/ImageUploadHook'
 import { BACKEND_URL } from '../../config'
-import { User } from '../../hooks'
-import { Edit3, MapPin, Calendar, Twitter, Github, Linkedin, Camera, X, Award, Heart, MessageCircle, Bookmark, Share2, Clock, BarChart3, TrendingUp, dummyusers } from 'lucide-react';
+import { Edit3, MapPin, Calendar, Twitter, Github, Linkedin, Camera, X, Award, Heart, MessageCircle, Bookmark, Share2, Clock, BarChart3, TrendingUp } from 'lucide-react';
+import { useUserDetails } from '../../hooks/index';
 
 
-interface ProfileInfoProps {
-  user: User
-  getRefreshData: () => Promise<void>
-}
+// interface ProfileInfoProps {
+//   user: user
+//   getRefreshData: () => Promise<void>
+// }
 
-export default function ProfileInfo ({
-  user,
-  getRefreshData
-}: ProfileInfoProps) {
-  const [isEditing, setIsEditing] = useState(false)
-  const [editedUser, setEditedUser] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
-    bio: user?.bio || '',
-    location: user?.location || '',
-    blogName: user?.blogName || '',
-    coverpicture: user?.coverpicture || ''
+export default function ProfileInfo () {
+  // const [isEditing, setIsEditing] = useState(false)
+  // const [user, setUser] = useState(null)
+  const {loading, userDetails,setUserDetails} = useUserDetails(
+    // userId: userId || " "
+   )
+  const [editeduser, setEditeduser] = useState({
+    name: userDetails?.name || '',
+    email: userDetails?.email || '',
+    blogName: userDetails?.blogName || '',
+    bio: userDetails?.bio || '',
+    location: userDetails?.location || '',
+    coverpicture:userDetails?.coverpicture || ''
+    
+    // coverpicture: user?.coverpicture || ''
   })
   // const handleUpdateProfile = (updatedData: typeof user) => {
   //   setdummyuser(updatedData);
@@ -33,10 +36,10 @@ export default function ProfileInfo ({
   // };
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const [image, setImage] = useState<File | null>(null)
-  const [imagePreview, setImagePreview] = useState(user?.profilePicture || '')
-  const [confirm, setConfirm] = useState(false)
-  const [loading, setLoading] = useState(false)
+  // const [image, setImage] = useState<File | null>(null)
+  // const [imagePreview, setImagePreview] = useState(userDetails?.profilePicture || '')
+  // const [confirm, setConfirm] = useState(false)
+  // const [loading, setLoading] = useState(false)
   const navigate = useNavigate() // Update: Replacing window.location.href
 
   const handleLogout = () => {
@@ -46,24 +49,74 @@ export default function ProfileInfo ({
   }
 
   const handleInputChange = (
-    e: FormEvent<HTMLFormElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target
-    setEditedUser(prev => ({ ...prev, [name]: value }))
+    setEditeduser(prev => ({ ...prev, [name]: value }))
+   
     // setdummyuser(updatedData);
-    setIsEditModalOpen(false);
+    // setIsEditModalOpen(false);
   }
 
-  const toggleEditMode = async () => {
+
+
+  const getRefreshData = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      toast.error('Sign In first');
+      navigate('/signin');
+      return;
+    }
+    try {
+      const response = await axios.get(`${BACKEND_URL}/api/v1/user/details`, {
+        headers: {
+          Authorization: ` ${token}`, // Ensure token format is correct
+        },
+      });
+      console.log('Got refresh response of user details', response.data);
+      setUserDetails(response.data);
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+      toast.error('Failed to refresh user details.');
+    }
+  };
+   const token = localStorage.getItem('token')
+   console.log(token)
+   if(!token){
+    navigate('/signin')
+    return 
+}
+if(loading){
+  return <div>
+      loading...
+  </div>
+ }
+ if (loading || !userDetails) {
+  return <div>
+             loading...
+          </div>
+}
+
+
+
+
+
+  
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // setLoading(true)
+    console.log('submit working')
     const token = localStorage.getItem('token')
-    if (isEditing) {
+     console.log(userDetails)
       try {
         // Simplified input check logic
-        const payload: Partial<typeof editedUser> = {}
-        if (editedUser.name !== user.name) payload.name = editedUser.name
-        if (editedUser.email !== user.email) payload.email = editedUser.email
-        if (editedUser.blogName !== user.blogName)
-          payload.blogName = editedUser.blogName
+        const payload: Partial<typeof editeduser> = {}
+        if (editeduser.name !== userDetails.name) payload.name = editeduser.name
+        if (editeduser.email !== userDetails.email) payload.email = editeduser.email
+        if (editeduser.blogName !== userDetails.blogName) payload.blogName = editeduser.blogName
+        if (editeduser.bio !== userDetails.bio) payload.bio = editeduser.bio
+        if (editeduser.location !== userDetails.location) payload.location = editeduser.location
+        if (editeduser.coverpicture !== userDetails.coverpicture) payload.coverpicture = editeduser.coverpicture;
 
         console.log(payload)
         console.log('pohonch gya,update send krn api kol')
@@ -76,72 +129,77 @@ export default function ProfileInfo ({
             }
           )
           toast.success('Profile updated successfully!')
-          await getRefreshData() // Fetch updated data to refresh the component
+
+          await getRefreshData()
+          setIsEditModalOpen(false)
+          // setLoading(false)
+           // Fetch updated data to refresh the component
         } else {
           toast.info('No changes detected.')
         }
       } catch (err) {
         toast.error('Failed to update profile. Please try again.')
       }
-    }
+    
 
-    setIsEditModalOpen(false)// Toggle edit mode
+    // setIsEditModalOpen(false)// Toggle edit mode
   }
 
-  const handleImageUpload = async () => {
-    if (!image) {
-      toast.error('Please select an image before confirming.')
-      return
-    }
-    const token = localStorage.getItem('token')
-    try {
-      setLoading(true)
-      const imageUrl = await ImageUploadHook(image)
-      if (imageUrl) {
-        setImagePreview(imageUrl)
+  // const handleImageUpload = async () => {
+  //   if (!image) {
+  //     toast.error('Please select an image before confirming.')
+  //     return
+  //   }
+  //   const token = localStorage.getItem('token')
+  //   try {
+  //     // setLoading(true)
+  //     const imageUrl = await ImageUploadHook(image)
+  //     if (imageUrl) {
+  //       setImagePreview(imageUrl)
 
-        // Update profile picture in the backend
-        await axios.put(
-          `${BACKEND_URL}/api/v1/user/update-profile-picture`,
-          { profilePicture: imageUrl },
-          { headers: { Authorization: token } }
-        )
-        await getRefreshData()
-        toast.success('Image uploaded successfully!')
-      } else {
-        toast.error('Image upload failed. Please try again.')
-      }
-    } catch (err) {
-      console.error('Image upload error:', err)
-      toast.error('An error occurred during image upload.')
-    } finally {
-      setLoading(false)
-      setConfirm(false)
-    }
-  }
+  //       // Update profile picture in the backend
+  //       await axios.put(
+  //         `${BACKEND_URL}/api/v1/user/update-profile-picture`,
+  //         { profilePicture: imageUrl },
+  //         { headers: { Authorization: token } }
+  //       )
+  //       await getRefreshData()
+  //       // setIsEditModalOpen(false)
+  //       toast.success('Image uploaded successfully!')
+  //     } else {
+  //       toast.error('Image upload failed. Please try again.')
+  //     }
+  //   } catch (err) {
+  //     console.error('Image upload error:', err)
+  //     toast.error('An error occurred during image upload.')
+  //   } finally {
+  //     // setLoading(false)
+  //     setConfirm(false)
+  //   }
+  // }
 
 
 
-  const [dummyuser, setdummyuser] = useState({
-    name: "Sarah Johnson",
-    blogName: "TechInsights",
-    email: "sarah.johnson@example.com",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    bio: "Senior Software Engineer | Tech Blogger | Cloud Architecture Enthusiast",
-    coverImage: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80",
-    location: "San Francisco, CA",
-    joinedDate: "January 2022",
-    social: {
-      twitter: "@sarahtechblog",
-      github: "sarahj",
-      linkedin: "sarahjohnson"
-    }
-  });
+  // const [dummyuser, setdummyuser] = useState({
+  //   name: "Sarah Johnson",
+  //   blogName: "TechInsights",
+  //   email: "sarah.johnson@example.com",
+  //   avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+  //   bio: "Senior Software Engineer | Tech Blogger | Cloud Architecture Enthusiast",
+  //   coverImage: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80",
+  //   location: "San Francisco, CA",
+  //   joinedDate: "January 2022",
+  //   social: {
+  //     twitter: "@sarahtechblog",
+  //     github: "sarahj",
+  //     linkedin: "sarahjohnson"
+  //   }
+  // });
 
   const stats = [
     { label: 'Total Views', value: '238K', icon: BarChart3, change: '+12.5%', color: 'text-cyan-400' },
     { label: 'Blog Posts', value: '47', icon: TrendingUp, change: '+5.2%', color: 'text-purple-400' },
-    { label: 'Followers', value: '12.5K', icon: dummyusers, change: '+18.3%', color: 'text-pink-400' },
+    { label: 'Followers', value: '12.5K', icon: TrendingUp, change: '+18.3%', color: 'text-pink-400' },
     { label: 'Comments', value: '1.2K', icon: MessageCircle, change: '+7.1%', color: 'text-amber-400' },
   ];
 
@@ -197,7 +255,7 @@ export default function ProfileInfo ({
       <div className="relative">
         <div className="h-80 relative">
           <img 
-            src={user.profilePicture} 
+            src={'user.profilePicture'} 
             alt="Cover" 
             className="w-full h-full object-cover"
           />
@@ -212,8 +270,8 @@ export default function ProfileInfo ({
           <div className="flex flex-col md:flex-row items-start md:items-end gap-6 -mt-20 relative">
             <div className="relative group">
               <img 
-                src={user.profilePicture} 
-                alt={user.name}
+                src={'user.profilePicture'} 
+                alt={'user.name'}
                 className="w-32 h-32 rounded-full border-4 border-gray-900 shadow-xl"
               />
               <button className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
@@ -224,8 +282,8 @@ export default function ProfileInfo ({
             <div className="flex-1">
               <div className="flex items-start justify-start">
                 <div>
-                  <h1 className="text-3xl font-bold text-white">{user.name}</h1>
-                  <p className="text-cyan-400 font-medium">{user.blogName}</p>
+                  <h1 className="text-3xl font-bold text-white">{'user.name'}</h1>
+                  <p className="text-cyan-400 font-medium">{'user.blogName'}</p>
                 </div>
                 <button
                   onClick={() => setIsEditModalOpen(true)}
@@ -236,21 +294,21 @@ export default function ProfileInfo ({
                 </button>
               </div>
               
-              <p className="mt-2 text-gray-300 max-w-2xl">{user.bio}</p>
+              <p className="mt-2 text-gray-300 max-w-2xl">{"user.bio"}</p>
               
               <div className="mt-4 flex flex-wrap items-center gap-4 text-gray-400">
                 <div className="flex items-center gap-1">
                   <MapPin size={16} />
-                  <span>{user.location}</span>
+                  <span>{"user.location"}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Calendar size={16} />
-                  <span>Joined {user.joinedDate}</span>
+                  <span>Joined {"user.joinedDate"}</span>
                 </div>
               </div>
 
               <div className="mt-4 flex gap-4">
-                <a href={`https://twitter.com/${user.social.twitter}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
+                {/* <a href={`https://twitter.com/${user.social.twitter}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
                   <Twitter size={20} />
                 </a>
                 <a href={`https://github.com/${user.social.github}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
@@ -258,7 +316,7 @@ export default function ProfileInfo ({
                 </a>
                 <a href={`https://linkedin.com/in/${user.social.linkedin}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
                   <Linkedin size={20} />
-                </a>
+                </a> */}
               </div>
             </div>
           </div>
@@ -275,7 +333,7 @@ export default function ProfileInfo ({
                 <div key={stat.label} className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50">
                   <div className="flex items-center gap-3">
                     <div className={`p-2 rounded-lg ${stat.color} bg-opacity-10`}>
-                      <stat.icon className={`h-6 w-6 ${stat.color}`} />
+                      {/* <stat.icon className={`h-6 w-6 ${stat.color}`} /> */}
                     </div>
                     <div>
                       <p className="text-sm text-gray-400">{stat.label}</p>
@@ -404,14 +462,13 @@ export default function ProfileInfo ({
               </button>
             </div>
 
-            <form onSubmit={(    e: FormEvent<HTMLFormElement>
-) => {
-              e.preventDefault();
-              handleInputChange(editedUser);
-            }} className="space-y-6">
+            <form onSubmit={
+              handleSubmit
+              // handleInputChange(editeduser);
+            } className="space-y-6">
               {/* Avatar Upload */}
               <div className="flex items-center gap-4">
-                <div className="relative group">
+                {/* <div className="relative group">
                   <img
                     src={dummyuser.avatar}
                     alt={dummyuser.name}
@@ -421,15 +478,15 @@ export default function ProfileInfo ({
                     <Camera size={20} className="text-white" />
                     <input type="file" className="hidden" accept="image/*" />
                   </label>
-                </div>
-                <div className="flex-1">
+                </div> */}
+                {/* <div className="flex-1">
                   <label className="block text-sm font-medium text-gray-300 mb-1">
                     Profile Picture
                   </label>
                   <p className="text-sm text-gray-400">
                     Recommended: Square image, at least 400x400px
                   </p>
-                </div>
+                </div> */}
               </div>
 
               {/* Form Fields */}
@@ -440,8 +497,9 @@ export default function ProfileInfo ({
                   </label>
                   <input
                     type="text"
-                    value={dummyuser.name}
-                    onChange={(e) => setdummyuser({ ...dummyuser, name: e.target.value })}
+                    name="name" 
+                    value={editeduser.name}
+                    onChange={handleInputChange}
                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
                   />
                 </div>
@@ -452,8 +510,9 @@ export default function ProfileInfo ({
                   </label>
                   <input
                     type="text"
-                    value={dummyuser.blogName}
-                    onChange={(e) => setdummyuser({ ...dummyuser, blogName: e.target.value })}
+                    name="blogName" 
+                    value={editeduser.blogName}
+                    onChange={handleInputChange}
                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
                   />
                 </div>
@@ -464,8 +523,9 @@ export default function ProfileInfo ({
                   </label>
                   <input
                     type="email"
-                    value={dummyuser.email}
-                    onChange={(e) => setdummyuser({ ...dummyuser, email: e.target.value })}
+                    name="email" 
+                    value={editeduser.email}
+                    onChange={handleInputChange}
                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
                   />
                 </div>
@@ -475,8 +535,9 @@ export default function ProfileInfo ({
                     Bio
                   </label>
                   <textarea
-                    value={dummyuser.bio}
-                    onChange={(e) => setdummyuser({ ...dummyuser, bio: e.target.value })}
+                    value={editeduser.bio}
+                    name="bio" 
+                    onChange={handleInputChange}
                     rows={3}
                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
                   />
@@ -488,26 +549,26 @@ export default function ProfileInfo ({
                   </label>
                   <input
                     type="text"
-                    value={dummyuser.location}
-                    onChange={(e) => setdummyuser({ ...dummyuser, location: e.target.value })}
+                    name="location" 
+                    value={editeduser.location}
+                    onChange={handleInputChange}
                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
                   />
                 </div>
 
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Twitter dummyusername
+                    Twitter username
                   </label>
                   <input
                     type="text"
-                    value={dummyuser.social.twitter}
-                    onChange={(e) => setdummyuser({
-                      ...dummyuser,
-                      social: { ...dummyuser.social, twitter: e.target.value }
-                    })}
+                    value={"dummyuser.social.twitter"}
+                    onChange={(e) => setEditeduser({
+                      ...editeduser,
+                     Social: e.target.value })
                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
                   />
-                </div>
+                </div> */}
               </div>
 
               {/* Action Buttons */}
@@ -554,10 +615,10 @@ export default function ProfileInfo ({
 
 
 // import  { useState } from 'react';
-// import { Edit3, MapPin, Calendar, Twitter, Github, Linkedin, Camera, X, Award, Heart, MessageCircle, Bookmark, Share2, Clock, BarChart3, TrendingUp, Users } from 'lucide-react';
+// import { Edit3, MapPin, Calendar, Twitter, Github, Linkedin, Camera, X, Award, Heart, MessageCircle, Bookmark, Share2, Clock, BarChart3, TrendingUp, users } from 'lucide-react';
 
-// export default function UserProfileBolt() {
-//   const [user, setUser] = useState({
+// export default function userProfileBolt() {
+//   const [user, setuser] = useState({
 //     name: "Sarah Johnson",
 //     blogName: "TechInsights",
 //     email: "sarah.johnson@example.com",
@@ -576,7 +637,7 @@ export default function ProfileInfo ({
 //   const stats = [
 //     { label: 'Total Views', value: '238K', icon: BarChart3, change: '+12.5%', color: 'text-cyan-400' },
 //     { label: 'Blog Posts', value: '47', icon: TrendingUp, change: '+5.2%', color: 'text-purple-400' },
-//     { label: 'Followers', value: '12.5K', icon: Users, change: '+18.3%', color: 'text-pink-400' },
+//     { label: 'Followers', value: '12.5K', icon: users, change: '+18.3%', color: 'text-pink-400' },
 //     { label: 'Comments', value: '1.2K', icon: MessageCircle, change: '+7.1%', color: 'text-amber-400' },
 //   ];
 
@@ -625,7 +686,7 @@ export default function ProfileInfo ({
 //   ];
 
 //   const handleUpdateProfile = (updatedData: typeof user) => {
-//     setUser(updatedData);
+//     setuser(updatedData);
 //     setIsEditModalOpen(false);
 //   };
 
@@ -728,7 +789,7 @@ export default function ProfileInfo ({
 //               ))}
 //             </div>
 
-//             {/* User Posts */}
+//             {/* user Posts */}
 //             <div className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50">
 //               <div className="flex items-center justify-between mb-6">
 //                 <h2 className="text-xl font-semibold text-white">Recent Posts</h2>
@@ -878,7 +939,7 @@ export default function ProfileInfo ({
 //                   <input
 //                     type="text"
 //                     value={user.name}
-//                     onChange={(e) => setUser({ ...user, name: e.target.value })}
+//                     onChange={(e) => setuser({ ...user, name: e.target.value })}
 //                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
 //                   />
 //                 </div>
@@ -890,7 +951,7 @@ export default function ProfileInfo ({
 //                   <input
 //                     type="text"
 //                     value={user.blogName}
-//                     onChange={(e) => setUser({ ...user, blogName: e.target.value })}
+//                     onChange={(e) => setuser({ ...user, blogName: e.target.value })}
 //                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
 //                   />
 //                 </div>
@@ -902,7 +963,7 @@ export default function ProfileInfo ({
 //                   <input
 //                     type="email"
 //                     value={user.email}
-//                     onChange={(e) => setUser({ ...user, email: e.target.value })}
+//                     onChange={(e) => setuser({ ...user, email: e.target.value })}
 //                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
 //                   />
 //                 </div>
@@ -913,7 +974,7 @@ export default function ProfileInfo ({
 //                   </label>
 //                   <textarea
 //                     value={user.bio}
-//                     onChange={(e) => setUser({ ...user, bio: e.target.value })}
+//                     onChange={(e) => setuser({ ...user, bio: e.target.value })}
 //                     rows={3}
 //                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
 //                   />
@@ -926,19 +987,19 @@ export default function ProfileInfo ({
 //                   <input
 //                     type="text"
 //                     value={user.location}
-//                     onChange={(e) => setUser({ ...user, location: e.target.value })}
+//                     onChange={(e) => setuser({ ...user, location: e.target.value })}
 //                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
 //                   />
 //                 </div>
 
 //                 <div>
 //                   <label className="block text-sm font-medium text-gray-300 mb-1">
-//                     Twitter Username
+//                     Twitter username
 //                   </label>
 //                   <input
 //                     type="text"
 //                     value={user.social.twitter}
-//                     onChange={(e) => setUser({
+//                     onChange={(e) => setuser({
 //                       ...user,
 //                       social: { ...user.social, twitter: e.target.value }
 //                     })}

@@ -20,7 +20,10 @@ export interface User {
   name: string
   email: string
   profilePicture: string
-  blogName: string
+  blogName: string,
+  bio:string,
+  location: string,
+  coverpicture:string
 }
 
 // export function useUserDetails({userId} : {userId : string}){
