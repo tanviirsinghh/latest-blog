@@ -57,7 +57,6 @@ export default function ProfileInfo () {
     // setdummyuser(updatedData);
     // setIsEditModalOpen(false);
   }
-
   const getRefreshData = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
