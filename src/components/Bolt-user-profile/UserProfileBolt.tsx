@@ -58,7 +58,6 @@ export default function ProfileInfo () {
     // setIsEditModalOpen(false);
   }
 
-
   const getRefreshData = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
