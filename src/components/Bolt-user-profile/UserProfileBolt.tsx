@@ -59,7 +59,6 @@ export default function ProfileInfo () {
   }
 
 
-
   const getRefreshData = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
