@@ -47,7 +47,6 @@ export default function ProfileInfo () {
     toast.success('Logged out successfully!')
     navigate('/signin') // Update: Use navigate instead of window.location.href
   }
-
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
