@@ -136,7 +136,6 @@ if(loading){
       } catch (err) {
         toast.error('Failed to update profile. Please try again.')
       }
-    
 
     // setIsEditModalOpen(false)// Toggle edit mode
   }
