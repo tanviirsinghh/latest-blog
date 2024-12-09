@@ -328,7 +328,7 @@ export default function ProfileInfo () {
                 setImage(e.target.files[0])
                 setImagePreview(URL.createObjectURL(e.target.files[0]))
               }
-            }}
+            }
                    */}
               </div>
                     <div className="grid  grid-cols-1 space-y-2">
