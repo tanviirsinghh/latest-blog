@@ -1,12 +1,14 @@
-import React, { FormEvent, useCallback, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 // import { PencilIcon } from 'lucide-react'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom' // Update: Added navigate for navigation
 // import ImageUploadHook from '../../hooks/ImageUploadHook'
 import { BACKEND_URL } from '../../config'
-import { Edit3, MapPin, Calendar, Twitter, Github, Linkedin, Camera, X, Award, Heart, MessageCircle, Bookmark, Share2, Clock, BarChart3, TrendingUp } from 'lucide-react';
+import { Edit3, MapPin, Calendar, Twitter, Github, Linkedin, Camera, X, Award, Heart, MessageCircle, Bookmark, Share2, Clock, BarChart3, TrendingUp, PencilIcon } from 'lucide-react';
 import { useUserDetails } from '../../hooks/index';
+import Loading from '../Loading'
+import ImageUploadHook from '../../hooks/ImageUploadHook'
 
 
 // interface ProfileInfoProps {
@@ -20,6 +22,8 @@ export default function ProfileInfo () {
   const {loading, userDetails,setUserDetails} = useUserDetails(
     // userId: userId || " "
    )
+   const [isSaving, setIsSaving] = useState(false);
+
   const [editeduser, setEditeduser] = useState({
     name: userDetails?.name || '',
     email: userDetails?.email || '',
@@ -30,16 +34,28 @@ export default function ProfileInfo () {
     
     // coverpicture: user?.coverpicture || ''
   })
+  useEffect(() => {
+    if (userDetails) {
+      setEditeduser({
+        name: userDetails.name || '',
+        email: userDetails.email || '',
+        blogName: userDetails.blogName || '',
+        bio: userDetails.bio || '',
+        location: userDetails.location || '',
+        coverpicture: userDetails.coverpicture || '',
+      });
+    }
+  }, [userDetails]);
   // const handleUpdateProfile = (updatedData: typeof user) => {
   //   setdummyuser(updatedData);
   //   setIsEditModalOpen(false);
   // };
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  // const [image, setImage] = useState<File | null>(null)
-  // const [imagePreview, setImagePreview] = useState(userDetails?.profilePicture || '')
-  // const [confirm, setConfirm] = useState(false)
-  // const [loading, setLoading] = useState(false)
+  const [image, setImage] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState(userDetails?.profilePicture || '')
+  const [confirm, setConfirm] = useState(false)
+  const [load, setLoad] = useState(false)
   const navigate = useNavigate() // Update: Replacing window.location.href
 
   const handleLogout = () => {
@@ -55,6 +71,15 @@ export default function ProfileInfo () {
    
     // setdummyuser(updatedData);
     // setIsEditModalOpen(false);
+  }
+  const handleCancel = () =>{
+    if(userDetails){
+      setEditeduser(userDetails); // Reset the edited state to the original data from the database.
+
+    }
+
+    setIsEditModalOpen(false)
+
   }
   const getRefreshData = async () => {
     const token = localStorage.getItem('token');
@@ -82,14 +107,10 @@ export default function ProfileInfo () {
     navigate('/signin')
     return 
 }
-if(loading){
-  return <div>
-      loading...
-  </div>
- }
+
  if (loading || !userDetails) {
   return <div>
-             loading...
+           <Loading/>
           </div>
 }
 
@@ -98,9 +119,12 @@ if(loading){
 
 
   
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>  ) => {
+
     e.preventDefault();
     // setLoading(true)
+    setIsSaving(true); // Disable the button
+
     console.log('submit working')
     const token = localStorage.getItem('token')
      console.log(userDetails)
@@ -132,46 +156,50 @@ if(loading){
            // Fetch updated data to refresh the component
         } else {
           toast.info('No changes detected.')
+          // setIsSaving(false); // Disable the button
+
         }
       } catch (err) {
+        setIsSaving(false); // Disable the button
+
         toast.error('Failed to update profile. Please try again.')
       }
 
     // setIsEditModalOpen(false)// Toggle edit mode
   }
 
-  // const handleImageUpload = async () => {
-  //   if (!image) {
-  //     toast.error('Please select an image before confirming.')
-  //     return
-  //   }
-  //   const token = localStorage.getItem('token')
-  //   try {
-  //     // setLoading(true)
-  //     const imageUrl = await ImageUploadHook(image)
-  //     if (imageUrl) {
-  //       setImagePreview(imageUrl)
+  const handleImageUpload = async () => {
+    if (!image) {
+      toast.error('Please select an image before confirming.')
+      return
+    }
+    const token = localStorage.getItem('token')
+    try {
+      setLoad(true)
+      const imageUrl = await ImageUploadHook(image)
+      if (imageUrl) {
+        setImagePreview(imageUrl)
 
-  //       // Update profile picture in the backend
-  //       await axios.put(
-  //         `${BACKEND_URL}/api/v1/user/update-profile-picture`,
-  //         { profilePicture: imageUrl },
-  //         { headers: { Authorization: token } }
-  //       )
-  //       await getRefreshData()
-  //       // setIsEditModalOpen(false)
-  //       toast.success('Image uploaded successfully!')
-  //     } else {
-  //       toast.error('Image upload failed. Please try again.')
-  //     }
-  //   } catch (err) {
-  //     console.error('Image upload error:', err)
-  //     toast.error('An error occurred during image upload.')
-  //   } finally {
-  //     // setLoading(false)
-  //     setConfirm(false)
-  //   }
-  // }
+        // Update profile picture in the backend
+        await axios.put(
+          `${BACKEND_URL}/api/v1/user/update-profile-picture`,
+          { profilePicture: imageUrl },
+          { headers: { Authorization: token } }
+        )
+        await getRefreshData()
+        // setIsEditModalOpen(false)
+        toast.success('Image uploaded successfully!')
+      } else {
+        toast.error('Image upload failed. Please try again.')
+      }
+    } catch (err) {
+      console.error('Image upload error:', err)
+      toast.error('An error occurred during image upload.')
+    } finally {
+      setLoad(false)
+      setConfirm(false)
+    }
+  }
 
 
 
@@ -250,7 +278,7 @@ if(loading){
       <div className="relative">
         <div className="h-80 relative">
           <img 
-            src={'user.profilePicture'} 
+            src={userDetails.coverpicture} 
             alt="Cover" 
             className="w-full h-full object-cover"
           />
@@ -263,22 +291,166 @@ if(loading){
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-start md:items-end gap-6 -mt-20 relative">
+            {/* profile picture update */}
             <div className="relative group">
-              <img 
-                src={'user.profilePicture'} 
-                alt={'user.name'}
-                className="w-32 h-32 rounded-full border-4 border-gray-900 shadow-xl"
+              <img  // if not found image put a random image,    fix this later
+                src={ imagePreview || userDetails.profilePicture} 
+                alt={userDetails.name}
+                className="w-36 h-36 rounded-full border-1 border-gray-900 shadow-xl"
               />
-              <button className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                <Camera size={24} className="text-white" />
-              </button>
+              <button
+          className='absolute bottom-3 right-2 bg-sky-500 text-white p-2 rounded-full hover:bg-blue-600'
+          onClick={() => setConfirm(true)}
+        >
+          <PencilIcon size={18} />
+        </button>
+                  {/* <label className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
+                  <Camera size={24} className="text-white" />
+                <input type="file" className="hidden" accept="image/*" onClick={imgChange} />
+
+              </label> */}
             </div>
 
+
+
+
+
+            {confirm && (
+            <div className=" absolute left-44 bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 border border-gray-700/50 " >
+                    <div className="grid grid-cols-1 space-y-2">
+                        {/* <label className="text-sm font-bold text-gray-500 tracking-wide">Title</label> */}
+                        {/* <input
+            type='file'
+            className="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+            accept='image/*'
+            onChange={e => {
+              if (e.target.files && e.target.files[0]) {
+                setImage(e.target.files[0])
+                setImagePreview(URL.createObjectURL(e.target.files[0]))
+              }
+            }}
+          />                 */}
+              </div>
+                    <div className="grid  grid-cols-1 space-y-2">
+                                    {/* <label className="text-sm font-bold text-gray-500 tracking-wide">Attach Document</label> */}
+                        <div className="flex  items-center justify-center  mt-3 h-24 w-60">
+                            <label className="flex flex-col rounded-lg border-4 border-dashed h-24  p-2 group text-center">
+                                <div className="h-24 w-full text-center flex flex-col cursor-pointer  justify-center items-center  ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-blue-400 group-hover:text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                    </svg>
+                                    <div className="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
+                                    {/* <img className="has-mask h-36 object-center" src="https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg" alt="freepik image"/> */}
+                                    </div>
+                                    <p className=" text-xs pointer-none text-gray-500 "><span className="text-sm">Drag and drop</span> files here <br /> or <a href="" id="" className="text-blue-600 hover:underline">select a file</a> from your computer</p>
+                                </div>
+                                <input
+            type='file'
+            className="hidden"
+            accept='image/*'
+            onChange={e => {
+              if (e.target.files && e.target.files[0]) {
+                setImage(e.target.files[0])
+                setImagePreview(URL.createObjectURL(e.target.files[0]))
+              }
+            }}
+          />                               </label>
+                        </div>
+                    </div>
+                            <p className="text-xs text-gray-300 text-center mt-2">
+                                <span>File type: Types of Images only</span>
+                            </p>
+                    <div className='flex justify-evenly items-center'>
+                    <button
+              className={`h-8 my-3 w-20 flex justify-center items-center bg-blue-500 text-xs text-gray-100   rounded-full tracking-wide font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300' ${
+                load
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-green-500 hover:bg-green-600'
+              }`}
+              onClick={handleImageUpload}
+              disabled={load}
+            >
+              Confirm
+            </button>
+            <button
+              className="h-8 my-3 w-20 flex justify-center items-center bg-red-500 text-xs text-gray-100     rounded-full tracking-wide
+                                    font-semibold  focus:outline-none focus:shadow-outline hover:bg-red-600 shadow-lg cursor-pointer transition ease-in duration-300"
+              onClick={() => {
+                setConfirm(false)
+                setImage(null)
+                setImagePreview(userDetails?.profilePicture || '')
+              }}
+            >
+              Cancel
+            </button>
+                    </div>
+        </div>
+  )}
+
+
+
+
+
+
+            {/* pop up for image upload */}
+            {/* {confirm && (
+        <div className='bg-blue-900 h-28 '>
+          <input
+            type='file'
+            className="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+            accept='image/*'
+            onChange={e => {
+              if (e.target.files && e.target.files[0]) {
+                setImage(e.target.files[0])
+                setImagePreview(URL.createObjectURL(e.target.files[0]))
+              }
+            }}
+          />
+          <div className='mt-4 flex justify-center gap-3'>
+            <button
+              className={`className="my-5 w-full flex justify-center bg-blue-500 text-gray-100 p-4  rounded-full tracking-wide
+                                    font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300" ${
+                load
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-green-500 hover:bg-green-600'
+              }`}
+              onClick={handleImageUpload}
+              disabled={load}
+            >
+              Confirm
+            </button>
+            <button
+              className="my-5 w-full flex justify-center bg-blue-500 text-gray-100 p-4  rounded-full tracking-wide
+                                    font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
+              onClick={() => {
+                setConfirm(false)
+                setImage(null)
+                setImagePreview(userDetails?.profilePicture || '')
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )} */}
+
+            {/* <div className="relative group">
+                  <img
+                    src={userDetails.profilePicture}
+                    alt={userDetails.name}
+                    className="w-20 h-20 rounded-full"
+                  />
+                  <label className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
+                    <Camera size={20} className="text-white" />
+                    <input type="file" className="hidden" accept="image/*" />
+                  </label>
+                </div>   */}
+{confirm? <div className=""></div> :
             <div className="flex-1">
               <div className="flex items-start justify-start">
                 <div>
-                  <h1 className="text-3xl font-bold text-white">{'user.name'}</h1>
-                  <p className="text-cyan-400 font-medium">{'user.blogName'}</p>
+                  <h1 className="text-3xl font-bold text-white">{userDetails.name}</h1>
+                  <p className="text-cyan-400 font-medium">{userDetails.blogName}</p>
                 </div>
                 <button
                   onClick={() => setIsEditModalOpen(true)}
@@ -289,16 +461,16 @@ if(loading){
                 </button>
               </div>
               
-              <p className="mt-2 text-gray-300 max-w-2xl">{"user.bio"}</p>
+              <p className="mt-2 text-gray-300 max-w-2xl">{userDetails.bio}</p>
               
               <div className="mt-4 flex flex-wrap items-center gap-4 text-gray-400">
                 <div className="flex items-center gap-1">
                   <MapPin size={16} />
-                  <span>{"user.location"}</span>
+                  <span>{userDetails.location}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Calendar size={16} />
-                  <span>Joined {"user.joinedDate"}</span>
+                  <span>Joined {"userDetails.joinedDate"}</span>
                 </div>
               </div>
 
@@ -313,7 +485,7 @@ if(loading){
                   <Linkedin size={20} />
                 </a> */}
               </div>
-            </div>
+            </div>}
           </div>
         </div>
       </div>
@@ -570,17 +742,20 @@ if(loading){
               <div className="flex justify-end gap-4 pt-4">
                 <button
                   type="button"
-                  onClick={() => setIsEditModalOpen(false)}
+                  onClick={ handleCancel }
                   className="px-6 py-2.5 text-gray-300 hover:text-white transition-colors"
                 >
                   Cancel
                 </button>
                 <button
-                  type="submit"
-                  className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
-                >
-                  Save Changes
-                </button>
+    type="submit"
+    disabled={isSaving} // Disable the button conditionally
+    className={`px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 ${
+      isSaving ? "opacity-50 cursor-not-allowed" : ""
+    }`}
+  >
+    {isSaving ? "Saving..." : "Save Changes"}
+  </button>
               </div>
             </form>
           </div>
