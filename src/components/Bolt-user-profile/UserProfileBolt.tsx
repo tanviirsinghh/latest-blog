@@ -321,7 +321,7 @@ export default function ProfileInfo () {
                         {/* <label className="text-sm font-bold text-gray-500 tracking-wide">Title</label> */}
                         {/* <input
             type='file'
-            className="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+            className="textorder border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
             
                    */}
               </div>
