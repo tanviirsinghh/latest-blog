@@ -323,8 +323,7 @@ export default function ProfileInfo () {
             type='file'
             className="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
             accept='image/*'
-            onChange={e => {
-              if (e.target.files && e.target.files[0])
+            
             
                    */}
               </div>
