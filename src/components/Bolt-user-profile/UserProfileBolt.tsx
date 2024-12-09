@@ -73,8 +73,14 @@ export default function ProfileInfo () {
   const [imagePreview, setImagePreview] = useState(
     userDetails?.profilePicture || ''
   )
+  const [coverImagePreview, setcoverImagePreview] = useState(
+    userDetails?.coverpicture || ''
+  )
+  const[coverImage,setCoverImage] = useState<File | null>(null)
   const [confirm, setConfirm] = useState(false)
   const [load, setLoad] = useState(false)
+  // confirmation for cover imageUpload
+  const [coverConfirm, setCoverConfirm] = useState(false)
   const navigate = useNavigate() // Update: Replacing window.location.href
 
   const handleLogout = () => {
@@ -183,8 +189,9 @@ export default function ProfileInfo () {
 
     // setIsEditModalOpen(false)// Toggle edit mode
   }
+//  handle the profile image upload
+  const handleProfileImage = async () => {
 
-  const handleImageUpload = async () => {
     if (!image) {
       toast.error('Please select an image before confirming.')
       return
@@ -216,7 +223,40 @@ export default function ProfileInfo () {
       setConfirm(false)
     }
   }
+  //  handle cover image upload
+  const handleCoverImage = async () => {
 
+    if (!coverImage) {
+      toast.error('Please select an image before confirming.')
+      return
+    }
+    const token = localStorage.getItem('token')
+    try {
+      setLoad(true)
+      const imageUrl = await ImageUploadHook(coverImage)
+      if (imageUrl) {
+        setcoverImagePreview(imageUrl)
+
+        // Update profile picture in the backend
+        await axios.put(
+          `${BACKEND_URL}/api/v1/user/update-cover-picture`,
+          { coverpicture: imageUrl },
+          { headers: { Authorization: token } }
+        )
+        await getRefreshData()
+        // setIsEditModalOpen(false)
+        toast.success('Image uploaded successfully!')
+      } else {
+        toast.error('Image upload failed. Please try again.')
+      }
+    } catch (err) {
+      console.error('Image upload error:', err)
+      toast.error('An error occurred during image upload.')
+    } finally {
+      setLoad(false)
+      setConfirm(false)
+    }
+  }
   // const [dummyuser, setdummyuser] = useState({
   //   name: "Sarah Johnson",
   //   blogName: "TechInsights",
@@ -319,18 +359,109 @@ export default function ProfileInfo () {
     <div className='min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'>
       {/* Profile Header */}
       <div className='relative'>
-        <div className='h-80 relative'>
-          <img
-            src={userDetails.coverpicture}
-            alt='Cover'
-            className='w-full h-full object-cover'
-          />
-          <div className='absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/90' />
-          <button className='absolute bottom-4 right-4 flex items-center gap-2 px-4 py-2 bg-gray-900/50 backdrop-blur-sm rounded-lg text-white hover:bg-gray-900/70 transition-colors'>
-            <Camera size={18} />
-            <span>Change Cover</span>
-          </button>
-        </div>
+      <div className="h-80 relative">
+  <img
+    src={coverImagePreview || userDetails.coverpicture}
+    alt="Cover"
+    className="w-full h-full object-cover"
+  />
+  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/90" />
+  {/* if coverConfirm is true it means that button is click and show the upload image component */}
+ {coverConfirm?    <div className=' absolute top-14 left-[38rem]  bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 border border-gray-700/50 '>
+                <div className='grid  grid-cols-1 space-y-2'>
+                  <div className='flex  items-center justify-center  mt-3 h-24 w-60'>
+                    <label className='flex flex-col rounded-lg border-4 border-dashed h-24  p-2 group text-center'>
+                      <div className='h-24 w-full text-center flex flex-col cursor-pointer  justify-center items-center  '>
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          className='w-6 h-6 text-blue-400 group-hover:text-blue-600'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          stroke='currentColor'
+                        >
+                          <path
+                            stroke-linecap='round'
+                            stroke-linejoin='round'
+                            stroke-width='2'
+                            d='M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12'
+                          />
+                        </svg>
+                        <div className='flex flex-auto max-h-48 w-2/5 mx-auto -mt-10'></div>
+                        <p className=' text-xs pointer-none text-gray-500 '>
+                          <span className='text-sm'>Drag and drop</span> files
+                          here <br /> or{' '}
+                          <a
+                            href=''
+                            id=''
+                            className='text-blue-600 hover:underline'
+                          >
+                            select a file
+                          </a>{' '}
+                          from your computer
+                        </p>
+                      </div>
+                      <input
+                        type='file'
+                        className='hidden'
+                        accept='image/*'
+                        onChange={e => {
+                          if (e.target.files && e.target.files[0]) {
+                            setCoverImage(e.target.files[0])
+                            setcoverImagePreview(
+                              URL.createObjectURL(e.target.files[0])
+                            )
+                          }
+                        }}
+                      />{' '}
+                    </label>
+                  </div>
+                </div>
+                <p className='text-xs text-gray-300 text-center mt-2'>
+                  <span>File type: Types of Images only</span>
+                </p>
+                <div className='flex justify-evenly items-center'>
+                  <button
+                    className={`h-8 my-3 w-20 flex justify-center items-center bg-blue-500 text-xs text-gray-100   rounded-full tracking-wide font-semibold  focus:outline-none focus:shadow-outline  shadow-lg cursor-pointer transition ease-in duration-300' ${
+                      load
+                        ? 'bg-gray-400 cursor-not-allowed pointer-events-none'
+                        : 'bg-green-500 hover:bg-green-600'
+                    }`}
+                    onClick={handleCoverImage}
+                    disabled={load}
+                  >
+                    Confirm
+                  </button>
+                  <button
+                    className='h-8 my-3 w-20 flex justify-center items-center bg-red-500 text-xs text-gray-100     rounded-full tracking-wide
+                                    font-semibold  focus:outline-none focus:shadow-outline hover:bg-red-600 shadow-lg cursor-pointer transition ease-in duration-300'
+                    onClick={() => {
+                      setCoverConfirm(false)
+                      setCoverImage(null)
+                      setcoverImagePreview(userDetails?.coverpicture || '')
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>:
+  <button
+    className="absolute top-4 right-4 flex items-center gap-2 bg-sky-400 text-black px-4 py-2 rounded-lg hover:bg-sky-600 hover:text-white cursor-pointer transition-colors duration-200"
+    onClick={() => setCoverConfirm(true)}
+  >
+    <span className="flex items-center gap-1">
+      <Camera size={18} />
+      Change Cover
+    </span>
+  </button>}
+
+ {/* toggle upload component */}
+ 
+ 
+
+
+
+</div>
+
 
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex flex-col md:flex-row items-start md:items-end gap-6 -mt-20 relative'>
@@ -410,7 +541,7 @@ export default function ProfileInfo () {
                         ? 'bg-gray-400 cursor-not-allowed pointer-events-none'
                         : 'bg-green-500 hover:bg-green-600'
                     }`}
-                    onClick={handleImageUpload}
+                    onClick={handleProfileImage}
                     disabled={load}
                   >
                     Confirm
@@ -445,7 +576,7 @@ export default function ProfileInfo () {
                   </div>
                   <button
                     onClick={() => setIsEditModalOpen(true)}
-                    className='flex items-center gap-2 px-4 ml-16 py-2 bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-medium rounded-lg transition-colors'
+                    className='flex items-center gap-2 px-4 ml-7 py-2 bg-cyan-400 hover:bg-cyan-600 text-gray-900 font-medium rounded-lg transition-colors'
                   >
                     <Edit3 size={18} />
                     Edit Profile
