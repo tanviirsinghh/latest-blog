@@ -322,9 +322,7 @@ export default function ProfileInfo () {
                         {/* <input
             type='file'
             className="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
-            accept='image/*'
-            
-            
+            accept='image/*
                    */}
               </div>
                     <div className="grid  grid-cols-1 space-y-2">
