@@ -319,11 +319,7 @@ export default function ProfileInfo () {
             <div className=" absolute left-44 bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 border border-gray-700/50 " >
                     <div className="grid grid-cols-1 space-y-2">
                         {/* <label className="text-sm font-bold text-gray-500 tracking-wide">Title</label> */}
-                        {/* <input
-            type='file'
-            className="  focus:border-indigo-500"
-            
-                   */}
+                      
               </div>
                     <div className="grid  grid-cols-1 space-y-2">
                                     {/* <label className="text-sm font-bold text-gray-500 tracking-wide">Attach Document</label> */}
