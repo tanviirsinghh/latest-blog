@@ -329,7 +329,7 @@ export default function ProfileInfo () {
                 setImagePreview(URL.createObjectURL(e.target.files[0]))
               }
             }}
-          />                 */}
+                   */}
               </div>
                     <div className="grid  grid-cols-1 space-y-2">
                                     {/* <label className="text-sm font-bold text-gray-500 tracking-wide">Attach Document</label> */}
@@ -362,9 +362,9 @@ export default function ProfileInfo () {
                             </p>
                     <div className='flex justify-evenly items-center'>
                     <button
-              className={`h-8 my-3 w-20 flex justify-center items-center bg-blue-500 text-xs text-gray-100   rounded-full tracking-wide font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300' ${
+              className={`h-8 my-3 w-20 flex justify-center items-center bg-blue-500 text-xs text-gray-100   rounded-full tracking-wide font-semibold  focus:outline-none focus:shadow-outline  shadow-lg cursor-pointer transition ease-in duration-300' ${
                 load
-                  ? 'bg-gray-400 cursor-not-allowed'
+                  ? 'bg-gray-400 cursor-not-allowed pointer-events-none'
                   : 'bg-green-500 hover:bg-green-600'
               }`}
               onClick={handleImageUpload}
