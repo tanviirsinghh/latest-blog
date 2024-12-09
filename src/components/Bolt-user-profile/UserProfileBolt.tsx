@@ -326,8 +326,7 @@ export default function ProfileInfo () {
             onChange={e => {
               if (e.target.files && e.target.files[0]) {
                 setImage(e.target.files[0])
-                setImagePreview(URL.createObjectURL(e.target.files[0]))
-              }
+                setImagePreview(URL.createObjectURL(e.target.files[0])
                    */}
               </div>
                     <div className="grid  grid-cols-1 space-y-2">
