@@ -724,7 +724,7 @@ export default function ProfileInfo () {
           </div>
 
           {/* Sidebar */}
-          <div className='space-y-6'>
+          <div className='space-y-6 overflow-y-auto '>
             {/* Saved Posts */}
             <div className='bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50'>
               <div className='flex items-center justify-between mb-6'>
@@ -734,12 +734,25 @@ export default function ProfileInfo () {
                     Saved Posts
                   </h2>
                 </div>
-                <button className='text-sm text-cyan-400 hover:text-cyan-300'>
+                {/* <button className='text-sm text-cyan-400 hover:text-cyan-300'>
                   View All
-                </button>
+                </button> */}
               </div>
+               {savedblogs.map((post) => (
+                <SavedBlogComponent
+                key={post.id}
+                id={post.id}
+                // authorName={post.author.name || 'Anonymous'}
+                title={post.title}
+                // content={post.content}
+                publishDate=" save the date"
+                url={post.url}/>
 
-              <div className='space-y-4'>
+             ) )}
+
+
+
+              {/* <div className='space-y-4'>
                 {
                 savedblogs.map((post) => (
                   <div
@@ -766,7 +779,7 @@ export default function ProfileInfo () {
                     </div>
                   </div>
                 ))}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -930,6 +943,7 @@ export default function ProfileInfo () {
 // import { Edit3, MapPin, Calendar, Twitter, Github, Linkedin, Camera, X, Award, Heart, MessageCircle, Bookmark, Share2, Clock, BarChart3, TrendingUp, users } from 'lucide-react';
 import Navbar from '../Navbar';
 import SavedBlogs from '../UserProfile.tsx/SavedBlogs';
+import SavedBlogComponent from './SavedBlogComponent';
 
 // export default function userProfileBolt() {
 //   const [user, setuser] = useState({
