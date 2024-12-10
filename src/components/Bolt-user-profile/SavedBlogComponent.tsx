@@ -4,13 +4,10 @@ import { Link } from 'react-router-dom'
 interface BlogCardProps {
   id: string
   title: string
-  // content: string
+ 
   url: string
-  // authorName:string
-  // p: string
   publishDate: string
-  // initialLikes: number
-  // initialComments: number
+  
 }
 
 export default function SavedBlogComponent ({ id, title, url ,publishDate}: BlogCardProps) {
