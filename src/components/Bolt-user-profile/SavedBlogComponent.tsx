@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 interface BlogCardProps {
   id: string
   title: string
- 
   url: string
   publishDate: string
   
