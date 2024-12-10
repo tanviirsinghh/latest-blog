@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { BACKEND_URL } from '../config'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
+// import SavedBlogs from '../components/UserProfile.tsx/SavedBlogs';
 
 export interface Blog {
   content: string
@@ -13,6 +14,28 @@ export interface Blog {
     name: string
   }
   // "authorName":string
+}
+export interface SavedBlog {
+  content: string
+  title: string
+  id: string
+  url: string //changed from number
+  author: {
+    name: string
+  }
+  // "authorName":string
+}
+interface Post {
+  id: string;
+  title: string;
+  url: string;
+  author: {
+    name: string;
+  };
+}
+
+export interface SavedPost {
+ savedblog : SavedBlog
 }
 
 export interface User {
@@ -150,5 +173,42 @@ export const useBlogs = () => {
   return {
     loading,
     blogs
+  }
+}
+
+
+export const useSavedBlogs = () => {
+  const [loadingsavedblogs, setloadingsavedblogs] = useState(true)
+  const [savedblogs, setSavedBlogs] = useState<SavedBlog[]>([])
+  const navigate = useNavigate()
+  useEffect(() => {
+    const fetchSavedBlogs = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found. Redirecting to login...');
+        navigate('/signin');
+        return;
+      }
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/v1/user/savedblogs`, 
+          {
+          headers: { Authorization: token },
+        });
+        // const saved = response.data.savedPosts
+        setSavedBlogs(response.data)
+        // console.log("saved blogs" + JSON.stringify(response.data.saved))
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+      } finally {
+        setloadingsavedblogs(false);
+      }
+     
+    };
+    fetchSavedBlogs()
+
+  }, [])
+  return {
+    loadingsavedblogs,
+    savedblogs
   }
 }

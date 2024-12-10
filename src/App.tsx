@@ -7,16 +7,17 @@ import Loading from './components/Loading'
 import NewSingleBlog from './components/NewSingleBlog'
 import LatestSignupPage from './pages/LatestSignUpPage'
 import LatestSignin from './components/LatestSignin'
-import UserProfileBolt from './components/Bolt-user-profile/UserProfileBolt'
-import BoltSignup from './components/Bolt-user-profile/BoltSignin'
+// import UserProfileBolt from './components/Bolt-user-profile/UserProfileBolt'
+// import BoltSignup from './components/Bolt-user-profile/BoltSignin'
 import BoltSignin from './components/Bolt-user-profile/BoltSignin'
+// import userProfileBolt from './components/Bolt-user-profile/UserProfileBolt';
 // Implementing lazy loading
 // const Signup = React.lazy(() => import('./pages/Signup'))
 const Signin = React.lazy(() => import('./pages/Signin'))
 const Blogs = React.lazy(() => import('./pages/Blogs'))
 const Blog = React.lazy(() => import('./pages/Blog'))
 const TextEditor = React.lazy(() => import('./pages/WriteBlog'))
-const UserProfile = React.lazy(() => import('./pages/UserProfile'))
+const UserProfileBolt = React.lazy(() => import('./components/Bolt-user-profile/UserProfileBolt'))
 
 function App () {
   const token = localStorage.getItem('token')
@@ -43,14 +44,14 @@ function App () {
               </React.Suspense>
             }
           ></Route>
-          <Route
+          {/* <Route
             path='/userprofilebolt'
             element={
               <React.Suspense fallback={<Loading />}>
                 <UserProfileBolt />
               </React.Suspense>
             }
-          ></Route>
+          ></Route> */}
           <Route
             path='/signin'
             element={
@@ -100,7 +101,7 @@ function App () {
             path='userprofile'
             element={
               <React.Suspense fallback={<Loading />}>
-                {token ? <UserProfile /> : <Signin />}
+                {token ?  <UserProfileBolt />: <Signin />}
               </React.Suspense>
             }
           ></Route>

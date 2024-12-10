@@ -22,9 +22,10 @@ import {
   Clock,
   BarChart3,
   TrendingUp,
-  PencilIcon
+  PencilIcon,
+  LogOut
 } from 'lucide-react'
-import { useUserDetails } from '../../hooks/index'
+import { useSavedBlogs, useUserDetails } from '../../hooks/index'
 import Loading from '../Loading'
 import ImageUploadHook from '../../hooks/ImageUploadHook'
 
@@ -40,8 +41,9 @@ export default function ProfileInfo () {
     useUserDetails()
     // userId: userId || " "
   const [isSaving, setIsSaving] = useState(false)
-
-  const [editeduser, setEditeduser] = useState({
+ const {savedblogs} = useSavedBlogs()
+ console.log(savedblogs)
+ const [editeduser, setEditeduser] = useState({
     name: userDetails?.name || '',
     email: userDetails?.email || '',
     blogName: userDetails?.blogName || '',
@@ -304,29 +306,29 @@ export default function ProfileInfo () {
     }
   ]
 
-  const savedPosts = [
-    {
-      title: 'The Future of Web Development',
-      author: 'Mike Chen',
-      date: '2 days ago',
-      thumbnail:
-        'https://images.unsplash.com/photo-1504639725590-34d0984388bd?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80'
-    },
-    {
-      title: 'Understanding TypeScript Generics',
-      author: 'Emily Rodriguez',
-      date: '1 week ago',
-      thumbnail:
-        'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80'
-    },
-    {
-      title: 'Advanced Git Workflows',
-      author: 'Alex Thompson',
-      date: '2 weeks ago',
-      thumbnail:
-        'https://images.unsplash.com/photo-1556075798-4825dfaaf498?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80'
-    }
-  ]
+  // const savedPosts = [
+  //   {
+  //     title: 'The Future of Web Development',
+  //     author: 'Mike Chen',
+  //     date: '2 days ago',
+  //     thumbnail:
+  //       'https://images.unsplash.com/photo-1504639725590-34d0984388bd?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80'
+  //   },
+  //   {
+  //     title: 'Understanding TypeScript Generics',
+  //     author: 'Emily Rodriguez',
+  //     date: '1 week ago',
+  //     thumbnail:
+  //       'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80'
+  //   },
+  //   {
+  //     title: 'Advanced Git Workflows',
+  //     author: 'Alex Thompson',
+  //     date: '2 weeks ago',
+  //     thumbnail:
+  //       'https://images.unsplash.com/photo-1556075798-4825dfaaf498?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80'
+  //   }
+  // ]
 
   const dummyuserPosts = [
     {
@@ -356,10 +358,12 @@ export default function ProfileInfo () {
   ]
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'>
+    <>
+   < Navbar/>
+    <div className=' min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'>
       {/* Profile Header */}
       <div className='relative'>
-      <div className="h-80 relative">
+      <div className="  h-80  relative">
   <img
     src={coverImagePreview || userDetails.coverpicture}
     alt="Cover"
@@ -464,7 +468,7 @@ export default function ProfileInfo () {
 
 
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-          <div className='flex flex-col md:flex-row items-start md:items-end gap-6 -mt-20 relative'>
+          <div className='flex flex-col   md:flex-row items-start md:items-end gap-6 -mt-20 relative'>
             {/* profile picture update */}
             <div className='relative group'>
               <img // if not found image put a random image,    fix this later
@@ -564,7 +568,7 @@ export default function ProfileInfo () {
             {confirm ? (
               <div className=''></div>
             ) : (
-              <div className='flex-1'>
+              <div className='flex-1 '>
                 <div className='flex items-start justify-start'>
                   <div>
                     <h1 className='text-3xl font-bold text-white'>
@@ -580,6 +584,13 @@ export default function ProfileInfo () {
                   >
                     <Edit3 size={18} />
                     Edit Profile
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className='flex items-center gap-1 px-4 ml-3 py-2 bg-red-600 hover:bg-red-700 text-gray-900 font-medium rounded-lg transition-colors'
+                  >
+                    <LogOut size={18} />
+                    Log Out
                   </button>
                 </div>
 
@@ -729,13 +740,14 @@ export default function ProfileInfo () {
               </div>
 
               <div className='space-y-4'>
-                {savedPosts.map((post, index) => (
+                {
+                savedblogs.map((post) => (
                   <div
-                    key={index}
+                    key={post.id}
                     className='flex items-center gap-3 p-3 rounded-lg hover:bg-gray-900/50 transition-colors cursor-pointer'
                   >
                     <img
-                      src={post.thumbnail}
+                      src={post.url}
                       alt={post.title}
                       className='w-12 h-12 rounded-lg object-cover'
                     />
@@ -744,11 +756,11 @@ export default function ProfileInfo () {
                         {post.title}
                       </h3>
                       <div className='flex items-center gap-2 mt-1 text-sm'>
-                        <span className='text-gray-400'>{post.author}</span>
+                        <span className='text-gray-400'> {post.title}</span>
                         <span className='text-gray-600'>•</span>
                         <div className='flex items-center gap-1 text-gray-500'>
                           <Clock size={14} />
-                          <span>{post.date}</span>
+                          <span>{"date v save kra saleya"}</span>
                         </div>
                       </div>
                     </div>
@@ -910,11 +922,14 @@ export default function ProfileInfo () {
         </div>
       )}
     </div>
+    </>
   )
 }
 
 // import  { useState } from 'react';
 // import { Edit3, MapPin, Calendar, Twitter, Github, Linkedin, Camera, X, Award, Heart, MessageCircle, Bookmark, Share2, Clock, BarChart3, TrendingUp, users } from 'lucide-react';
+import Navbar from '../Navbar';
+import SavedBlogs from '../UserProfile.tsx/SavedBlogs';
 
 // export default function userProfileBolt() {
 //   const [user, setuser] = useState({
