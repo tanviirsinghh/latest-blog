@@ -34,7 +34,7 @@ export default function SavedBlogComponent ({
           <div className='flex-1 min-w-0'>
             <h3 className='font-medium text-white truncate'>{title}</h3>
             <div className='flex items-center gap-2 mt-1 text-sm'>
-              <Link to={`/details/${authorId}`}>
+              <Link to={`/details?authorId=${authorId}`}>
                 <span className='text-gray-400 hover:text-blue-400'>
                   {authorName}
                 </span>
