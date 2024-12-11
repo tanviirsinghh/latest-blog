@@ -73,7 +73,6 @@ export function useUserDetails () {
           },
         });
         
-        // console.log('got response of user details', response.data);
         setUserDetails(response.data);
       } catch (error) {
         if (axios.isAxiosError(error)) {
