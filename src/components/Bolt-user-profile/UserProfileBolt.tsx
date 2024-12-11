@@ -31,16 +31,14 @@ import ImageUploadHook from '../../hooks/ImageUploadHook'
 import Navbar from '../Navbar'
 import SavedBlogComponent from './SavedBlogComponent'
 
-
 export default function ProfileInfo () {
   // const [isEditing, setIsEditing] = useState(false)
-  const { loading, userDetails, setUserDetails } =
-    useUserDetails()
-    // userId: userId || " "
+  const { loading, userDetails, setUserDetails } = useUserDetails()
+  // userId: userId || " "
   const [isSaving, setIsSaving] = useState(false)
- const {savedblogs} = useSavedBlogs()
-//  console.log(savedblogs)
- const [editeduser, setEditeduser] = useState({
+  const { savedblogs } = useSavedBlogs()
+  //  console.log(savedblogs)
+  const [editeduser, setEditeduser] = useState({
     name: userDetails?.name || '',
     email: userDetails?.email || '',
     blogName: userDetails?.blogName || '',
@@ -75,7 +73,7 @@ export default function ProfileInfo () {
   const [coverImagePreview, setcoverImagePreview] = useState(
     userDetails?.coverpicture || ''
   )
-  const[coverImage,setCoverImage] = useState<File | null>(null)
+  const [coverImage, setCoverImage] = useState<File | null>(null)
   const [confirm, setConfirm] = useState(false)
   const [load, setLoad] = useState(false)
   // confirmation for cover imageUpload
@@ -188,9 +186,8 @@ export default function ProfileInfo () {
 
     // setIsEditModalOpen(false)// Toggle edit mode
   }
-//  handle the profile image upload
+  //  handle the profile image upload
   const handleProfileImage = async () => {
-
     if (!image) {
       toast.error('Please select an image before confirming.')
       return
@@ -224,7 +221,6 @@ export default function ProfileInfo () {
   }
   //  handle cover image upload
   const handleCoverImage = async () => {
-
     if (!coverImage) {
       toast.error('Please select an image before confirming.')
       return
@@ -356,19 +352,20 @@ export default function ProfileInfo () {
 
   return (
     <>
-   < Navbar/>
-    <div className=' min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'>
-      {/* Profile Header */}
-      <div className='relative'>
-      <div className="  h-80  relative">
-  <img
-    src={coverImagePreview || userDetails.coverpicture}
-    alt="Cover"
-    className="w-full h-full object-cover"
-  />
-  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/90" />
-  {/* if coverConfirm is true it means that button is click and show the upload image component */}
- {coverConfirm?    <div className=' absolute top-14 left-[38rem]  bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 border border-gray-700/50 '>
+      <Navbar />
+      <div className=' min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'>
+        {/* Profile Header */}
+        <div className='relative'>
+          <div className='  h-80  relative'>
+            <img
+              src={coverImagePreview || userDetails.coverpicture}
+              alt='Cover'
+              className='w-full h-full object-cover'
+            />
+            <div className='absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/90' />
+            {/* if coverConfirm is true it means that button is click and show the upload image component */}
+            {coverConfirm ? (
+              <div className=' absolute top-14 left-[38rem]  bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 border border-gray-700/50 '>
                 <div className='grid  grid-cols-1 space-y-2'>
                   <div className='flex  items-center justify-center  mt-3 h-24 w-60'>
                     <label className='flex flex-col rounded-lg border-4 border-dashed h-24  p-2 group text-center'>
@@ -444,170 +441,166 @@ export default function ProfileInfo () {
                     Cancel
                   </button>
                 </div>
-              </div>:
-  <button
-    className="absolute top-4 right-4 flex items-center gap-2 bg-sky-400 text-black px-4 py-2 rounded-lg hover:bg-sky-600 hover:text-white cursor-pointer transition-colors duration-200"
-    onClick={() => setCoverConfirm(true)}
-  >
-    <span className="flex items-center gap-1">
-      <Camera size={18} />
-      Change Cover
-    </span>
-  </button>}
-
- {/* toggle upload component */}
- 
- 
-
-
-
-</div>
-
-
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-          <div className='flex flex-col   md:flex-row items-start md:items-end gap-6 -mt-20 relative'>
-            {/* profile picture update */}
-            <div className='relative group'>
-              <img // if not found image put a random image,    fix this later
-                src={imagePreview || userDetails.profilePicture}
-                alt={userDetails.name}
-                className='w-36 h-36 rounded-full border-1 border-gray-900 shadow-xl'
-              />
-              <button
-                className='absolute bottom-3 right-2 bg-sky-500 text-white p-2 rounded-full hover:bg-blue-600'
-                onClick={() => setConfirm(true)}
-              >
-                <PencilIcon size={18} />
-              </button>
-            </div>
-
-            {confirm && (
-              <div className=' absolute left-44 bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 border border-gray-700/50 '>
-                <div className='grid grid-cols-1 space-y-2'></div>
-                <div className='grid  grid-cols-1 space-y-2'>
-                  <div className='flex  items-center justify-center  mt-3 h-24 w-60'>
-                    <label className='flex flex-col rounded-lg border-4 border-dashed h-24  p-2 group text-center'>
-                      <div className='h-24 w-full text-center flex flex-col cursor-pointer  justify-center items-center  '>
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          className='w-6 h-6 text-blue-400 group-hover:text-blue-600'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          stroke='currentColor'
-                        >
-                          <path
-                            stroke-linecap='round'
-                            stroke-linejoin='round'
-                            stroke-width='2'
-                            d='M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12'
-                          />
-                        </svg>
-                        <div className='flex flex-auto max-h-48 w-2/5 mx-auto -mt-10'></div>
-                        <p className=' text-xs pointer-none text-gray-500 '>
-                          <span className='text-sm'>Drag and drop</span> files
-                          here <br /> or{' '}
-                          <a
-                            href=''
-                            id=''
-                            className='text-blue-600 hover:underline'
-                          >
-                            select a file
-                          </a>{' '}
-                          from your computer
-                        </p>
-                      </div>
-                      <input
-                        type='file'
-                        className='hidden'
-                        accept='image/*'
-                        onChange={e => {
-                          if (e.target.files && e.target.files[0]) {
-                            setImage(e.target.files[0])
-                            setImagePreview(
-                              URL.createObjectURL(e.target.files[0])
-                            )
-                          }
-                        }}
-                      />{' '}
-                    </label>
-                  </div>
-                </div>
-                <p className='text-xs text-gray-300 text-center mt-2'>
-                  <span>File type: Types of Images only</span>
-                </p>
-                <div className='flex justify-evenly items-center'>
-                  <button
-                    className={`h-8 my-3 w-20 flex justify-center items-center bg-blue-500 text-xs text-gray-100   rounded-full tracking-wide font-semibold  focus:outline-none focus:shadow-outline  shadow-lg cursor-pointer transition ease-in duration-300' ${
-                      load
-                        ? 'bg-gray-400 cursor-not-allowed pointer-events-none'
-                        : 'bg-green-500 hover:bg-green-600'
-                    }`}
-                    onClick={handleProfileImage}
-                    disabled={load}
-                  >
-                    Confirm
-                  </button>
-                  <button
-                    className='h-8 my-3 w-20 flex justify-center items-center bg-red-500 text-xs text-gray-100     rounded-full tracking-wide
-                                    font-semibold  focus:outline-none focus:shadow-outline hover:bg-red-600 shadow-lg cursor-pointer transition ease-in duration-300'
-                    onClick={() => {
-                      setConfirm(false)
-                      setImage(null)
-                      setImagePreview(userDetails?.profilePicture || '')
-                    }}
-                  >
-                    Cancel
-                  </button>
-                </div>
               </div>
+            ) : (
+              <button
+                className='absolute top-4 right-4 flex items-center gap-2 bg-sky-400 text-black px-4 py-2 rounded-lg hover:bg-sky-600 hover:text-white cursor-pointer transition-colors duration-200'
+                onClick={() => setCoverConfirm(true)}
+              >
+                <span className='flex items-center gap-1'>
+                  <Camera size={18} />
+                  Change Cover
+                </span>
+              </button>
             )}
 
-            {confirm ? (
-              <div className=''></div>
-            ) : (
-              <div className='flex-1 '>
-                <div className='flex items-start justify-start'>
-                  <div>
-                    <h1 className='text-3xl font-bold text-white'>
-                      {userDetails.name}
-                    </h1>
-                    <p className='text-cyan-400 font-medium'>
-                      {userDetails.blogName}
-                    </p>
+            {/* toggle upload component */}
+          </div>
+
+          <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+            <div className='flex flex-col   md:flex-row items-start md:items-end gap-6 -mt-20 relative'>
+              {/* profile picture update */}
+              <div className='relative group'>
+                <img // if not found image put a random image,    fix this later
+                  src={imagePreview || userDetails.profilePicture}
+                  alt={userDetails.name}
+                  className='w-36 h-36 rounded-full border-1 border-gray-900 shadow-xl'
+                />
+                <button
+                  className='absolute bottom-3 right-2 bg-sky-500 text-white p-2 rounded-full hover:bg-blue-600'
+                  onClick={() => setConfirm(true)}
+                >
+                  <PencilIcon size={18} />
+                </button>
+              </div>
+
+              {confirm && (
+                <div className=' absolute left-44 bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 border border-gray-700/50 '>
+                  <div className='grid grid-cols-1 space-y-2'></div>
+                  <div className='grid  grid-cols-1 space-y-2'>
+                    <div className='flex  items-center justify-center  mt-3 h-24 w-60'>
+                      <label className='flex flex-col rounded-lg border-4 border-dashed h-24  p-2 group text-center'>
+                        <div className='h-24 w-full text-center flex flex-col cursor-pointer  justify-center items-center  '>
+                          <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            className='w-6 h-6 text-blue-400 group-hover:text-blue-600'
+                            fill='none'
+                            viewBox='0 0 24 24'
+                            stroke='currentColor'
+                          >
+                            <path
+                              stroke-linecap='round'
+                              stroke-linejoin='round'
+                              stroke-width='2'
+                              d='M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12'
+                            />
+                          </svg>
+                          <div className='flex flex-auto max-h-48 w-2/5 mx-auto -mt-10'></div>
+                          <p className=' text-xs pointer-none text-gray-500 '>
+                            <span className='text-sm'>Drag and drop</span> files
+                            here <br /> or{' '}
+                            <a
+                              href=''
+                              id=''
+                              className='text-blue-600 hover:underline'
+                            >
+                              select a file
+                            </a>{' '}
+                            from your computer
+                          </p>
+                        </div>
+                        <input
+                          type='file'
+                          className='hidden'
+                          accept='image/*'
+                          onChange={e => {
+                            if (e.target.files && e.target.files[0]) {
+                              setImage(e.target.files[0])
+                              setImagePreview(
+                                URL.createObjectURL(e.target.files[0])
+                              )
+                            }
+                          }}
+                        />{' '}
+                      </label>
+                    </div>
                   </div>
-                  <button
-                    onClick={() => setIsEditModalOpen(true)}
-                    className='flex items-center gap-2 px-4 ml-7 py-2 bg-cyan-400 hover:bg-cyan-600 text-gray-900 font-medium rounded-lg transition-colors'
-                  >
-                    <Edit3 size={18} />
-                    Edit Profile
-                  </button>
-                  <button
-                    onClick={handleLogout}
-                    className='flex items-center gap-1 px-4 ml-3 py-2 bg-red-600 hover:bg-red-700 text-gray-900 font-medium rounded-lg transition-colors'
-                  >
-                    <LogOut size={18} />
-                    Log Out
-                  </button>
+                  <p className='text-xs text-gray-300 text-center mt-2'>
+                    <span>File type: Types of Images only</span>
+                  </p>
+                  <div className='flex justify-evenly items-center'>
+                    <button
+                      className={`h-8 my-3 w-20 flex justify-center items-center bg-blue-500 text-xs text-gray-100   rounded-full tracking-wide font-semibold  focus:outline-none focus:shadow-outline  shadow-lg cursor-pointer transition ease-in duration-300' ${
+                        load
+                          ? 'bg-gray-400 cursor-not-allowed pointer-events-none'
+                          : 'bg-green-500 hover:bg-green-600'
+                      }`}
+                      onClick={handleProfileImage}
+                      disabled={load}
+                    >
+                      Confirm
+                    </button>
+                    <button
+                      className='h-8 my-3 w-20 flex justify-center items-center bg-red-500 text-xs text-gray-100     rounded-full tracking-wide
+                                    font-semibold  focus:outline-none focus:shadow-outline hover:bg-red-600 shadow-lg cursor-pointer transition ease-in duration-300'
+                      onClick={() => {
+                        setConfirm(false)
+                        setImage(null)
+                        setImagePreview(userDetails?.profilePicture || '')
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
+              )}
 
-                <p className='mt-2 text-gray-300 max-w-2xl'>
-                  {userDetails.bio}
-                </p>
-
-                <div className='mt-4 flex flex-wrap items-center gap-4 text-gray-400'>
-                  <div className='flex items-center gap-1'>
-                    <MapPin size={16} />
-                    <span>{userDetails.location}</span>
+              {confirm ? (
+                <div className=''></div>
+              ) : (
+                <div className='flex-1 '>
+                  <div className='flex items-start justify-start'>
+                    <div>
+                      <h1 className='text-3xl font-bold text-white'>
+                        {userDetails.name}
+                      </h1>
+                      <p className='text-cyan-400 font-medium'>
+                        {userDetails.blogName}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setIsEditModalOpen(true)}
+                      className='flex items-center gap-2 px-4 ml-7 py-2 bg-cyan-400 hover:bg-cyan-600 text-gray-900 font-medium rounded-lg transition-colors'
+                    >
+                      <Edit3 size={18} />
+                      Edit Profile
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className='flex items-center gap-1 px-4 ml-3 py-2 bg-red-600 hover:bg-red-700 text-gray-900 font-medium rounded-lg transition-colors'
+                    >
+                      <LogOut size={18} />
+                      Log Out
+                    </button>
                   </div>
-                  <div className='flex items-center gap-1'>
-                    <Calendar size={16} />
-                    <span>Joined {'userDetails.joinedDate'}</span>
-                  </div>
-                </div>
 
-                <div className='mt-4 flex gap-4'>
-                  {/* <a href={`https://twitter.com/${user.social.twitter}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
+                  <p className='mt-2 text-gray-300 max-w-2xl'>
+                    {userDetails.bio}
+                  </p>
+
+                  <div className='mt-4 flex flex-wrap items-center gap-4 text-gray-400'>
+                    <div className='flex items-center gap-1'>
+                      <MapPin size={16} />
+                      <span>{userDetails.location}</span>
+                    </div>
+                    <div className='flex items-center gap-1'>
+                      <Calendar size={16} />
+                      <span>Joined {'userDetails.joinedDate'}</span>
+                    </div>
+                  </div>
+
+                  <div className='mt-4 flex gap-4'>
+                    {/* <a href={`https://twitter.com/${user.social.twitter}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
                   <Twitter size={20} />
                 </a>
                 <a href={`https://github.com/${user.social.github}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
@@ -616,143 +609,140 @@ export default function ProfileInfo () {
                 <a href={`https://linkedin.com/in/${user.social.linkedin}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
                   <Linkedin size={20} />
                 </a> */}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Main Content */}
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 relative z-10'>
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
-          <div className='lg:col-span-2 space-y-6'>
-            {/* Stats Grid */}
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
-              {stats.map(stat => (
-                <div
-                  key={stat.label}
-                  className='bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50'
-                >
-                  <div className='flex items-center gap-3'>
-                    <div
-                      className={`p-2 rounded-lg ${stat.color} bg-opacity-10`}
-                    >
-                      {/* <stat.icon className={`h-6 w-6 ${stat.color}`} /> */}
-                    </div>
-                    <div>
-                      <p className='text-sm text-gray-400'>{stat.label}</p>
-                      <p className='text-2xl font-bold text-white'>
-                        {stat.value}
-                      </p>
-                    </div>
-                  </div>
-                  <div className='mt-2 flex items-center text-sm'>
-                    <span className='text-green-400'>{stat.change}</span>
-                    <span className='text-gray-500 ml-2'>vs last month</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* dummyuser Posts */}
-            <div className='bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50'>
-              <div className='flex items-center justify-between mb-6'>
-                <h2 className='text-xl font-semibold text-white'>
-                  Recent Posts
-                </h2>
-                <div className='flex gap-2'>
-                  <button className='px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors'>
-                    Most Recent
-                  </button>
-                  <button className='px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors'>
-                    Most Popular
-                  </button>
-                </div>
-              </div>
-
-              <div className='space-y-6'>
-                {dummyuserPosts.map((post, index) => (
-                  <div key={index} className='group'>
-                    <div className='flex gap-4 p-4 rounded-xl bg-gray-900/50 hover:bg-gray-900/70 transition-colors cursor-pointer'>
-                      <img
-                        src={post.thumbnail}
-                        alt={post.title}
-                        className='w-24 h-24 rounded-lg object-cover'
-                      />
-                      <div className='flex-1'>
-                        <h3 className='font-medium text-lg text-white group-hover:text-cyan-400 transition-colors'>
-                          {post.title}
-                        </h3>
-                        <p className='text-gray-400 text-sm mt-1 line-clamp-2'>
-                          {post.excerpt}
-                        </p>
-
-                        <div className='flex items-center gap-4 mt-2 text-sm text-gray-500'>
-                          <span>{post.date}</span>
-                          <span>•</span>
-                          <span>{post.readTime} read</span>
-                          <span>•</span>
-                          <span>{post.views} views</span>
-                        </div>
-
-                        <div className='flex items-center gap-6 mt-3'>
-                          <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
-                            <Heart size={18} />
-                            <span>{post.likes}</span>
-                          </button>
-                          <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
-                            <MessageCircle size={18} />
-                            <span>{post.comments}</span>
-                          </button>
-                          <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
-                            <Bookmark size={18} />
-                          </button>
-                          <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
-                            <Share2 size={18} />
-                          </button>
-                        </div>
+        {/* Main Content */}
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 relative z-10'>
+          <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
+            <div className='lg:col-span-2 space-y-6'>
+              {/* Stats Grid */}
+              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+                {stats.map(stat => (
+                  <div
+                    key={stat.label}
+                    className='bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50'
+                  >
+                    <div className='flex items-center gap-3'>
+                      <div
+                        className={`p-2 rounded-lg ${stat.color} bg-opacity-10`}
+                      >
+                        {/* <stat.icon className={`h-6 w-6 ${stat.color}`} /> */}
                       </div>
+                      <div>
+                        <p className='text-sm text-gray-400'>{stat.label}</p>
+                        <p className='text-2xl font-bold text-white'>
+                          {stat.value}
+                        </p>
+                      </div>
+                    </div>
+                    <div className='mt-2 flex items-center text-sm'>
+                      <span className='text-green-400'>{stat.change}</span>
+                      <span className='text-gray-500 ml-2'>vs last month</span>
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
 
-          {/* Sidebar */}
-          <div className='space-y-6 overflow-y-auto '>
-            {/* Saved Posts */}
-            <div className='bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50'>
-              <div className='flex items-center justify-between mb-6'>
-                <div className='flex items-center gap-2'>
-                  <Bookmark className='h-5 w-5 text-cyan-400' />
-                  <h2 className='text-lg font-semibold text-white'>
-                    Saved Posts
+              {/* dummyuser Posts */}
+              <div className='bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50'>
+                <div className='flex items-center justify-between mb-6'>
+                  <h2 className='text-xl font-semibold text-white'>
+                    Recent Posts
                   </h2>
+                  <div className='flex gap-2'>
+                    <button className='px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors'>
+                      Most Recent
+                    </button>
+                    <button className='px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors'>
+                      Most Popular
+                    </button>
+                  </div>
                 </div>
-                {/* <button className='text-sm text-cyan-400 hover:text-cyan-300'>
+
+                <div className='space-y-6'>
+                  {dummyuserPosts.map((post, index) => (
+                    <div key={index} className='group'>
+                      <div className='flex gap-4 p-4 rounded-xl bg-gray-900/50 hover:bg-gray-900/70 transition-colors cursor-pointer'>
+                        <img
+                          src={post.thumbnail}
+                          alt={post.title}
+                          className='w-24 h-24 rounded-lg object-cover'
+                        />
+                        <div className='flex-1'>
+                          <h3 className='font-medium text-lg text-white group-hover:text-cyan-400 transition-colors'>
+                            {post.title}
+                          </h3>
+                          <p className='text-gray-400 text-sm mt-1 line-clamp-2'>
+                            {post.excerpt}
+                          </p>
+
+                          <div className='flex items-center gap-4 mt-2 text-sm text-gray-500'>
+                            <span>{post.date}</span>
+                            <span>•</span>
+                            <span>{post.readTime} read</span>
+                            <span>•</span>
+                            <span>{post.views} views</span>
+                          </div>
+
+                          <div className='flex items-center gap-6 mt-3'>
+                            <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
+                              <Heart size={18} />
+                              <span>{post.likes}</span>
+                            </button>
+                            <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
+                              <MessageCircle size={18} />
+                              <span>{post.comments}</span>
+                            </button>
+                            <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
+                              <Bookmark size={18} />
+                            </button>
+                            <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
+                              <Share2 size={18} />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Sidebar */}
+            <div className='space-y-6 overflow-y-auto '>
+              {/* Saved Posts */}
+              <div className='bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50'>
+                <div className='flex items-center justify-between mb-6'>
+                  <div className='flex items-center gap-2'>
+                    <Bookmark className='h-5 w-5 text-cyan-400' />
+                    <h2 className='text-lg font-semibold text-white'>
+                      Saved Posts
+                    </h2>
+                  </div>
+                  {/* <button className='text-sm text-cyan-400 hover:text-cyan-300'>
                   View All
                 </button> */}
-              </div>
-               {savedblogs.map((post) => (
-                <SavedBlogComponent
-                key={post.id}
-                id={post.id}
-                authorId={post.authorId}
+                </div>
+                {savedblogs.map(post => (
+                  <SavedBlogComponent
+                    key={post.id}
+                    id={post.id}
+                    authorId={post.authorId}
+                    // authorName={post.author.name || 'Anonymous'}
+                    title={post.title}
+                    content={post.content}
+                    authorName={post.author.name}
+                    publishDate=' save the date'
+                    url={post.url}
+                  />
+                ))}
 
-                // authorName={post.author.name || 'Anonymous'}
-                title={post.title}
-                content={post.content}
-                authorName= {post.author.name}
-                publishDate=" save the date"
-                url={post.url}/>
-
-             ) )}
-
-
-
-              {/* <div className='space-y-4'>
+                {/* <div className='space-y-4'>
                 {
                 savedblogs.map((post) => (
                   <div
@@ -780,35 +770,37 @@ export default function ProfileInfo () {
                   </div>
                 ))}
               </div> */}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Edit Profile Modal */}
-      {isEditModalOpen && (
-        <div className='fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center'>
-          <div className='bg-gray-800/90 rounded-2xl p-8 max-w-2xl w-full mx-4 shadow-xl border border-gray-700/50'>
-            <div className='flex justify-between items-center mb-6'>
-              <h2 className='text-xl font-semibold text-white'>Edit Profile</h2>
-              <button
-                onClick={() => setIsEditModalOpen(false)}
-                className='text-gray-400 hover:text-white'
+        {/* Edit Profile Modal */}
+        {isEditModalOpen && (
+          <div className='fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center'>
+            <div className='bg-gray-800/90 rounded-2xl p-8 max-w-2xl w-full mx-4 shadow-xl border border-gray-700/50'>
+              <div className='flex justify-between items-center mb-6'>
+                <h2 className='text-xl font-semibold text-white'>
+                  Edit Profile
+                </h2>
+                <button
+                  onClick={() => setIsEditModalOpen(false)}
+                  className='text-gray-400 hover:text-white'
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              <form
+                onSubmit={
+                  handleSubmit
+                  // handleInputChange(editeduser);
+                }
+                className='space-y-6'
               >
-                <X size={24} />
-              </button>
-            </div>
-
-            <form
-              onSubmit={
-                handleSubmit
-                // handleInputChange(editeduser);
-              }
-              className='space-y-6'
-            >
-              {/* Avatar Upload */}
-              <div className='flex items-center gap-4'>
-                {/* <div className="relative group">
+                {/* Avatar Upload */}
+                <div className='flex items-center gap-4'>
+                  {/* <div className="relative group">
                   <img
                     src={dummyuser.avatar}
                     alt={dummyuser.name}
@@ -819,7 +811,7 @@ export default function ProfileInfo () {
                     <input type="file" className="hidden" accept="image/*" />
                   </label>
                 </div> */}
-                {/* <div className="flex-1">
+                  {/* <div className="flex-1">
                   <label className="block text-sm font-medium text-gray-300 mb-1">
                     Profile Picture
                   </label>
@@ -827,76 +819,76 @@ export default function ProfileInfo () {
                     Recommended: Square image, at least 400x400px
                   </p>
                 </div> */}
-              </div>
-
-              {/* Form Fields */}
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-                <div>
-                  <label className='block text-sm font-medium text-gray-300 mb-1'>
-                    Name
-                  </label>
-                  <input
-                    type='text'
-                    name='name'
-                    value={editeduser.name}
-                    onChange={handleInputChange}
-                    className='w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
-                  />
                 </div>
 
-                <div>
-                  <label className='block text-sm font-medium text-gray-300 mb-1'>
-                    Blog Name
-                  </label>
-                  <input
-                    type='text'
-                    name='blogName'
-                    value={editeduser.blogName}
-                    onChange={handleInputChange}
-                    className='w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
-                  />
-                </div>
+                {/* Form Fields */}
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                  <div>
+                    <label className='block text-sm font-medium text-gray-300 mb-1'>
+                      Name
+                    </label>
+                    <input
+                      type='text'
+                      name='name'
+                      value={editeduser.name}
+                      onChange={handleInputChange}
+                      className='w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
+                    />
+                  </div>
 
-                <div className='md:col-span-2'>
-                  <label className='block text-sm font-medium text-gray-300 mb-1'>
-                    Email
-                  </label>
-                  <input
-                    type='email'
-                    name='email'
-                    value={editeduser.email}
-                    onChange={handleInputChange}
-                    className='w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
-                  />
-                </div>
+                  <div>
+                    <label className='block text-sm font-medium text-gray-300 mb-1'>
+                      Blog Name
+                    </label>
+                    <input
+                      type='text'
+                      name='blogName'
+                      value={editeduser.blogName}
+                      onChange={handleInputChange}
+                      className='w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
+                    />
+                  </div>
 
-                <div className='md:col-span-2'>
-                  <label className='block text-sm font-medium text-gray-300 mb-1'>
-                    Bio
-                  </label>
-                  <textarea
-                    value={editeduser.bio}
-                    name='bio'
-                    onChange={handleInputChange}
-                    rows={3}
-                    className='w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
-                  />
-                </div>
+                  <div className='md:col-span-2'>
+                    <label className='block text-sm font-medium text-gray-300 mb-1'>
+                      Email
+                    </label>
+                    <input
+                      type='email'
+                      name='email'
+                      value={editeduser.email}
+                      onChange={handleInputChange}
+                      className='w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
+                    />
+                  </div>
 
-                <div>
-                  <label className='block text-sm font-medium text-gray-300 mb-1'>
-                    Location
-                  </label>
-                  <input
-                    type='text'
-                    name='location'
-                    value={editeduser.location}
-                    onChange={handleInputChange}
-                    className='w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
-                  />
-                </div>
+                  <div className='md:col-span-2'>
+                    <label className='block text-sm font-medium text-gray-300 mb-1'>
+                      Bio
+                    </label>
+                    <textarea
+                      value={editeduser.bio}
+                      name='bio'
+                      onChange={handleInputChange}
+                      rows={3}
+                      className='w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
+                    />
+                  </div>
 
-                {/* <div>
+                  <div>
+                    <label className='block text-sm font-medium text-gray-300 mb-1'>
+                      Location
+                    </label>
+                    <input
+                      type='text'
+                      name='location'
+                      value={editeduser.location}
+                      onChange={handleInputChange}
+                      className='w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
+                    />
+                  </div>
+
+                  {/* <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">
                     Twitter username
                   </label>
@@ -909,32 +901,32 @@ export default function ProfileInfo () {
                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
                   />
                 </div> */}
-              </div>
+                </div>
 
-              {/* Action Buttons */}
-              <div className='flex justify-end gap-4 pt-4'>
-                <button
-                  type='button'
-                  onClick={handleCancel}
-                  className='px-6 py-2.5 text-gray-300 hover:text-white transition-colors'
-                >
-                  Cancel
-                </button>
-                <button
-                  type='submit'
-                  disabled={isSaving} // Disable the button conditionally
-                  className={`px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 ${
-                    isSaving ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
-                >
-                  {isSaving ? 'Saving...' : 'Save Changes'}
-                </button>
-              </div>
-            </form>
+                {/* Action Buttons */}
+                <div className='flex justify-end gap-4 pt-4'>
+                  <button
+                    type='button'
+                    onClick={handleCancel}
+                    className='px-6 py-2.5 text-gray-300 hover:text-white transition-colors'
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type='submit'
+                    disabled={isSaving} // Disable the button conditionally
+                    className={`px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 ${
+                      isSaving ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    {isSaving ? 'Saving...' : 'Save Changes'}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
     </>
   )
 }
