@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { BACKEND_URL } from '../config'
 import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 // import SavedBlogs from '../components/UserProfile.tsx/SavedBlogs';
 
 export interface Blog {
@@ -19,20 +19,21 @@ export interface SavedBlog {
   content: string
   title: string
   id: string
-  url: string //changed from number
+  url: string 
+  authorId:string,//changed from number
   author: {
     name: string
   }
   // "authorName":string
 }
-interface Post {
-  id: string;
-  title: string;
-  url: string;
-  author: {
-    name: string;
-  };
-}
+// interface Post {
+//   id: string;
+//   title: string;
+//   url: string;
+//   author: {
+//     name: string;
+//   };
+// }
 
 export interface SavedPost {
  savedblog : SavedBlog
@@ -54,15 +55,14 @@ export function useUserDetails () {
   const navigate = useNavigate()
   const [userDetails, setUserDetails] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  // const id = useParams()
   useEffect(() => {
     const getUserDetails = async () => {
       try {
         console.log('start fetching user details');
         
         const token = localStorage.getItem('token');
-        console.log('checking if the token is present or not' + token )
         if (!token) {
-          
           throw new Error("Token Undefined")
           // Handle the case where the token is missing
         }
@@ -73,7 +73,7 @@ export function useUserDetails () {
           },
         });
         
-        console.log('got response of user details', response.data);
+        // console.log('got response of user details', response.data);
         setUserDetails(response.data);
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -90,7 +90,7 @@ export function useUserDetails () {
           navigate('/signin'); // Redirect to sign-in page
         }
         } else {
-          console.error('Unexpected error:', error);
+          // console.error('Unexpected error:', error);
           toast.error('An unexpected error occurred.');
           navigate('/signin'); // Redirect to sign-in page
 

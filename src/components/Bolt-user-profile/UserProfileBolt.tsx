@@ -9,17 +9,17 @@ import {
   Edit3,
   MapPin,
   Calendar,
-  Twitter,
-  Github,
-  Linkedin,
+  // Twitter,
+  // Github,
+  // Linkedin,
   Camera,
   X,
-  Award,
+  // Award,
   Heart,
   MessageCircle,
   Bookmark,
   Share2,
-  Clock,
+  // Clock,
   BarChart3,
   TrendingUp,
   PencilIcon,
@@ -28,6 +28,8 @@ import {
 import { useSavedBlogs, useUserDetails } from '../../hooks/index'
 import Loading from '../Loading'
 import ImageUploadHook from '../../hooks/ImageUploadHook'
+import Navbar from '../Navbar'
+import SavedBlogComponent from './SavedBlogComponent'
 
 // interface ProfileInfoProps {
 //   user: user
@@ -42,7 +44,7 @@ export default function ProfileInfo () {
     // userId: userId || " "
   const [isSaving, setIsSaving] = useState(false)
  const {savedblogs} = useSavedBlogs()
- console.log(savedblogs)
+//  console.log(savedblogs)
  const [editeduser, setEditeduser] = useState({
     name: userDetails?.name || '',
     email: userDetails?.email || '',
@@ -127,7 +129,7 @@ export default function ProfileInfo () {
     }
   }
   const token = localStorage.getItem('token')
-  console.log(token)
+  // console.log(token)
   if (!token) {
     navigate('/signin')
     return
@@ -742,9 +744,12 @@ export default function ProfileInfo () {
                 <SavedBlogComponent
                 key={post.id}
                 id={post.id}
+                authorId={post.authorId}
+
                 // authorName={post.author.name || 'Anonymous'}
                 title={post.title}
-                // content={post.content}
+                content={post.content}
+                authorName= {post.author.name}
                 publishDate=" save the date"
                 url={post.url}/>
 
@@ -941,9 +946,9 @@ export default function ProfileInfo () {
 
 // import  { useState } from 'react';
 // import { Edit3, MapPin, Calendar, Twitter, Github, Linkedin, Camera, X, Award, Heart, MessageCircle, Bookmark, Share2, Clock, BarChart3, TrendingUp, users } from 'lucide-react';
-import Navbar from '../Navbar';
-import SavedBlogs from '../UserProfile.tsx/SavedBlogs';
-import SavedBlogComponent from './SavedBlogComponent';
+// import Navbar from '../Navbar';
+// import SavedBlogs from '../UserProfile.tsx/SavedBlogs';
+// import SavedBlogComponent from './SavedBlogComponent';
 
 // export default function userProfileBolt() {
 //   const [user, setuser] = useState({

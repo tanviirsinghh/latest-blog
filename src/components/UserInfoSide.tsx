@@ -7,6 +7,73 @@ import {  Twitter, Linkedin, GitlabIcon as GitHub } from 'lucide-react';
 export default function UserInfoSide() {
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
     const [user, setUser] = useState({
         name: 'John Doe',
         email: 'john.doe@example.com',

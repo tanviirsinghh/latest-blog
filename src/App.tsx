@@ -10,6 +10,7 @@ import LatestSignin from './components/LatestSignin'
 // import UserProfileBolt from './components/Bolt-user-profile/UserProfileBolt'
 // import BoltSignup from './components/Bolt-user-profile/BoltSignin'
 import BoltSignin from './components/Bolt-user-profile/BoltSignin'
+import AuthorProfile from './components/Bolt-user-profile/AuthorProfile'
 // import userProfileBolt from './components/Bolt-user-profile/UserProfileBolt';
 // Implementing lazy loading
 // const Signup = React.lazy(() => import('./pages/Signup'))
@@ -87,7 +88,14 @@ function App () {
               </React.Suspense>
             }
           ></Route>
-
+<Route
+            path='/details'
+            element={
+              <React.Suspense fallback={<Loading />}>
+                <AuthorProfile />
+              </React.Suspense>
+            }
+          ></Route>
           <Route
             path='/publish'
             element={
