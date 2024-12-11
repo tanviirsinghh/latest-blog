@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { BACKEND_URL } from '../config'
 import { toast } from 'react-toastify'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // import SavedBlogs from '../components/UserProfile.tsx/SavedBlogs';
 
 export interface Blog {
