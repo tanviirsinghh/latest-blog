@@ -31,10 +31,6 @@ import ImageUploadHook from '../../hooks/ImageUploadHook'
 import Navbar from '../Navbar'
 import SavedBlogComponent from './SavedBlogComponent'
 
-// interface ProfileInfoProps {
-//   user: user
-//   getRefreshData: () => Promise<void>
-// }
 
 export default function ProfileInfo () {
   // const [isEditing, setIsEditing] = useState(false)
@@ -214,7 +210,7 @@ export default function ProfileInfo () {
           { headers: { Authorization: token } }
         )
         await getRefreshData()
-        // setIsEditModalOpen(false)
+        setIsEditModalOpen(false)
         toast.success('Image uploaded successfully!')
       } else {
         toast.error('Image upload failed. Please try again.')
@@ -248,7 +244,7 @@ export default function ProfileInfo () {
           { headers: { Authorization: token } }
         )
         await getRefreshData()
-        // setIsEditModalOpen(false)
+        setIsEditModalOpen(false)
         toast.success('Image uploaded successfully!')
       } else {
         toast.error('Image upload failed. Please try again.')
