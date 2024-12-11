@@ -34,7 +34,6 @@ import SavedBlogComponent from './SavedBlogComponent'
 
 export default function ProfileInfo () {
   // const [isEditing, setIsEditing] = useState(false)
-  // const [user, setUser] = useState(null)
   const { loading, userDetails, setUserDetails } =
     useUserDetails()
     // userId: userId || " "
