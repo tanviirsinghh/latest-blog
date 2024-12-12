@@ -180,9 +180,6 @@ export const useBlogsPersonal = (authorId?: string) => {
   useEffect(() => {
     const fetchBlogs = async () => {
       console.log('user blog personal hook')
-     
-   
-
       const token = localStorage.getItem('token')
       if (!token) {
         console.error('No token found. Redirecting to login...')
