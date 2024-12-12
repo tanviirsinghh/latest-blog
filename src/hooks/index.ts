@@ -180,7 +180,7 @@ export const useBlogsPersonal = (authorId?: string) => {
   useEffect(() => {
     const fetchBlogs = async () => {
       console.log('user blog personal hook')
-      // const queryParams = new 
+      // const queryParams =
    
 
       const token = localStorage.getItem('token')
