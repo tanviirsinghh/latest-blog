@@ -9,6 +9,9 @@ import {
   TrendingUp,
   Users,
   MessageCircle,
+  Heart,
+  Bookmark,
+  Share2,
   // Heart,
   // Share2,
   // Bookmark
@@ -19,6 +22,8 @@ import { BACKEND_URL } from '../../config'
 import { toast } from 'react-toastify'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Navbar from '../Navbar'
+import { useBlogsPersonal } from '../../hooks/index';
+import DOMPurify from 'dompurify';
 
 export interface User {
   id: string
@@ -35,7 +40,8 @@ export default function AuthorProfile () {
   const navigate = useNavigate()
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
-  const authorId = queryParams.get('authorId')
+  const authorId = queryParams.get('authorId') || undefined
+  const {blogsPersonal} = useBlogsPersonal(authorId)
 
   console.log('author id, authorProfile component ' + authorId)
   //   console.log('component te khulda')
@@ -177,7 +183,7 @@ export default function AuthorProfile () {
                     <div>
                       <p className='text-sm text-gray-400'>Total Posts</p>
                       <p className='text-2xl font-bold text-white'>
-                        {"author.stats.posts"}
+                        {"austs"}
                       </p>
                     </div>
                   </div>
@@ -191,7 +197,7 @@ export default function AuthorProfile () {
                     <div>
                       <p className='text-sm text-gray-400'>Followers</p>
                       <p className='text-2xl font-bold text-white'>
-                        {"author.stats.followers"}
+                        {"auttat"}
                       </p>
                     </div>
                   </div>
@@ -205,7 +211,7 @@ export default function AuthorProfile () {
                     <div>
                       <p className='text-sm text-gray-400'>Total Views</p>
                       <p className='text-2xl font-bold text-white'>
-                        {"author.stats.views"}
+                        {"auews"}
                       </p>
                     </div>
                   </div>
@@ -219,7 +225,7 @@ export default function AuthorProfile () {
                     <div>
                       <p className='text-sm text-gray-400'>Engagement</p>
                       <p className='text-2xl font-bold text-white'>
-                        {"author.stats.engagement"}
+                        {"at"}
                       </p>
                     </div>
                   </div>
@@ -244,11 +250,11 @@ export default function AuthorProfile () {
               </div>
 
               <div className='space-y-6'>
-              {/* {posts.map((post, index) => (
-                  <div key={index} className='group'>
+              {blogsPersonal.map((post) => (
+                  <div key={post.id} className='group'>
                     <div className='bg-gray-800/50 backdrop-blur-lg rounded-xl overflow-hidden border border-gray-700/50 hover:border-gray-600/50 transition-colors'>
                       <img
-                        src={post.coverImage}
+                        src={post.url}
                         alt={post.title}
                         className='w-full h-64 object-cover'
                       />
@@ -256,17 +262,20 @@ export default function AuthorProfile () {
                         <h3 className='text-xl font-semibold text-white group-hover:text-cyan-400 transition-colors'>
                           {post.title}
                         </h3>
-                        <p className='mt-2 text-gray-400'>{post.excerpt}</p>
+                        <p className='mt-2 text-gray-400'
+                        dangerouslySetInnerHTML={{
+                          __html: DOMPurify.sanitize(post.content ? post.content.slice(1, 80) + "..." : " ")
+                        }}></p>
 
                         <div className='flex flex-wrap gap-2 mt-4'>
-                          {post.tags.map((tag, tagIndex) => (
+                          {/* {post.tags.map((tag, tagIndex) => (
                             <span
                               key={tagIndex}
                               className='px-3 py-1 text-sm bg-gray-700/50 text-cyan-400 rounded-full'
                             >
                               {tag}
                             </span>
-                          ))}
+                          ))} */}
                         </div>
 
                         <div className='flex items-center justify-between mt-6 pt-4 border-t border-gray-700/50'>
@@ -296,7 +305,7 @@ export default function AuthorProfile () {
                       </div>
                     </div>
                   </div>
-                ))} */}
+                ))}
               </div>
             </div>
           </div>
