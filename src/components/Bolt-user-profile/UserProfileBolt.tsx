@@ -65,7 +65,7 @@ export default function ProfileInfo () {
   // const handleUpdateProfile = (updatedData: typeof user) => {
   //   setdummyuser(updatedData);
   //   setIsEditModalOpen(false);
-  // };
+  //
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
   const [image, setImage] = useState<File | null>(null)
