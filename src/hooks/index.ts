@@ -172,16 +172,16 @@ export const useBlogs = () => {
 }
 //  personal blogs
 
-export const useBlogsPersonal = () => {
+export const useBlogsPersonal = (authorId?: string) => {
   const [loading, setLoading] = useState(true)
   const [blogsPersonal, setBlogsPersonal] = useState<Blog[]>([])
   const navigate = useNavigate()
-  const location = useLocation()
+  // const location = useLocation()
   useEffect(() => {
     const fetchBlogs = async () => {
       console.log('user blog personal hook')
-      const queryParams = new URLSearchParams(location.search)
-      const authorId = queryParams.get('id')
+      // const queryParams = new URLSearchParams(location.search)
+      // const authorId = queryParams.get
 
       const token = localStorage.getItem('token')
       if (!token) {
@@ -190,12 +190,10 @@ export const useBlogsPersonal = () => {
         return
       }
       try {
-        const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
-          headers: { Authorization: token },
-          params:{
-            id: authorId
-          }
-        })
+        const response = await axios.get(`${BACKEND_URL}/api/v1/blogs/bulk`, {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { authorId }, // Dynamically pass authorId
+        });
         setBlogsPersonal(response.data.posts)
         console.log(response.data.posts)
       } catch (error) {

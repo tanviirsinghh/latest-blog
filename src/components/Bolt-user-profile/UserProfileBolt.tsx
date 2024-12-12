@@ -64,7 +64,7 @@ export default function ProfileInfo () {
   }, [userDetails])
   // const handleUpdateProfile = (updatedData: typeof user) => {
   //   setdummyuser(updatedData);
-  //   setIsEditModalOpen(fal
+  //   setIsEditModalOpen(fa
   
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
