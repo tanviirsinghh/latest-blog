@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { BACKEND_URL } from '../config'
 import { toast } from 'react-toastify'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 // import SavedBlogs from '../components/UserProfile.tsx/SavedBlogs';
 
 export interface Blog {
@@ -151,6 +151,7 @@ export const useBlogs = () => {
         navigate('/signin')
         return
       }
+
       try {
         const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
           headers: { Authorization: token }
@@ -176,7 +177,7 @@ export const useBlogsPersonal = (authorId?: string) => {
   const [loading, setLoading] = useState(true)
   const [blogsPersonal, setBlogsPersonal] = useState<Blog[]>([])
   const navigate = useNavigate()
-  // const location = useLocation()
+
   useEffect(() => {
     const fetchBlogs = async () => {
       console.log('user blog personal hook')
@@ -187,10 +188,11 @@ export const useBlogsPersonal = (authorId?: string) => {
         return
       }
       try {
-        const response = await axios.get(`${BACKEND_URL}/api/v1/blogs/bulk`, {
-          headers: { Authorization: `Bearer ${token}` },
-          params: { authorId }, // Dynamically pass authorId
-        });
+        const response = await axios.get(`${BACKEND_URL}/api/v1/blog/posts`, {
+          headers: { Authorization: token },
+          params: { authorId }
+          // Pass authorId here
+        })
         setBlogsPersonal(response.data.posts)
         console.log(response.data.posts)
       } catch (error) {
@@ -199,8 +201,10 @@ export const useBlogsPersonal = (authorId?: string) => {
         setLoading(false)
       }
     }
+
     fetchBlogs()
-  }, [])
+  }, [authorId]) // Dependency on authorId to refetch when it changes
+
   return {
     loading,
     blogsPersonal
