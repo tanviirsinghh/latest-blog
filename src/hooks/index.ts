@@ -181,7 +181,7 @@ export const useBlogsPersonal = (authorId?: string) => {
     const fetchBlogs = async () => {
       console.log('user blog personal hook')
       // const queryParams = new URLSearchParams(location.search)
-      // const authorId = 
+      // const 
 
       const token = localStorage.getItem('token')
       if (!token) {
