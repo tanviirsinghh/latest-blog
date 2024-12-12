@@ -9,9 +9,9 @@ import {
   TrendingUp,
   Users,
   MessageCircle,
-  Heart,
-  Share2,
-  Bookmark
+  // Heart,
+  // Share2,
+  // Bookmark
 } from 'lucide-react'
 import Loading from '../Loading'
 import axios from 'axios'
@@ -72,7 +72,7 @@ export default function AuthorProfile () {
     }
 
     fetchAuthorData()
-  }, [authorId])
+  }, [authorId, navigate, token])
 
   if (!token) {
     navigate('/signin')
@@ -86,62 +86,6 @@ export default function AuthorProfile () {
       </div>
     )
   }
-  const author = {
-    name: 'Sarah Johnson',
-    role: 'Senior Software Engineer',
-    avatar:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    coverImage:
-      'https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80',
-    bio: 'Passionate about web development, cloud architecture, and teaching others. I write about modern development practices and emerging technologies.',
-    location: 'San Francisco, CA',
-    joinedDate: 'January 2022',
-    social: {
-      twitter: '@sarahtechblog',
-      github: 'sarahj',
-      linkedin: 'sarahjohnson'
-    },
-    stats: {
-      posts: 47,
-      followers: '12.5K',
-      views: '238K',
-      engagement: '18%'
-    }
-  }
-
-  const posts = [
-    {
-      title: "Understanding React 18's Concurrent Features",
-      excerpt:
-        'An in-depth look at the new concurrent features in React 18 and how they improve application performance.',
-      coverImage:
-        'https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80',
-      date: '2 days ago',
-      readTime: '5 min',
-      tags: ['React', 'JavaScript', 'Web Development'],
-      stats: {
-        views: '1.2K',
-        likes: 234,
-        comments: 45
-      }
-    },
-    {
-      title: 'Building Scalable Applications with Next.js',
-      excerpt:
-        'Learn how to leverage Next.js features to build performant and scalable web applications.',
-      coverImage:
-        'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80',
-      date: '5 days ago',
-      readTime: '8 min',
-      tags: ['Next.js', 'Performance', 'Architecture'],
-      stats: {
-        views: '2.5K',
-        likes: 456,
-        comments: 78
-      }
-    }
-  ]
-
   return (
     <>
       <Navbar />
@@ -233,7 +177,7 @@ export default function AuthorProfile () {
                     <div>
                       <p className='text-sm text-gray-400'>Total Posts</p>
                       <p className='text-2xl font-bold text-white'>
-                        {author.stats.posts}
+                        {"author.stats.posts"}
                       </p>
                     </div>
                   </div>
@@ -247,7 +191,7 @@ export default function AuthorProfile () {
                     <div>
                       <p className='text-sm text-gray-400'>Followers</p>
                       <p className='text-2xl font-bold text-white'>
-                        {author.stats.followers}
+                        {"author.stats.followers"}
                       </p>
                     </div>
                   </div>
@@ -261,7 +205,7 @@ export default function AuthorProfile () {
                     <div>
                       <p className='text-sm text-gray-400'>Total Views</p>
                       <p className='text-2xl font-bold text-white'>
-                        {author.stats.views}
+                        {"author.stats.views"}
                       </p>
                     </div>
                   </div>
@@ -275,7 +219,7 @@ export default function AuthorProfile () {
                     <div>
                       <p className='text-sm text-gray-400'>Engagement</p>
                       <p className='text-2xl font-bold text-white'>
-                        {author.stats.engagement}
+                        {"author.stats.engagement"}
                       </p>
                     </div>
                   </div>
@@ -300,7 +244,7 @@ export default function AuthorProfile () {
               </div>
 
               <div className='space-y-6'>
-                {posts.map((post, index) => (
+              {/* {posts.map((post, index) => (
                   <div key={index} className='group'>
                     <div className='bg-gray-800/50 backdrop-blur-lg rounded-xl overflow-hidden border border-gray-700/50 hover:border-gray-600/50 transition-colors'>
                       <img
@@ -327,11 +271,11 @@ export default function AuthorProfile () {
 
                         <div className='flex items-center justify-between mt-6 pt-4 border-t border-gray-700/50'>
                           <div className='flex items-center gap-4 text-sm text-gray-400'>
-                            <span>{post.date}</span>
+                            <span>{"post.date"}</span>
                             <span>•</span>
-                            <span>{post.readTime} read</span>
+                            <span>{"post.readTime"} read</span>
                             <span>•</span>
-                            <span>{post.stats.views} views</span>
+                            <span>{"post.stats.views"} views</span>
                           </div>
 
                           <div className='flex items-center gap-4'>
@@ -352,7 +296,7 @@ export default function AuthorProfile () {
                       </div>
                     </div>
                   </div>
-                ))}
+                ))} */}
               </div>
             </div>
           </div>

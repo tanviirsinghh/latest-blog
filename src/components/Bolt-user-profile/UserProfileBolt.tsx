@@ -25,11 +25,12 @@ import {
   PencilIcon,
   LogOut
 } from 'lucide-react'
-import { useSavedBlogs, useUserDetails } from '../../hooks/index'
+import { useSavedBlogs, useUserDetails, useBlogsPersonal } from '../../hooks/index';
 import Loading from '../Loading'
 import ImageUploadHook from '../../hooks/ImageUploadHook'
 import Navbar from '../Navbar'
 import SavedBlogComponent from './SavedBlogComponent'
+import DOMPurify from 'dompurify'
 
 export default function ProfileInfo () {
   // const [isEditing, setIsEditing] = useState(false)
@@ -37,6 +38,7 @@ export default function ProfileInfo () {
   // userId: userId || " "
   const [isSaving, setIsSaving] = useState(false)
   const { savedblogs } = useSavedBlogs()
+  const {blogsPersonal}= useBlogsPersonal()
   //  console.log(savedblogs)
   const [editeduser, setEditeduser] = useState({
     name: userDetails?.name || '',
@@ -323,32 +325,32 @@ export default function ProfileInfo () {
   //   }
   // ]
 
-  const dummyuserPosts = [
-    {
-      title: "Understanding React 18's Concurrent Features",
-      excerpt:
-        'An in-depth look at the new concurrent features in React 18 and how they improve application performance.',
-      thumbnail:
-        'https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80',
-      date: '2 days ago',
-      readTime: '5 min',
-      views: '1.2K',
-      likes: 234,
-      comments: 45
-    },
-    {
-      title: 'Building Scalable Applications with Next.js',
-      excerpt:
-        'Learn how to leverage Next.js features to build performant and scalable web applications.',
-      thumbnail:
-        'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80',
-      date: '5 days ago',
-      readTime: '8 min',
-      views: '2.5K',
-      likes: 456,
-      comments: 78
-    }
-  ]
+  // const dummyuserPosts = [
+  //   {
+  //     title: "Understanding React 18's Concurrent Features",
+  //     excerpt:
+  //       'An in-depth look at the new concurrent features in React 18 and how they improve application performance.',
+  //     thumbnail:
+  //       'https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80',
+  //     date: '2 days ago',
+  //     readTime: '5 min',
+  //     views: '1.2K',
+  //     likes: 234,
+  //     comments: 45
+  //   },
+  //   {
+  //     title: 'Building Scalable Applications with Next.js',
+  //     excerpt:
+  //       'Learn how to leverage Next.js features to build performant and scalable web applications.',
+  //     thumbnail:
+  //       'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80',
+  //     date: '5 days ago',
+  //     readTime: '8 min',
+  //     views: '2.5K',
+  //     likes: 456,
+  //     comments: 78
+  //   }
+  // ]
 
   return (
     <>
@@ -665,11 +667,11 @@ export default function ProfileInfo () {
                 </div>
 
                 <div className='space-y-6'>
-                  {dummyuserPosts.map((post, index) => (
-                    <div key={index} className='group'>
+                  {blogsPersonal.map((post) => (
+                    <div key={post.id} className='group'>
                       <div className='flex gap-4 p-4 rounded-xl bg-gray-900/50 hover:bg-gray-900/70 transition-colors cursor-pointer'>
                         <img
-                          src={post.thumbnail}
+                          src={post.url}
                           alt={post.title}
                           className='w-24 h-24 rounded-lg object-cover'
                         />
@@ -677,26 +679,27 @@ export default function ProfileInfo () {
                           <h3 className='font-medium text-lg text-white group-hover:text-cyan-400 transition-colors'>
                             {post.title}
                           </h3>
-                          <p className='text-gray-400 text-sm mt-1 line-clamp-2'>
-                            {post.excerpt}
-                          </p>
+                          <p className='text-gray-400 text-sm mt-1 line-clamp-2' 
+                          dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(post.content ? post.content.slice(1, 80) + "..." : " ")
+                  }}></p>
 
                           <div className='flex items-center gap-4 mt-2 text-sm text-gray-500'>
-                            <span>{post.date}</span>
+                            <span>{"post.date"}</span>
                             <span>•</span>
-                            <span>{post.readTime} read</span>
+                            <span>{"post.readTime"} read</span>
                             <span>•</span>
-                            <span>{post.views} views</span>
+                            <span>{"post.views"} views</span>
                           </div>
 
                           <div className='flex items-center gap-6 mt-3'>
                             <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
                               <Heart size={18} />
-                              <span>{post.likes}</span>
+                              <span>{"post.likes"}</span>
                             </button>
                             <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
                               <MessageCircle size={18} />
-                              <span>{post.comments}</span>
+                              <span>{"post.comments"}</span>
                             </button>
                             <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
                               <Bookmark size={18} />

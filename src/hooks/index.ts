@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { BACKEND_URL } from '../config'
 import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 // import SavedBlogs from '../components/UserProfile.tsx/SavedBlogs';
 
 export interface Blog {
@@ -13,6 +13,7 @@ export interface Blog {
   author: {
     name: string
   }
+  authorId: string
   // "authorName":string
 }
 export interface SavedBlog {
@@ -167,6 +168,47 @@ export const useBlogs = () => {
   return {
     loading,
     blogs
+  }
+}
+//  personal blogs
+
+export const useBlogsPersonal = () => {
+  const [loading, setLoading] = useState(true)
+  const [blogsPersonal, setBlogsPersonal] = useState<Blog[]>([])
+  const navigate = useNavigate()
+  const location = useLocation()
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      console.log('user blog personal hook')
+      const queryParams = new URLSearchParams(location.search)
+      const authorId = queryParams.get('id')
+
+      const token = localStorage.getItem('token')
+      if (!token) {
+        console.error('No token found. Redirecting to login...')
+        navigate('/signin')
+        return
+      }
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
+          headers: { Authorization: token },
+          params:{
+            id: authorId
+          }
+        })
+        setBlogsPersonal(response.data.posts)
+        console.log(response.data.posts)
+      } catch (error) {
+        console.error('Error fetching blogs:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchBlogs()
+  }, [])
+  return {
+    loading,
+    blogsPersonal
   }
 }
 
