@@ -11,6 +11,9 @@ import LatestSignin from './components/LatestSignin'
 // import BoltSignup from './components/Bolt-user-profile/BoltSignin'
 import BoltSignin from './components/Bolt-user-profile/BoltSignin'
 import AuthorProfile from './components/Bolt-user-profile/AuthorProfile'
+import BoltTextEditor from './components/Bolt-user-profile/BoltTextEditor'
+import BoltLandingPage from './pages/BoltLandingPage'
+import BoltMainPage from './pages/BoltMainPage'
 // import userProfileBolt from './components/Bolt-user-profile/UserProfileBolt';
 // Implementing lazy loading
 // const Signup = React.lazy(() => import('./pages/Signup'))
@@ -93,6 +96,30 @@ function App () {
             element={
               <React.Suspense fallback={<Loading />}>
                 <AuthorProfile />
+              </React.Suspense>
+            }
+          ></Route>
+          <Route
+            path='/bolttexteditor'
+            element={
+              <React.Suspense fallback={<Loading />}>
+                <BoltTextEditor />
+              </React.Suspense>
+            }
+          ></Route>
+          <Route
+            path='/boltlandingpage'
+            element={
+              <React.Suspense fallback={<Loading />}>
+                <BoltLandingPage />
+              </React.Suspense>
+            }
+          ></Route>
+           <Route
+            path='/boltmainpage'
+            element={
+              <React.Suspense fallback={<Loading />}>
+                <BoltMainPage />
               </React.Suspense>
             }
           ></Route>
