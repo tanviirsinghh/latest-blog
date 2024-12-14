@@ -89,8 +89,6 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 //       title: 'Machine Learning in Frontend Development',
 //       author: 'Jane Smith',
 //       date: '2023-05-10',
-//       readTime: '4 min read',
-
 //       image: '/placeholder.svg?height=80&width=120',
 //   const [isLiked, setIsLiked] = useState(false);
 //   const [isBookmarked, setIsBookmarked] = useState(false);
