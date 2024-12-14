@@ -93,8 +93,6 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 //       image: '/placeholder.svg?height=80&width=120',
 //     },
 //     {
-//       id: 2,
-
 //       readTime: '5 min read',
 //       image: '/placeholder.svg?height=80&width=120',
 //     },
