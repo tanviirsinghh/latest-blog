@@ -94,8 +94,6 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 //   const [isBookmarked, setIsBookmarked] = useState(false);
 //   const [showComments, setShowComments] = useState(false);
 //   const [newComment, setNewComment] = useState('');
-//   const [showShareModal, setShowShareModal] = useState(false);
-
 //   const handleLike = () => {
 //     setIsLiked(!isLiked);
 //     setBlog(prevBlog => ({
