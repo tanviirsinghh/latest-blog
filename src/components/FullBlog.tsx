@@ -95,12 +95,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 //     {
 //       id: 2,
 //       title: 'The Rise of AI-Assisted Coding',
-//       author: 'Mike Johnson',
-//       date: '2023-05-12',
-//       readTime: '6 min read',
-//       image: '/placeholder.svg?height=80&width=120',
-//     },
-//     {
+//    
 //       id: 3,
 //       title: 'Ethical Considerations in AI Development',
 //       author: 'Sarah Lee',
