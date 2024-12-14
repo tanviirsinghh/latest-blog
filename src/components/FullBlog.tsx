@@ -98,8 +98,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 //     setBlog(prevBlog => ({
 //       ...prevBlog,
 //       likes: isLiked ? prevBlog.likes - 1 : prevBlog.likes + 1
-//     }));
-//   };
+
 
 //   const handleBookmark = () => {
 //     setIsBookmarked(!isBookmarked);
