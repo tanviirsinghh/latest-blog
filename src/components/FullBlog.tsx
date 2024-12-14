@@ -94,8 +94,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 //     },
 //     {
 //       id: 2,
-//       title: 'The Rise of AI-Assisted Coding',
-//    
+
 //       id: 3,
 //       title: 'Ethical Considerations in AI Development',
 //       author: 'Sarah Lee',
