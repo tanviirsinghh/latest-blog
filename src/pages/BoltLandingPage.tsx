@@ -1,7 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Search, 
   TrendingUp, 
   BookOpen, 
   Users, 
@@ -9,7 +7,8 @@ import {
   Heart, 
   MessageCircle, 
   Bookmark,
-  PenSquare
+  PenSquare,
+  Book
 } from 'lucide-react';
 
 export default function BoltLandingPage() {
@@ -73,20 +72,22 @@ export default function BoltLandingPage() {
               discover new perspectives, and engage in meaningful conversations.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
+            <Link
+                to="/blogs"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
+              >
+                <Book className="mr-2 h-5 w-5" />
+                  Read
+              </Link>
+              <div className="relative">
+              
               <Link
-                to="/write"
+                to="/publish"
                 className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
               >
                 <PenSquare className="mr-2 h-5 w-5" />
                 Start Writing
               </Link>
-              <div className="relative">
-                <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search articles..."
-                  className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500/50 text-white placeholder-gray-400"
-                />
               </div>
             </div>
           </div>

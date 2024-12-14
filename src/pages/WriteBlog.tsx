@@ -14,7 +14,11 @@ import ImageUploadHook from '../hooks/ImageUploadHook'
 export default function TextEditor () {
   const editorRef = useRef<TinyMCEEditor | null>(null)
   const navigate = useNavigate()
-
+  const token = localStorage.getItem('token')
+  if(!token){
+    toast.info('Log In or Create Account First')
+     navigate('/publish')
+  }
   const [title, setTitle] = useState('')
   const [descript, setDescript] = useState('')
   const [img, setImg] = useState<File | null>(null)

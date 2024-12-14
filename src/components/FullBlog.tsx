@@ -2,7 +2,7 @@ import { Blog } from '../hooks/index'
 import { Avatar } from './BlogCard'
 import DOMPurify from 'dompurify'
 import { useNavigate } from 'react-router-dom'
-import Navbar from './Navbar'
+import Navbar from './Bolt-user-profile/Navbar'
 
 
 
@@ -86,10 +86,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 //   });
 
 //   const [blog, setBlog] = useState({
-//     title: 'The Future of Artificial Intelligence in Web Development',
-//     description: 'Explore how AI is revolutionizing the way we build and interact with websites, and what this means for developers and users alike.',
-//     content: `Artificial Intelligence is rapidly transforming various industries, and web development is no exception. In this post, we'll dive deep into how AI is changing the landscape of web development, discussing topics such as:
-
+//     title: 'T
 // 1. AI-powered design tools
 // 2. Intelligent chatbots and virtual assistants
 // 3. Personalized user experiences

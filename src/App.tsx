@@ -18,7 +18,7 @@ import BoltMainPage from './pages/BoltMainPage'
 // Implementing lazy loading
 // const Signup = React.lazy(() => import('./pages/Signup'))
 const Signin = React.lazy(() => import('./pages/Signin'))
-const Blogs = React.lazy(() => import('./pages/Blogs'))
+// const Blogs = React.lazy(() => import('./pages/Blogs'))
 const Blog = React.lazy(() => import('./pages/Blog'))
 const TextEditor = React.lazy(() => import('./pages/WriteBlog'))
 const UserProfileBolt = React.lazy(() => import('./components/Bolt-user-profile/UserProfileBolt'))
