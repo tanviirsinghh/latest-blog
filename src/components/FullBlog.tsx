@@ -93,7 +93,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 //       image: '/placeholder.svg?height=80&width=120',
 //     },
 //     {
-//       readTime: '5 min read',
+
 //       image: '/placeholder.svg?height=80&width=120',
 //   const [isLiked, setIsLiked] = useState(false);
 //   const [isBookmarked, setIsBookmarked] = useState(false);
