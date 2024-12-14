@@ -59,18 +59,6 @@ export default function NewFullBlog ({ blog }: { blog: Blog }) {
     fetchBookmarkStatus()
   }, [blog.id]) // Ensures check happens on blog change
 
-  const [user, setUser] = useState({
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    bio: 'Passionate writer and tech enthusiast. I love exploring new technologies and sharing my insights with the world.',
-    avatar: '/placeholder.svg?height=150&width=150',
-    socialLinks: {
-      twitter: 'https://twitter.com/johndoe',
-      linkedin: 'https://linkedin.com/in/johndoe',
-      github: 'https://github.com/johndoe'
-    }
-  })
-
   const [tempBlog, settempBlog] = useState({
     title: 'The Future of Artificial Intelligence in Web Development',
     description:
@@ -105,32 +93,7 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
     ]
   })
 
-  const [relatedtempBlogs, setRelatedtempBlogs] = useState([
-    {
-      id: 1,
-      title: 'Machine Learning in Frontend Development',
-      author: 'Jane Smith',
-      date: '2023-05-10',
-      readTime: '4 min read',
-      image: '/placeholder.svg?height=80&width=120'
-    },
-    {
-      id: 2,
-      title: 'The Rise of AI-Assisted Coding',
-      author: 'Mike Johnson',
-      date: '2023-05-12',
-      readTime: '6 min read',
-      image: '/placeholder.svg?height=80&width=120'
-    },
-    {
-      id: 3,
-      title: 'Ethical Considerations in AI Development',
-      author: 'Sarah Lee',
-      date: '2023-05-14',
-      readTime: '5 min read',
-      image: '/placeholder.svg?height=80&width=120'
-    }
-  ])
+  
 
   const [isLiked, setIsLiked] = useState(false)
   const [isBookmarked, setIsBookmarked] = useState(false)

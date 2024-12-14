@@ -84,15 +84,69 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 //       github: 'https://github.com/johndoe',
 //     },
 //   });
-// 1. AI-powered design tools
 
+//   const [blog, setBlog] = useState({
+//     title: 'The Future of Artificial Intelligence in Web Development',
+//     description: 'Explore how AI is revolutionizing the way we build and interact with websites, and what this means for developers and users alike.',
+//     content: `Artificial Intelligence is rapidly transforming various industries, and web development is no exception. In this post, we'll dive deep into how AI is changing the landscape of web development, discussing topics such as:
+
+// 1. AI-powered design tools
+// 2. Intelligent chatbots and virtual assistants
+// 3. Personalized user experiences
+// 4. Automated testing and bug detection
+// 5. The ethical considerations of AI in web development
+
+// Join me on this exciting journey as we explore the cutting-edge advancements in AI and their impact on the future of web development.`,
+//     image: '/placeholder.svg?height=400&width=800',
+//     date: '2023-05-15',
+//     readTime: '5 min read',
+//     likes: 42,
+//     comments: [
+//       { id: 1, author: 'Alice', content: 'Great article! Very insightful.', date: '2023-05-16' },
+//       { id: 2, author: 'Bob', content: 'I\'m excited to see how AI will shape the future of web development.', date: '2023-05-17' },
+//     ],
+//   });
+
+//   const [relatedBlogs, setRelatedBlogs] = useState([
+//     {
+//       id: 1,
 //       title: 'Machine Learning in Frontend Development',
 //       author: 'Jane Smith',
 //       date: '2023-05-10',
+//       readTime: '4 min read',
 //       image: '/placeholder.svg?height=80&width=120',
-//   const [isLiked, setIsLiked] = useState(false);
-//   co
+//     },
+//     {
+//       id: 2,
+//       title: 'The Rise of AI-Assisted Coding',
+//       author: 'Mike Johnson',
+//       date: '2023-05-12',
+//       readTime: '6 min read',
+//       image: '/placeholder.svg?height=80&width=120',
+//     },
+//     {
+//       id: 3,
+//       title: 'Ethical Considerations in AI Development',
+//       author: 'Sarah Lee',
+//       date: '2023-05-14',
+//       readTime: '5 min read',
+//       image: '/placeholder.svg?height=80&width=120',
+//     },
+//   ]);
 
+//   const [isLiked, setIsLiked] = useState(false);
+//   const [isBookmarked, setIsBookmarked] = useState(false);
+//   const [showComments, setShowComments] = useState(false);
+//   const [newComment, setNewComment] = useState('');
+//   const [showShareModal, setShowShareModal] = useState(false);
+
+//   const handleLike = () => {
+//     setIsLiked(!isLiked);
+//     setBlog(prevBlog => ({
+//       ...prevBlog,
+//       likes: isLiked ? prevBlog.likes - 1 : prevBlog.likes + 1
+//     }));
+//   };
 
 //   const handleBookmark = () => {
 //     setIsBookmarked(!isBookmarked);

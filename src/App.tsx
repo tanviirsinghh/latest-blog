@@ -14,6 +14,7 @@ import AuthorProfile from './components/Bolt-user-profile/AuthorProfile'
 import BoltTextEditor from './components/Bolt-user-profile/BoltTextEditor'
 import BoltLandingPage from './pages/BoltLandingPage'
 import BoltMainPage from './pages/BoltMainPage'
+import BoltFullBlog from './components/Bolt-user-profile/BoltFullBlog'
 // import userProfileBolt from './components/Bolt-user-profile/UserProfileBolt';
 // Implementing lazy loading
 // const Signup = React.lazy(() => import('./pages/Signup'))
@@ -45,6 +46,14 @@ function App () {
             element={
               <React.Suspense fallback={<Loading />}>
                 <BoltSignin />
+              </React.Suspense>
+            }
+          ></Route>
+          <Route
+            path='/boltfullblog'
+            element={
+              <React.Suspense fallback={<Loading />}>
+                <BoltFullBlog />
               </React.Suspense>
             }
           ></Route>
