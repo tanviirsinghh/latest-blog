@@ -95,7 +95,6 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 //   const [showComments, setShowComments] = useState(false);
 //   const [newComment, setNewComment] = useState('');
 //   const handleLike = () => {
-//     setIsLiked(!isLiked);
 //     setBlog(prevBlog => ({
 //       ...prevBlog,
 //       likes: isLiked ? prevBlog.likes - 1 : prevBlog.likes + 1
