@@ -3,7 +3,7 @@
 import {  useBlog } from "../hooks";
 
 import {useNavigate, useParams} from "react-router-dom";
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Bolt-user-profile/Navbar'
 import NewFullBlog from './NewFullBlog';
 
 

@@ -64,14 +64,14 @@ function App () {
               </React.Suspense>
             }
           ></Route>
-          <Route
+          {/* <Route
             path='/blogs'
             element={
               <React.Suspense fallback={<Loading />}>
                 <Blogs />
               </React.Suspense>
             }
-          ></Route>
+          ></Route> */}
           <Route
             path='/blog/:id'
             element={
@@ -107,8 +107,9 @@ function App () {
               </React.Suspense>
             }
           ></Route>
+         
           <Route
-            path='/boltlandingpage'
+            path='/'
             element={
               <React.Suspense fallback={<Loading />}>
                 <BoltLandingPage />
@@ -116,7 +117,7 @@ function App () {
             }
           ></Route>
            <Route
-            path='/boltmainpage'
+            path='/blogs'
             element={
               <React.Suspense fallback={<Loading />}>
                 <BoltMainPage />

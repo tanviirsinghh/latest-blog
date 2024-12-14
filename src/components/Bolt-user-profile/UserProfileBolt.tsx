@@ -28,7 +28,7 @@ import {
 import { useSavedBlogs, useUserDetails, useBlogsPersonal } from '../../hooks/index';
 import Loading from '../Loading'
 import ImageUploadHook from '../../hooks/ImageUploadHook'
-import Navbar from '../Navbar'
+import Navbar from '../Bolt-user-profile/Navbar'
 import SavedBlogComponent from './SavedBlogComponent'
 import DOMPurify from 'dompurify'
 

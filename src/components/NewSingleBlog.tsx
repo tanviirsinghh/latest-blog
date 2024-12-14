@@ -11,9 +11,8 @@ interface BlogCardProps {
   title: string
   content: string
   url: string
-  author:{
-    name:string
-  }
+  authorName:string
+
   authorAvatar: string
   publishDate: string
   initialLikes: number
@@ -27,7 +26,7 @@ export default function NewSingleBlog ({
   publishDate,
   url,
   authorAvatar,
-  author,
+  authorName,
   initialLikes,
   initialComments
 }: BlogCardProps) {
@@ -63,11 +62,11 @@ export default function NewSingleBlog ({
               <img
                 className='h-10 w-10 rounded-full mr-2'
                 src={authorAvatar}
-                alt={author.name}
+                alt={authorName}
               />
               <div className=''>
                 <p className='text-sm font-semibold text-gray-900'>
-                  {author.name}
+                  {authorName}
                 </p>
                 <p className='text-xs text-gray-600'>{publishDate}</p>
               </div>

@@ -21,7 +21,7 @@ import axios from 'axios'
 import { BACKEND_URL } from '../../config'
 import { toast } from 'react-toastify'
 import { useLocation, useNavigate } from 'react-router-dom'
-import Navbar from '../Navbar'
+import  Navbar  from './Navbar'
 import { useBlogsPersonal } from '../../hooks/index';
 import DOMPurify from 'dompurify';
 

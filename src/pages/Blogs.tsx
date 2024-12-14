@@ -1,7 +1,7 @@
 import { useBlogs } from '../hooks'
 import { BlogSkeleton } from '../components/BlogSkeleton'
 import { useNavigate } from 'react-router-dom'
-import Navbar from '../components/Navbar'
+import Navbar from '../components/Bolt-user-profile/Navbar'
 import Sidebar from '../components/Sidebar'
 import LowerSidebar from '../components/LowerSidebar'
 import NewSingleBlog from '../components/NewSingleBlog';
@@ -32,7 +32,7 @@ export const Blogs = () => {
     <>
 <div className="w-full h-screen bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
   {/* Fixed Navbar */}
-  <div className="fixed w-full h-[4rem] z-10 bg-white shadow-md">
+  <div className="fixed w-full h-[4rem] z-10  ">
     <Navbar />
   </div>
 
