@@ -95,7 +95,6 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 //     {
 //       id: 2,
 
-//       id: 3,
 //       title: 'Ethical Considerations in AI Development',
 //       author: 'Sarah Lee',
 //       date: '2023-05-14',
