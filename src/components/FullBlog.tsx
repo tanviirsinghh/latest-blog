@@ -97,8 +97,6 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 //       { id: 1, author: 'Alice', content: 'Great article! Very insightful.', date: '2023-05-16' },
 //       { id: 2, author: 'Bob', content: 'I\'m excited to see how AI will shape the future of web development.', date: '2023-05-17' },
 //     ],
-
-
 //   const [relatedBlogs, setRelatedBlogs] = useState([
 //     {
 //       id: 1,
