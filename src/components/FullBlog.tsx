@@ -99,7 +99,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 //     ],
 //   const [relatedBlogs, setRelatedBlogs] = useState([
 //     {
-//       id: 1,
+
 //       title: 'Machine Learning in Frontend Development',
 //       author: 'Jane Smith',
 //       date: '2023-05-10',
