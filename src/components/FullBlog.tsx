@@ -85,20 +85,6 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 //     },
 //   });
 // 1. AI-powered design tools
-// 2. Intelligent chatbots and virtual assistants
-// 3. Personalized user experiences
-// 4. Automated testing and bug detection
-// Join me on this exciting journey as we explore the cutting-edge advancements in AI and their impact on the future of web development.`,
-//     image: '/placeholder.svg?height=400&width=800',
-//     date: '2023-05-15',
-//     readTime: '5 min read',
-//     likes: 42,
-//     comments: [
-//       { id: 1, author: 'Alice', content: 'Great article! Very insightful.', date: '2023-05-16' },
-//       { id: 2, author: 'Bob', content: 'I\'m excited to see how AI will shape the future of web development.', date: '2023-05-17' },
-//     ],
-//   const [relatedBlogs, setRelatedBlogs] = useState([
-//     {
 
 //       title: 'Machine Learning in Frontend Development',
 //       author: 'Jane Smith',
