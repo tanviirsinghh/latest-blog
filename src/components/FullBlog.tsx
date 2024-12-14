@@ -91,13 +91,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 //       date: '2023-05-10',
 //       image: '/placeholder.svg?height=80&width=120',
 //   const [isLiked, setIsLiked] = useState(false);
-//   const [isBookmarked, setIsBookmarked] = useState(false);
-//   const [showComments, setShowComments] = useState(false);
-//   const [newComment, setNewComment] = useState('');
-//   const handleLike = () => {
-//     setBlog(prevBlog => ({
-//       ...prevBlog,
-//       likes: isLiked ? prevBlog.likes - 1 : prevBlog.likes + 1
+//   co
 
 
 //   const handleBookmark = () => {
