@@ -84,9 +84,6 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
 //       github: 'https://github.com/johndoe',
 //     },
 //   });
-
-//   const [blog, setBlog] = useState({
-//     title: 'T
 // 1. AI-powered design tools
 // 2. Intelligent chatbots and virtual assistants
 // 3. Personalized user experiences
