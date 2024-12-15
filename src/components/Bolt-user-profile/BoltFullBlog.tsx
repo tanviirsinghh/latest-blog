@@ -22,6 +22,7 @@ import { BACKEND_URL } from "../../config";
 import { Blog } from "../../hooks/index";
 import DOMPurify from "dompurify";
 import BoltFooter from "./BoltFooter";
+import Navbar from './Navbar';
 
   export default function BoltFullBlog({ blog }: { blog: Blog }) {
     const [liked, setLiked] = useState(false);
@@ -233,7 +234,7 @@ import BoltFooter from "./BoltFooter";
     //     setNewComment('')
     //   }
     // }
-  
+
     // const handleShare = () => {
     //   setShowShareModal(true);
     // };
@@ -245,9 +246,11 @@ import BoltFooter from "./BoltFooter";
       return <Loading />
     }
 
-
     return (
-      <div className="min-h-screen bg-gray-50">
+      <>
+             < Navbar/>
+            
+      <div className="min-h-screen mt-14 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <main className="lg:col-span-2">
@@ -347,11 +350,11 @@ import BoltFooter from "./BoltFooter";
                   className="flex items-center space-x-2 group"
                 >
                   <Bookmark
-                    className={`w-6 h-6 ${saved ? "fill-blue-500 text-blue-500" : "text-gray-600"} group-hover:scale-110 transition-transform`}
+                    className={`w-6 h-6 ${isBookmarked ? "fill-blue-500 text-blue-500" : "text-gray-600"} group-hover:scale-110 transition-transform`}
                   />
-                  <span className="text-gray-600">
+                  {/* <span className="text-gray-600">
                     {saved ? "Saved" : "Save"}
-                  </span>
+                  </span> */}
                 </button>
               </div>
   
@@ -420,7 +423,7 @@ import BoltFooter from "./BoltFooter";
   
             {/* Author Sidebar */}
             <aside className="lg:col-span-1">
-              <div className="sticky top-8 bg-white rounded-lg shadow-md p-6">
+              <div className="sticky top-44 bg-white rounded-lg shadow-md p-6">
                 <div className="text-center mb-6">
                   <img
                     src="https://randomuser.me/api/portraits/women/45.jpg"
@@ -464,6 +467,7 @@ import BoltFooter from "./BoltFooter";
          <BoltFooter/>
         </div>
       </div>
+      </>
     );
   }
  

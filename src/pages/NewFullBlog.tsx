@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Heart, MessageCircle, Bookmark } from 'lucide-react'
-import Navbar from '../components/Bolt-user-profile/Navbar'
+import Navbar from '../components/Bolt-user-profile/Navbar';
 import { useNavigate, useParams } from 'react-router-dom'
 import DOMPurify from 'dompurify'
 import { Blog } from '../hooks/index'
