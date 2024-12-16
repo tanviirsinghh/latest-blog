@@ -28,7 +28,7 @@ import Navbar from './Navbar';
     // const [liked, setLiked] = useState(false);
     const [isLiked, setIsLiked] = useState(false)
 
-    const [likeCount, setLikeCount] = useState(342);
+    const [likeCount, setLikeCount] = useState(0);
     const [saved, setSaved] = useState(false);
     const [showShareMenu, setShowShareMenu] = useState(false);
     const [comments, setComments] = useState([
@@ -52,13 +52,84 @@ import Navbar from './Navbar';
       },
     ]);
     const [newComment, setNewComment] = useState("");
-    const [email, setEmail] = useState("");
-    const handleLike = () => {
-      setIsLiked(!isLiked);
-      setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
-    };
-        const { userDetails } = useUserDetails()
+    // const [email, setEmail] = useState("");
+    const { userDetails } = useUserDetails()
+    const { id } = useParams()
+    const token = localStorage.getItem('token')
+ 
+    const handleLike = async () => {
+
+      if(isLiked){
+        setIsLoading(true);
+        try {
+        
+       console.log("like remove triggered frontend")
+          const response = await axios.delete(
+           `${BACKEND_URL}/api/v1/blog/${blog.id}/likeremove`,
+             // No need to send postId explicitly, it's in the URL
+            { headers: { Authorization: token } }
+          );
       
+          if (response && response.data) {
+            // Toggle like state and adjust like count
+           
+            setIsLiked(false);
+            setLikeCount((count) => count - 1);
+          }
+        } catch (e) {
+          console.error('Error:', e);
+      
+          // Handle specific error scenarios
+            if (axios.isAxiosError(e) && e.response?.status === 411) {
+              setIsLiked(true);
+            toast.error('Error while removing Like');
+          } else {
+            // Default error handling
+            setIsLiked(true);
+            toast.error('Server error occurred');
+          }
+        } finally {
+          setIsLoading(true);
+        }       
+          
+      } else{
+        setIsLoading(true);
+      try {
+        
+    
+        const response = await axios.post(
+          `${BACKEND_URL}/api/v1/blog/${blog.id}/like`,
+           null,// No need to send postId explicitly, it's in the URL
+          { headers: { Authorization: token } }
+        );
+    
+        if (response && response.data) {
+          // Toggle like state and adjust like count
+          
+            setLikeCount((count) => count + 1);
+            setIsLiked(true);
+        }
+      } catch (e) {
+        console.error('Error:', e);
+    
+        // Handle specific error scenarios
+        if (axios.isAxiosError(e) && e.response?.status === 400) {
+          setIsLiked(false);
+          toast.error('Already liked');
+        } else if (axios.isAxiosError(e) && e.response?.status === 411) {
+          toast.error('Server error, please try again later.');
+        } else {
+          // Default error handling
+          setIsLiked(false);
+          toast.error('An unexpected error occurred');
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    };
+
+    
     
   
     const handleComment = (e: React.FormEvent<HTMLFormElement>) => {
@@ -79,25 +150,12 @@ import Navbar from './Navbar';
 
 
 
-
-
-
-
-
-
-
-
-
-
     const navigate = useNavigate()
     // fetch the save blog condition to render  on the save button
-    const { id } = useParams()
-    console.log('jehda open heoya blog ohdi id ' + id)
   
     useEffect(() => {
       // Persistent bookmark status check across page refreshes
       const fetchBookmarkStatus = async () => {
-        const token = localStorage.getItem('token')
         if (!token) return
   
         setIsLoading(true)
@@ -162,7 +220,7 @@ import Navbar from './Navbar';
   
     const handleBookmark = async () => {
       // Retrieve the authentication token from local storage
-      const token = localStorage.getItem('token')
+      
   
       // Check if user is authenticated
       if (!token) {
