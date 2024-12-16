@@ -24,7 +24,8 @@ export default  function Navbar () {
     navigate('/publish')
   }
   return (
-    <nav className="fixed top-0 left-0 right-0  bg-white/1s0 backdrop-blur-md border-b border-white/20 z-50">
+
+    <nav className="fixed top-0 left-0 right-0 bg-gray-900/80 backdrop-blur-lg border-b border-gray-700/50 z-50">
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div className="flex justify-between items-center h-16">
       <div className="flex items-center">
@@ -69,7 +70,6 @@ export default  function Navbar () {
     </div>
   </div>
 </nav>
-
   
   )
 }

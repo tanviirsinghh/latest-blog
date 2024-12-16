@@ -7,8 +7,8 @@ import {
     Clock,
     // MessageSquare,
     Twitter,
-    Facebook,
-    Instagram,
+    // Facebook,
+    // Instagram,
     Mail,
     Globe,
     Linkedin,
@@ -19,13 +19,15 @@ import Loading from "../Loading";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { BACKEND_URL } from "../../config";
-import { Blog } from "../../hooks/index";
+import { Blog, useBlogsPersonal, useUserDetails } from "../../hooks/index";
 import DOMPurify from "dompurify";
 import BoltFooter from "./BoltFooter";
 import Navbar from './Navbar';
 
   export default function BoltFullBlog({ blog }: { blog: Blog }) {
-    const [liked, setLiked] = useState(false);
+    // const [liked, setLiked] = useState(false);
+    const [isLiked, setIsLiked] = useState(false)
+
     const [likeCount, setLikeCount] = useState(342);
     const [saved, setSaved] = useState(false);
     const [showShareMenu, setShowShareMenu] = useState(false);
@@ -52,9 +54,12 @@ import Navbar from './Navbar';
     const [newComment, setNewComment] = useState("");
     const [email, setEmail] = useState("");
     const handleLike = () => {
-      setLiked(!liked);
-      setLikeCount(liked ? likeCount - 1 : likeCount + 1);
+      setIsLiked(!isLiked);
+      setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
     };
+        const { userDetails } = useUserDetails()
+      
+    
   
     const handleComment = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -133,7 +138,6 @@ import Navbar from './Navbar';
     }, [blog.id]) 
 
 
-    const [isLiked, setIsLiked] = useState(false)
     const [isBookmarked, setIsBookmarked] = useState(false)
     // const [showComments, setShowComments] = useState(false)
     // const [newComment, setNewComment] = useState('')
@@ -247,19 +251,20 @@ import Navbar from './Navbar';
     }
 
     return (
-      <>
+      <div className=" bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+
              < Navbar/>
             
-      <div className="min-h-screen mt-14 bg-gray-50">
+      <div className=" pt-16 ">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <main className="lg:col-span-2">
               {/* Header Section */}
               <header className="mb-8">
-                <h1 className="text-4xl font-bold mb-4">
+                <h1 className=" text-gray-300 text-4xl font-bold mb-4">
                   {blog.title}
                 </h1>
-                <div className="flex items-center space-x-4 text-gray-600 text-sm">
+                <div className="flex items-center space-x-4 text-gray-400 text-sm">
                   <div className="flex items-center">
                     <Clock className="w-4 h-4 mr-1" />
                     <span>8 min read</span>
@@ -276,7 +281,7 @@ import Navbar from './Navbar';
               />
   
               {/* Article Content */}
-              <article className="prose lg:prose-xl max-w-none mb-8">
+              <article className="text-gray-300 prose lg:prose-xl max-w-none mb-8">
                 <p className="mb-4"
                 dangerouslySetInnerHTML={{
                                 __html: DOMPurify.sanitize(blog.content)
@@ -307,14 +312,14 @@ import Navbar from './Navbar';
                 <div className="flex items-center space-x-6">
                   <button
                     onClick={handleLike}
-                    className="flex items-center space-x-2 group"
+                    className=" flex items-center space-x-2 group"
                   >
                      <Heart
-                    className={`w-6 h-6 ${
-                      isLiked ? 'fill-current text-red-500' : ''
+                    className={`w-6 h-6 text-red-600 ${
+                      isLiked ? 'fill-current text-red-900' : ''
                     }`}
                   />
-                    <span className="text-gray-600">{likeCount}</span>
+                    <span className="text-gray-300 font-sans">{likeCount}</span>
                   </button>
   
                   <div className="relative">
@@ -322,8 +327,8 @@ import Navbar from './Navbar';
                       onClick={() => setShowShareMenu(!showShareMenu)}
                       className="flex items-center space-x-2 group"
                     >
-                      <Share2 className="w-6 h-6 text-gray-600 group-hover:scale-110 transition-transform" />
-                      <span className="text-gray-600">Share</span>
+                      <Share2 className="w-6 h-6 text-blue-300 group-hover:scale-110 transition-transform" />
+                      <span className="text-gray-300">Share</span>
                     </button>
   
                     {showShareMenu && (
@@ -360,12 +365,12 @@ import Navbar from './Navbar';
   
               {/* Comments Section */}
               <section className="mt-12">
-                <h3 className="text-2xl font-bold mb-6">Comments</h3>
+                <h3 className="text-2xl text-gray-300 font-bold mb-6">Comments</h3>
   
                 <form onSubmit={handleComment} className="mb-8">
                   <div className="flex items-start space-x-4">
                     <img
-                      src="https://randomuser.me/api/portraits/women/68.jpg"
+                      src={userDetails?.profilePicture}
                       alt="Your avatar"
                       className="w-10 h-10 rounded-full"
                     />
@@ -374,7 +379,7 @@ import Navbar from './Navbar';
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
                         placeholder="Add a comment..."
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                        className="w-full p-3 border text-white bg-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                         rows={3}
                       />
                       <button
@@ -396,11 +401,11 @@ import Navbar from './Navbar';
                         className="w-10 h-10 rounded-full"
                       />
                       <div className="flex-1">
-                        <div className="bg-gray-50 p-4 rounded-lg">
+                        <div className="text-white bg-gray-800 shadow-md p-4 rounded-lg">
                           <div className="flex items-center justify-between mb-2">
                             <div>
                               <h4 className="font-semibold">{comment.author}</h4>
-                              <p className="text-gray-600 text-sm">
+                              <p className="text-white text-sm">
                                 {comment.date}
                               </p>
                             </div>
@@ -410,10 +415,10 @@ import Navbar from './Navbar';
                           </div>
                           <p>{comment.content}</p>
                         </div>
-                        <div className="flex items-center space-x-4 mt-2 text-sm text-gray-600">
+                        {/* <div className="flex items-center space-x-4 mt-2 text-sm text-gray-600">
                           <button className="hover:text-blue-500">Reply</button>
                           <button className="hover:text-blue-500">Like</button>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   ))}
@@ -423,19 +428,19 @@ import Navbar from './Navbar';
   
             {/* Author Sidebar */}
             <aside className="lg:col-span-1">
-              <div className="sticky top-44 bg-white rounded-lg shadow-md p-6">
+              <div className="sticky top-44 bg-gray-900 rounded-lg shadow-lg p-6">
                 <div className="text-center mb-6">
                   <img
                     src="https://randomuser.me/api/portraits/women/45.jpg"
                     alt="Emma Roberts"
                     className="w-24 h-24 rounded-full mx-auto mb-4"
                   />
-                  <h2 className="text-xl font-bold">Emma Roberts</h2>
-                  <p className="text-gray-600">Architecture & Design Editor</p>
+                  <h2 className="text-xl text-gray-300 font-bold">Emma Roberts</h2>
+                  <p className="text-gray-300">Architecture & Design Editor</p>
                 </div>
   
                 <div className="mb-6">
-                  <p className="text-gray-700">
+                  <p className="text-gray-300">
                     Award-winning architecture journalist with 10+ years of
                     experience covering sustainable design and urban development.
                     Previously wrote for Architectural Digest and Dwell Magazine.
@@ -443,18 +448,18 @@ import Navbar from './Navbar';
                 </div>
   
                 <div className="border-t border-gray-200 pt-4">
-                  <h3 className="font-semibold mb-3">Connect with Emma</h3>
+                  <h3 className="font-semibold mb-3 text-gray-300">Connect with Emma</h3>
                   <div className="flex justify-center space-x-4">
-                    <a className="text-gray-600 hover:text-blue-500">
+                    <a className="text-gray-300 hover:text-blue-300 cursor-pointer">
                       <Twitter className="w-5 h-5" />
                     </a>
-                    <a className="text-gray-600 hover:text-blue-500">
+                    <a className="text-gray-300 hover:text-blue-300 cursor-pointer">
                       <Linkedin className="w-5 h-5" />
                     </a>
-                    <a className="text-gray-600 hover:text-blue-500">
+                    <a className="text-gray-300 hover:text-blue-300 cursor-pointer">
                       <Globe className="w-5 h-5" />
                     </a>
-                    <a className="text-gray-600 hover:text-blue-500">
+                    <a className="text-gray-300 hover:text-blue-300 cursor-pointer">
                       <Mail className="w-5 h-5" />
                     </a>
                   </div>
@@ -467,7 +472,7 @@ import Navbar from './Navbar';
          <BoltFooter/>
         </div>
       </div>
-      </>
+      </div>
     );
   }
  

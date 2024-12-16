@@ -6,8 +6,8 @@ export default function BoltFooter() {
        <footer className="mt-16 border-t border-gray-200 pt-12">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
               <div>
-                <h4 className="font-bold text-lg mb-4">Newsletter</h4>
-                <p className="text-gray-600 mb-4">
+                <h4 className="font-bold text-gray-300 text-lg mb-4">Newsletter</h4>
+                <p className="text-gray-300 mb-4">
                   Stay updated with our latest stories and architectural insights
                 </p>
                 <form className="flex gap-2">
@@ -28,26 +28,26 @@ export default function BoltFooter() {
               </div>
   
               <div>
-                <h4 className="font-bold text-lg mb-4">Quick Links</h4>
+                <h4 className="font-bold text-gray-300 text-lg mb-4">Quick Links</h4>
                 <ul className="space-y-2 text-gray-600">
                   <li>
-                    <a className="hover:text-blue-500">About Us</a>
+                    <a className="text-gray-300 hover:text-blue-500">About Us</a>
                   </li>
                   <li>
-                    <a className="hover:text-blue-500">Contact</a>
+                    <a className="text-gray-300 hover:text-blue-500">Contact</a>
                   </li>
                   <li>
-                    <a className="hover:text-blue-500">Privacy Policy</a>
+                    <a className="text-gray-300 hover:text-blue-500">Privacy Policy</a>
                   </li>
                   <li>
-                    <a className="hover:text-blue-500">Terms of Service</a>
+                    <a className="text-gray-300 hover:text-blue-500">Terms of Service</a>
                   </li>
                 </ul>
               </div>
   
               <div>
-                <h4 className="font-bold text-lg mb-4">Contact Us</h4>
-                <address className="text-gray-600 not-italic">
+                <h4 className="font-bold text-gray-300 text-lg mb-4">Contact Us</h4>
+                <address className="text-gray-300 not-italic">
                   <p>123 Architecture Avenue</p>
                   <p>New York, NY 10001</p>
                   <p>Email: contact@archblog.com</p>
@@ -56,25 +56,25 @@ export default function BoltFooter() {
               </div>
   
               <div>
-                <h4 className="font-bold text-lg mb-4">Follow Us</h4>
+                <h4 className="font-bold text-gray-300 text-lg mb-4">Follow Us</h4>
                 <div className="flex space-x-4">
-                  <a className="text-gray-600 hover:text-blue-500">
+                  <a className="text-gray-300 hover:text-blue-500">
                     <Twitter className="w-6 h-6" />
                   </a>
-                  <a className="text-gray-600 hover:text-blue-500">
+                  <a className="text-gray-300 hover:text-blue-500">
                     <Facebook className="w-6 h-6" />
                   </a>
-                  <a className="text-gray-600 hover:text-blue-500">
+                  <a className="text-gray-300 hover:text-blue-500">
                     <Instagram className="w-6 h-6" />
                   </a>
-                  <a className="text-gray-600 hover:text-blue-500">
+                  <a className="text-gray-300 hover:text-blue-500">
                     <Linkedin className="w-6 h-6" />
                   </a>
                 </div>
               </div>
             </div>
   
-            <div className="border-t border-gray-200 pt-8 text-center text-gray-600">
+            <div className="border-t border-gray-200 pt-8 text-center text-gray-300">
               <p>&copy; 2023 Architecture Blog. All rights reserved.</p>
             </div>
           </footer>
