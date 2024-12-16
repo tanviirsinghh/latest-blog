@@ -33,6 +33,10 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
   const [saved, setSaved] = useState(false)
   const [showShareMenu, setShowShareMenu] = useState(false)
   const { id } = useParams()
+  const [newComment, setNewComment] = useState('')
+  const { userDetails } = useUserDetails()
+  const token = localStorage.getItem('token')
+
   const [comments, setComments] = useState([
     {
       id: 1,
@@ -53,21 +57,54 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
       likes: 15
     }
   ])
-
   
+  useEffect(() => {
+    const fetchLikeCount = async () => {
+      setIsLoading(true)
+      try {
+       
+       const response =   await axios.get(
+          `${BACKEND_URL}/api/v1/blog/${blog.id}/postlikes`,
+          { headers: { Authorization: token } }
+        )
+
+
+        if (response && response.data) {
+          // Toggle like state and adjust like count
+            setLikeCount(response.data.count)
+            console.log("like count" + response.data)
+        }
+      } catch (e) {
+        console.error('Error:', e)
+
+        // Handle specific error scenarios
+        if (axios.isAxiosError(e) && e.response?.status === 411) {
+          setLikeStatus(false)
+          toast.error('Error while fetching Like')
+        }
+      } 
+    }
+  // Fetch status on component mount or blog.id change
+    }, [blog.id]);
+
+
   useEffect(() => {
     const fetchLikeStatus = async () => {
       setIsLoading(true)
       try {
        
-         await axios.get(
-          `${BACKEND_URL}/api/v1/blog/${blog.id}/likestatus`,
-           // No need to send postId explicitly, it's in the URL
+       const response =   await axios.get(
+          `${BACKEND_URL}/api/v1/blog/likestatus/${blog.id}`,
           { headers: { Authorization: token } }
         )
 
 
-        setLikeStatus(true)
+        if (response && response.data) {
+          // Toggle like state and adjust like count
+  
+          setLikeCount(count => count + 1)
+          setLikeStatus(true)
+        }
       } catch (e) {
         console.error('Error:', e)
 
@@ -84,18 +121,56 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
     }, [blog.id]);
 
 
-  const [newComment, setNewComment] = useState('')
-  // const [email, setEmail] = useState("");
-  const { userDetails } = useUserDetails()
+  
  
-  const token = localStorage.getItem('token')
 
 
 
   const handleLike = async () => {
     console.log('like state ' + likeStatus)
-    if (likeStatus) {
-      setIsLoading(true)
+
+    if (!likeStatus) {
+    setIsLoading(true)
+
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/v1/blog/${blog.id}/like`,
+         null,// No need to send postId explicitly, it's in the URL
+        { headers: { Authorization: token } }
+      )
+
+      if (response && response.data) {
+        // Toggle like state and adjust like count
+        const likehai = response.data.isLiked
+
+        setLikeCount(count => count + 1)
+        setLikeStatus(likehai)
+      }
+    } catch (e) {
+      console.error('Error:', e)
+
+      // Handle specific error scenarios
+      if (axios.isAxiosError(e) && e.response?.status === 400) {
+        setLikeStatus(false)
+        console.log('haiga pehla hi like, status true krta')
+        // setLikeCount(
+        //   (count) => count + 1)
+
+        toast.error('Already liked')
+      } else if (axios.isAxiosError(e) && e.response?.status === 411) {
+        toast.error('Server error, Unable to fetch like')
+      } else {
+        // Default error handling
+        setLikeStatus(false)
+        toast.error('An unexpected error occurred')
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+else {
+
       try {
         console.log('like remove triggered frontend')
         const response = await axios.delete(
@@ -106,8 +181,9 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
 
         if (response && response.data) {
           // Toggle like state and adjust like count
+          const removed = response.data.isLiked
 
-          setLikeStatus(false)
+          setLikeStatus(removed)
           setLikeCount(count => count - 1)
         }
       } catch (e) {
@@ -125,44 +201,8 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
       } finally {
         setIsLoading(false)
       }
-    } else {
-      setIsLoading(false)
-
-      try {
-        const response = await axios.post(
-          `${BACKEND_URL}/api/v1/blog/${blog.id}/like`,
-          null, // No need to send postId explicitly, it's in the URL
-          { headers: { Authorization: token } }
-        )
-
-        if (response && response.data) {
-          // Toggle like state and adjust like count
-
-          setLikeCount(count => count + 1)
-          setLikeStatus(true)
-        }
-      } catch (e) {
-        console.error('Error:', e)
-
-        // Handle specific error scenarios
-        if (axios.isAxiosError(e) && e.response?.status === 400) {
-          setLikeStatus(true)
-          console.log('haiga pehla hi like, status true krta')
-          setLikeCount(
-            (count) => count + 1)
-
-          toast.error('Already liked')
-        } else if (axios.isAxiosError(e) && e.response?.status === 411) {
-          toast.error('Server error, please try again later.')
-        } else {
-          // Default error handling
-          setLikeStatus(false)
-          toast.error('An unexpected error occurred')
-        }
-      } finally {
-        setIsLoading(false)
-      }
-    }
+    } 
+     
   }
 
 
