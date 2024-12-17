@@ -5,6 +5,7 @@ import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { toast } from "react-toastify";
 
+
 export const Auth =({type}: {type:"signup" | "signin"}) =>{
     const navigate= useNavigate()
     const [inputs, setInputs] = useState<SignupInput>({

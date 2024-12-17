@@ -151,7 +151,7 @@ if(loading){
       {/* <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"> */}
       
       <div className='h-[34rem] w-full  flex flex-col justify-center items-center'>
-        <div className='h-16 w-56  flex justify-center items-center '>
+       <div className='h-16 w-56  flex justify-center items-center '>
           <h1 className='text-3xl font-bold font-sans  '>User Profile</h1>
         </div>
         <div className='h-3/4 w-3/4 flex justify-evenly items-center  '>

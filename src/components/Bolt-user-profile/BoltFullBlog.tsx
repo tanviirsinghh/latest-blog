@@ -14,7 +14,7 @@ import {
   Linkedin
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Loading from '../Loading'
 import { toast } from 'react-toastify'
 import axios from 'axios'
@@ -30,9 +30,9 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
   const [likeStatus, setLikeStatus] = useState(false)
 
   const [likeCount, setLikeCount] = useState(0)
-  const [saved, setSaved] = useState(false)
+  // const [saved, setSaved] = useState(false)
   const [showShareMenu, setShowShareMenu] = useState(false)
-  const { id } = useParams()
+  // const { id } = useParams()
   const [newComment, setNewComment] = useState('')
   const { userDetails } = useUserDetails()
   const token = localStorage.getItem('token')
@@ -58,7 +58,7 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
     }
   ])
   
-  useEffect(() => {
+
     const fetchLikeCount = async () => {
       setIsLoading(true)
       try {
@@ -71,24 +71,26 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
 
         if (response && response.data) {
           // Toggle like state and adjust like count
-            setLikeCount(response.data.count)
-            console.log("like count" + response.data)
+            setLikeCount(response.data.likeCount)
         }
       } catch (e) {
         console.error('Error:', e)
 
         // Handle specific error scenarios
         if (axios.isAxiosError(e) && e.response?.status === 411) {
-          setLikeStatus(false)
+          // setLikeStatus(false)
           toast.error('Error while fetching Like')
         }
       } 
     }
+    useEffect(() => {
+    fetchLikeCount()
   // Fetch status on component mount or blog.id change
     }, [blog.id]);
 
 
   useEffect(() => {
+    console.log(" useEffect triggered hoeys "+ likeStatus)
     const fetchLikeStatus = async () => {
       setIsLoading(true)
       try {
@@ -99,111 +101,96 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
         )
 
 
-        if (response && response.data) {
+        if (response && response.data.isLiked) {
+          const haiLike = response.data.isLiked
           // Toggle like state and adjust like count
-  
-          setLikeCount(count => count + 1)
+           if(haiLike){
+          // setLikeCount(count => count + 1)
           setLikeStatus(true)
+          console.log(" backend to response true aaeya get like status- "+ response.data.isLiked)
+
+        }else{
+          setLikeStatus(false)
+          console.log(" backend to response aaeya false get like status- "+ response.data.isLiked)
+
         }
+      }
       } catch (e) {
         console.error('Error:', e)
 
         // Handle specific error scenarios
         if (axios.isAxiosError(e) && e.response?.status === 411) {
           setLikeStatus(false)
+          
           toast.error('Error while fetching Like')
         }
       } finally {
         setIsLoading(false)
       }
     }
+    fetchLikeStatus();
+
   // Fetch status on component mount or blog.id change
-    }, [blog.id]);
+    }, [blog.id,token]);
 
 
   
  
 
 
-
-  const handleLike = async () => {
-    console.log('like state ' + likeStatus)
-
-    if (!likeStatus) {
-    setIsLoading(true)
-
-    try {
-      const response = await axios.post(
-        `${BACKEND_URL}/api/v1/blog/${blog.id}/like`,
-         null,// No need to send postId explicitly, it's in the URL
-        { headers: { Authorization: token } }
-      )
-
-      if (response && response.data) {
-        // Toggle like state and adjust like count
-        const likehai = response.data.isLiked
-
-        setLikeCount(count => count + 1)
-        setLikeStatus(likehai)
-      }
-    } catch (e) {
-      console.error('Error:', e)
-
-      // Handle specific error scenarios
-      if (axios.isAxiosError(e) && e.response?.status === 400) {
-        setLikeStatus(false)
-        console.log('haiga pehla hi like, status true krta')
-        // setLikeCount(
-        //   (count) => count + 1)
-
-        toast.error('Already liked')
-      } else if (axios.isAxiosError(e) && e.response?.status === 411) {
-        toast.error('Server error, Unable to fetch like')
-      } else {
-        // Default error handling
-        setLikeStatus(false)
-        toast.error('An unexpected error occurred')
-      }
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-else {
-
+    // const [likeStatus, setLikeStatus] = useState(false); // true if liked, false otherwise
+    // const [likeCount, setLikeCount] = useState(0);       // Total like count
+    const [isProcessing, setIsProcessing] = useState(false);
+    const handleLike = async () => {
+      if (isProcessing) return; // Avoid duplicate requests
+      setIsProcessing(true);
+  
+      setLikeStatus(prevStatus => !prevStatus);
+      // setLikeCount(prevCount => (likeStatus ? prevCount - 1 : prevCount + 1));
+      
       try {
-        console.log('like remove triggered frontend')
-        const response = await axios.delete(
-          `${BACKEND_URL}/api/v1/blog/${blog.id}/likeremove`,
-           // No need to send postId explicitly, it's in the URL
-          { headers: { Authorization: token } }
-        )
-
-        if (response && response.data) {
-          // Toggle like state and adjust like count
-          const removed = response.data.isLiked
-
-          setLikeStatus(removed)
-          setLikeCount(count => count - 1)
-        }
-      } catch (e) {
-        console.error('Error:', e)
-
-        // Handle specific error scenarios
-        if (axios.isAxiosError(e) && e.response?.status === 403) {
-          setLikeStatus(true)
-          toast.error('Error while removing Like')
+        if (!likeStatus) {
+          // Send POST request to like the blog
+          await axios.post(
+            `${BACKEND_URL}/api/v1/blog/${blog.id}/like`,
+            null,
+            { headers: { Authorization: token } }
+          );
+      // setLikeCount((prevCount) => prevCount + 1);
+      setLikeCount((prevCount) => prevCount + 1);
         } else {
-          // Default error handling
-          setLikeStatus(true)
-          toast.error('Server error occurred')
+          // Send DELETE request to remove like
+          await axios.delete(
+            `${BACKEND_URL}/api/v1/blog/${blog.id}/likeremove`,
+            { headers: { Authorization: token } }
+          );
+      // Update like count based on server response
+      setLikeCount((prevCount) => prevCount - 1);
+        }
+      } catch (error) {
+        // Revert UI changes on error
+        setLikeStatus(prevStatus => !prevStatus);
+        // setLikeCount(prevCount => (likeStatus ? prevCount + 1 : prevCount - 1));
+    
+  
+        if (axios.isAxiosError(error)) {
+          const { status } = error.response || {};
+          if (status === 400) {
+            toast.error("Already liked.");
+          } else if (status === 403) {
+            toast.error("Error while removing like.");
+          } else if (status === 411) {
+            toast.error("Server error, please try again later.");
+          } else {
+            toast.error("An unexpected error occurred.");
+          }
+        } else {
+          toast.error("Network error, please check your connection.");
         }
       } finally {
-        setIsLoading(false)
+        setIsProcessing(false);
       }
-    } 
-     
-  }
+    };
 
 
   const handleComment = (e: React.FormEvent<HTMLFormElement>) => {
@@ -438,11 +425,12 @@ else {
                 <div className='flex items-center space-x-6'>
                   <button
                     onClick={handleLike}
+                    disabled={isProcessing}
                     className=' flex items-center space-x-2 group'
                   >
                     <Heart
                       className={`w-6 h-6 text-red-600 ${
-                        likeStatus ? 'fill-current text-red-900' : ''
+                        likeStatus ? 'fill-current text-red-600' : ''
                       }`}
                     />
                     <span className='text-gray-300 font-sans'>{likeCount}</span>

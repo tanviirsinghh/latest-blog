@@ -31,6 +31,7 @@ import ImageUploadHook from '../../hooks/ImageUploadHook'
 import Navbar from '../Bolt-user-profile/Navbar'
 import SavedBlogComponent from './SavedBlogComponent'
 import DOMPurify from 'dompurify'
+import AuthorPosts from './AuthorPosts'
 
 export default function ProfileInfo () {
   // const [isEditing, setIsEditing] = useState(false)
@@ -667,50 +668,20 @@ export default function ProfileInfo () {
                 </div>
 
                 <div className='space-y-6'>
-                  {blogsPersonal.map((post) => (
-                    <div key={post.id} className='group'>
-                      <div className='flex gap-4 p-4 rounded-xl bg-gray-900/50 hover:bg-gray-900/70 transition-colors cursor-pointer'>
-                        <img
-                          src={post.url}
-                          alt={post.title}
-                          className='w-24 h-24 rounded-lg object-cover'
-                        />
-                        <div className='flex-1'>
-                          <h3 className='font-medium text-lg text-white group-hover:text-cyan-400 transition-colors'>
-                            {post.title}
-                          </h3>
-                          <p className='text-gray-400 text-sm mt-1 line-clamp-2' 
-                          dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(post.content ? post.content.slice(1, 80) + "..." : " ")
-                  }}></p>
-
-                          <div className='flex items-center gap-4 mt-2 text-sm text-gray-500'>
-                            <span>{"post.date"}</span>
-                            <span>•</span>
-                            <span>{"post.readTime"} read</span>
-                            <span>•</span>
-                            <span>{"post.views"} views</span>
-                          </div>
-
-                          <div className='flex items-center gap-6 mt-3'>
-                            <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
-                              <Heart size={18} />
-                              <span>{"post.likes"}</span>
-                            </button>
-                            <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
-                              <MessageCircle size={18} />
-                              <span>{"post.comments"}</span>
-                            </button>
-                            <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
-                              <Bookmark size={18} />
-                            </button>
-                            <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
-                              <Share2 size={18} />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  {blogsPersonal.map((blog) => (
+                          <AuthorPosts
+                          key={blog.id}
+                          id={blog.id}
+                          authorName={blog.author.name || 'Anonymous'}
+                          title={blog.title}
+                          content={blog.content}
+                          publishDate=" save the date also and then fetch here"
+                          url={blog.url}
+              
+                          // make user upload the photo then fetch here
+                          authorAvatar=''
+                          initialLikes= {1}
+                          initialComments={5}/>
                   ))}
                 </div>
               </div>
