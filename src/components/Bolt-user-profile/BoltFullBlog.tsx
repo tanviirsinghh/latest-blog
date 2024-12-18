@@ -503,7 +503,7 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
                   </div>
                 </form>
 
-                <div className='space-y-6 bg-yellow-900 overflow-auto'>
+                <div className='space-y-6 bg-yellow-900 h-96 overflow-scroll '>
                   {comments && comments.map((comment: Comments)  => (
                     <div key={comment.id} className='flex space-x-4'>
                       <img
