@@ -67,13 +67,9 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
           if (haiLike) {
             // setLikeCount(count => count + 1)
             setLikeStatus(true)
-          
           } else {
             setLikeStatus(false)
-            console.log(
-              ' backend to response aaeya false get like status- ' +
-                response.data.isLiked
-            )
+          
           }
         }
       } catch (e) {
