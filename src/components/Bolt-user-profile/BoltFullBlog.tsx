@@ -24,6 +24,7 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
   const [isLoading, setIsLoading] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const authorId = blog.authorId
+
   const fetchLikeCount = async () => {
     setIsLoading(true)
     try {
@@ -52,7 +53,6 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
   }, [blog.id])
 
   useEffect(() => {
-    console.log(' useEffect triggered hoeys ' + likeStatus)
     const fetchLikeStatus = async () => {
       setIsLoading(true)
       try {
