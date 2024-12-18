@@ -52,7 +52,7 @@ export interface User {
 }
 
 // export function useUserDetails({userId} : {userId : string}){
-export function useUserDetails () {
+export function useUserDetails (authorId?: string) {
   const navigate = useNavigate()
   const [userDetails, setUserDetails] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
@@ -60,7 +60,6 @@ export function useUserDetails () {
   useEffect(() => {
     const getUserDetails = async () => {
       try {
-        console.log('start fetching user details')
 
         const token = localStorage.getItem('token')
         if (!token) {
@@ -71,7 +70,9 @@ export function useUserDetails () {
         const response = await axios.get(`${BACKEND_URL}/api/v1/user/details`, {
           headers: {
             Authorization: `Bearer ${token}` // Ensure the token format is correct
-          }
+           
+          },
+          params: { authorId }
         })
 
         setUserDetails(response.data.userData)
@@ -98,7 +99,7 @@ export function useUserDetails () {
     }
 
     getUserDetails()
-  }, [navigate]) // for safety
+  }, [authorId]) // for safety
 
   return {
     loading,
@@ -180,7 +181,6 @@ export const useBlogsPersonal = (authorId?: string) => {
 
   useEffect(() => {
     const fetchBlogs = async () => {
-      console.log('user blog personal hook')
       const token = localStorage.getItem('token')
       if (!token) {
         console.error('No token found. Redirecting to login...')
@@ -194,7 +194,6 @@ export const useBlogsPersonal = (authorId?: string) => {
           // Pass authorId here
         })
         setBlogsPersonal(response.data.posts)
-        console.log(response.data.posts)
       } catch (error) {
         console.error('Error fetching blogs:', error)
       } finally {

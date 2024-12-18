@@ -43,8 +43,6 @@ export default function AuthorProfile () {
   const authorId = queryParams.get('authorId') || undefined
   const {blogsPersonal} = useBlogsPersonal(authorId)
 
-  console.log('author id, authorProfile component ' + authorId)
-  //   console.log('component te khulda')
   const [authorData, setauthorData] = useState<User | null>(null)
   const [loading, setLoading] = useState(false)
   const token = localStorage.getItem('token')
@@ -96,7 +94,7 @@ export default function AuthorProfile () {
     <>
       <Navbar />
       <div className='min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'>
-        Author Header
+        {authorData.name}
         <div className='relative'>
           <div className='h-80 relative'>
             <img

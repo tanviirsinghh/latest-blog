@@ -1,18 +1,4 @@
-import {
-  Heart,
-  Share2,
-  Bookmark,
-  MoreVertical,
-  // Send,
-  Clock,
-  // MessageSquare,
-  Twitter,
-  // Facebook,
-  // Instagram,
-  Mail,
-  Globe,
-  Linkedin
-} from 'lucide-react'
+import { Heart, Share2, Bookmark, MoreVertical, Clock } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../Loading'
@@ -23,19 +9,141 @@ import { Blog, useUserDetails } from '../../hooks/index'
 import DOMPurify from 'dompurify'
 import BoltFooter from './BoltFooter'
 import Navbar from './Navbar'
+import AuthorAsidebar from './AuthorAsidebar'
 
 export default function BoltFullBlog ({ blog }: { blog: Blog }) {
-  // const [liked, setLiked] = useState(false);
-  // const [isLiked, setIsLiked] = useState(false)
   const [likeStatus, setLikeStatus] = useState(false)
-
   const [likeCount, setLikeCount] = useState(0)
-  // const [saved, setSaved] = useState(false)
   const [showShareMenu, setShowShareMenu] = useState(false)
   // const { id } = useParams()
   const [newComment, setNewComment] = useState('')
   const { userDetails } = useUserDetails()
   const token = localStorage.getItem('token')
+  const [isBookmarked, setIsBookmarked] = useState(false)
+  const [savedBlogId, setSavedBlogId] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
+  const authorId = blog.authorId
+  const fetchLikeCount = async () => {
+    setIsLoading(true)
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/api/v1/blog/${blog.id}/postlikes`,
+        { headers: { Authorization: token } }
+      )
+
+      if (response && response.data) {
+        // Toggle like state and adjust like count
+        setLikeCount(response.data.likeCount)
+      }
+    } catch (e) {
+      console.error('Error:', e)
+
+      // Handle specific error scenarios
+      if (axios.isAxiosError(e) && e.response?.status === 411) {
+        // setLikeStatus(false)
+        toast.error('Error while fetching Like')
+      }
+    }
+  }
+  useEffect(() => {
+    fetchLikeCount()
+    // Fetch status on component mount or blog.id change
+  }, [blog.id])
+
+  useEffect(() => {
+    console.log(' useEffect triggered hoeys ' + likeStatus)
+    const fetchLikeStatus = async () => {
+      setIsLoading(true)
+      try {
+        const response = await axios.get(
+          `${BACKEND_URL}/api/v1/blog/likestatus/${blog.id}`,
+          { headers: { Authorization: token } }
+        )
+
+        if (response && response.data.isLiked) {
+          const haiLike = response.data.isLiked
+          // Toggle like state and adjust like count
+          if (haiLike) {
+            // setLikeCount(count => count + 1)
+            setLikeStatus(true)
+            console.log(
+              ' backend to response true aaeya get like status- ' +
+                response.data.isLiked
+            )
+          } else {
+            setLikeStatus(false)
+            console.log(
+              ' backend to response aaeya false get like status- ' +
+                response.data.isLiked
+            )
+          }
+        }
+      } catch (e) {
+        console.error('Error:', e)
+
+        // Handle specific error scenarios
+        if (axios.isAxiosError(e) && e.response?.status === 411) {
+          setLikeStatus(false)
+
+          toast.error('Error while fetching Like')
+        }
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchLikeStatus()
+
+    // Fetch status on component mount or blog.id change
+  }, [blog.id, token, likeStatus])
+
+  const handleLike = async () => {
+    if (isProcessing) return // Avoid duplicate requests
+    setIsProcessing(true)
+
+    setLikeStatus(prevStatus => !prevStatus)
+    // setLikeCount(prevCount => (likeStatus ? prevCount - 1 : prevCount + 1));
+
+    try {
+      if (!likeStatus) {
+        // Send POST request to like the blog
+        await axios.post(`${BACKEND_URL}/api/v1/blog/${blog.id}/like`, null, {
+          headers: { Authorization: token }
+        })
+        // setLikeCount((prevCount) => prevCount + 1);
+        setLikeCount(prevCount => prevCount + 1)
+      } else {
+        // Send DELETE request to remove like
+        await axios.delete(`${BACKEND_URL}/api/v1/blog/${blog.id}/likeremove`, {
+          headers: { Authorization: token }
+        })
+        // Update like count based on server response
+        setLikeCount(prevCount => prevCount - 1)
+        setLikeStatus(false)
+      }
+    } catch (error) {
+      // Revert UI changes on error
+      setLikeStatus(prevStatus => !prevStatus)
+      // setLikeCount(prevCount => (likeStatus ? prevCount + 1 : prevCount - 1));
+
+      if (axios.isAxiosError(error)) {
+        const { status } = error.response || {}
+        if (status === 400) {
+          toast.error('Already liked.')
+        } else if (status === 403) {
+          toast.error('Error while removing like.')
+        } else if (status === 411) {
+          toast.error('Server error, please try again later.')
+        } else {
+          toast.error('An unexpected error occurred.')
+        }
+      } else {
+        toast.error('Network error, please check your connection.')
+      }
+    } finally {
+      setIsProcessing(false)
+    }
+  }
 
   const [comments, setComments] = useState([
     {
@@ -57,142 +165,6 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
       likes: 15
     }
   ])
-  
-
-    const fetchLikeCount = async () => {
-      setIsLoading(true)
-      try {
-       
-       const response =   await axios.get(
-          `${BACKEND_URL}/api/v1/blog/${blog.id}/postlikes`,
-          { headers: { Authorization: token } }
-        )
-
-
-        if (response && response.data) {
-          // Toggle like state and adjust like count
-            setLikeCount(response.data.likeCount)
-        }
-      } catch (e) {
-        console.error('Error:', e)
-
-        // Handle specific error scenarios
-        if (axios.isAxiosError(e) && e.response?.status === 411) {
-          // setLikeStatus(false)
-          toast.error('Error while fetching Like')
-        }
-      } 
-    }
-    useEffect(() => {
-    fetchLikeCount()
-  // Fetch status on component mount or blog.id change
-    }, [blog.id]);
-
-
-  useEffect(() => {
-    console.log(" useEffect triggered hoeys "+ likeStatus)
-    const fetchLikeStatus = async () => {
-      setIsLoading(true)
-      try {
-       
-       const response =   await axios.get(
-          `${BACKEND_URL}/api/v1/blog/likestatus/${blog.id}`,
-          { headers: { Authorization: token } }
-        )
-
-
-        if (response && response.data.isLiked) {
-          const haiLike = response.data.isLiked
-          // Toggle like state and adjust like count
-           if(haiLike){
-          // setLikeCount(count => count + 1)
-          setLikeStatus(true)
-          console.log(" backend to response true aaeya get like status- "+ response.data.isLiked)
-
-        }else{
-          setLikeStatus(false)
-          console.log(" backend to response aaeya false get like status- "+ response.data.isLiked)
-
-        }
-      }
-      } catch (e) {
-        console.error('Error:', e)
-
-        // Handle specific error scenarios
-        if (axios.isAxiosError(e) && e.response?.status === 411) {
-          setLikeStatus(false)
-          
-          toast.error('Error while fetching Like')
-        }
-      } finally {
-        setIsLoading(false)
-      }
-    }
-    fetchLikeStatus();
-
-  // Fetch status on component mount or blog.id change
-    }, [blog.id,token]);
-
-
-  
- 
-
-
-    // const [likeStatus, setLikeStatus] = useState(false); // true if liked, false otherwise
-    // const [likeCount, setLikeCount] = useState(0);       // Total like count
-    const [isProcessing, setIsProcessing] = useState(false);
-    const handleLike = async () => {
-      if (isProcessing) return; // Avoid duplicate requests
-      setIsProcessing(true);
-  
-      setLikeStatus(prevStatus => !prevStatus);
-      // setLikeCount(prevCount => (likeStatus ? prevCount - 1 : prevCount + 1));
-      
-      try {
-        if (!likeStatus) {
-          // Send POST request to like the blog
-          await axios.post(
-            `${BACKEND_URL}/api/v1/blog/${blog.id}/like`,
-            null,
-            { headers: { Authorization: token } }
-          );
-      // setLikeCount((prevCount) => prevCount + 1);
-      setLikeCount((prevCount) => prevCount + 1);
-        } else {
-          // Send DELETE request to remove like
-          await axios.delete(
-            `${BACKEND_URL}/api/v1/blog/${blog.id}/likeremove`,
-            { headers: { Authorization: token } }
-          );
-      // Update like count based on server response
-      setLikeCount((prevCount) => prevCount - 1);
-        }
-      } catch (error) {
-        // Revert UI changes on error
-        setLikeStatus(prevStatus => !prevStatus);
-        // setLikeCount(prevCount => (likeStatus ? prevCount + 1 : prevCount - 1));
-    
-  
-        if (axios.isAxiosError(error)) {
-          const { status } = error.response || {};
-          if (status === 400) {
-            toast.error("Already liked.");
-          } else if (status === 403) {
-            toast.error("Error while removing like.");
-          } else if (status === 411) {
-            toast.error("Server error, please try again later.");
-          } else {
-            toast.error("An unexpected error occurred.");
-          }
-        } else {
-          toast.error("Network error, please check your connection.");
-        }
-      } finally {
-        setIsProcessing(false);
-      }
-    };
-
-
   const handleComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!newComment.trim()) return
@@ -251,34 +223,16 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
     }
 
     fetchBookmarkStatus()
-  }, [blog.id])
+  }, [blog.id, token])
 
-  const [isBookmarked, setIsBookmarked] = useState(false)
-  // const [showComments, setShowComments] = useState(false)
-  // const [newComment, setNewComment] = useState('')
-
-  const [savedBlogId, setSavedBlogId] = useState(null)
-  //   onst [isBookmarked, setIsBookmarked] = useState(false);
-  // const [savedBlogId, setSavedBlogId] = useState(null);
-  const [isLoading, setIsLoading] = useState(false) // store the blogId here when stored in the database
-  // const [showShareModal, setShowShareModal] = useState(false);
+  // store the blogId here when stored in the database
 
   if (!localStorage.getItem('token')) {
     navigate('/signin')
     return
   }
-  // const handleLike = () => {
-  //   setIsLiked(!isLiked)
-  //   settempBlog(prevtempBlog => ({
-  //     ...prevtempBlog,
-  //     likes: isLiked ? prevtempBlog.likes - 1 : prevtempBlog.likes + 1
-  //   }))
-  // }
 
   const handleBookmark = async () => {
-    // Retrieve the authentication token from local storage
-
-    // Check if user is authenticated
     if (!token) {
       toast.error('Please sign in')
       return
@@ -309,7 +263,7 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
       } else {
         // Removing saved blog
         // Use savedBlogId if available, otherwise use blog.id as fallback
-        const blogToRemove = blog.id
+        const blogToRemove = blog.id || savedBlogId
 
         await axios.delete(
           `${BACKEND_URL}/api/v1/blog/removesavedblog/${blogToRemove}`,
@@ -401,23 +355,6 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
                     __html: DOMPurify.sanitize(blog.content)
                   }}
                 ></p>
-
-                {/* <p className="mb-4">
-                  From living walls that purify air to solar-integrated facades
-                  that generate power, the innovations in sustainable architecture
-                  are transforming our cities into living, breathing ecosystems.
-                  These advancements are not just about environmental
-                  responsibility—they're about creating spaces that enhance human
-                  wellbeing and foster community connection.
-                </p>
-  
-                <p className="mb-4">
-                  Recent developments in materials science have introduced new
-                  possibilities for sustainable construction. Self-healing
-                  concrete, transparent solar panels, and biodegradable building
-                  materials are just a few examples of how technology is
-                  revolutionizing the industry.
-                </p> */}
               </article>
 
               {/* Interaction Buttons */}
@@ -475,9 +412,6 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
                         : 'text-gray-600'
                     } group-hover:scale-110 transition-transform`}
                   />
-                  {/* <span className="text-gray-600">
-                    {saved ? "Saved" : "Save"}
-                  </span> */}
                 </button>
               </div>
 
@@ -549,50 +483,7 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
             </main>
 
             {/* Author Sidebar */}
-            <aside className='lg:col-span-1'>
-              <div className='sticky top-44 bg-gray-900 rounded-lg shadow-lg p-6'>
-                <div className='text-center mb-6'>
-                  <img
-                    src='https://randomuser.me/api/portraits/women/45.jpg'
-                    alt='Emma Roberts'
-                    className='w-24 h-24 rounded-full mx-auto mb-4'
-                  />
-                  <h2 className='text-xl text-gray-300 font-bold'>
-                    Emma Roberts
-                  </h2>
-                  <p className='text-gray-300'>Architecture & Design Editor</p>
-                </div>
-
-                <div className='mb-6'>
-                  <p className='text-gray-300'>
-                    Award-winning architecture journalist with 10+ years of
-                    experience covering sustainable design and urban
-                    development. Previously wrote for Architectural Digest and
-                    Dwell Magazine.
-                  </p>
-                </div>
-
-                <div className='border-t border-gray-200 pt-4'>
-                  <h3 className='font-semibold mb-3 text-gray-300'>
-                    Connect with Emma
-                  </h3>
-                  <div className='flex justify-center space-x-4'>
-                    <a className='text-gray-300 hover:text-blue-300 cursor-pointer'>
-                      <Twitter className='w-5 h-5' />
-                    </a>
-                    <a className='text-gray-300 hover:text-blue-300 cursor-pointer'>
-                      <Linkedin className='w-5 h-5' />
-                    </a>
-                    <a className='text-gray-300 hover:text-blue-300 cursor-pointer'>
-                      <Globe className='w-5 h-5' />
-                    </a>
-                    <a className='text-gray-300 hover:text-blue-300 cursor-pointer'>
-                      <Mail className='w-5 h-5' />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </aside>
+            <AuthorAsidebar authorId={authorId} />
           </div>
 
           {/* Footer */}
