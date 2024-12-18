@@ -159,6 +159,7 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
   const handleComment = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!newComment.trim()) return
+    
   try{
     const response = await axios.post(`${BACKEND_URL}/api/v1/blog/${blog.id}/comment`,
     {
@@ -169,7 +170,7 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
         Authorization: token
       }
     })
-    if(response && response.data){
+    if(response && response.data && response.data.post){
       toast.success('Comment Posted')
       setNewComment('')
 
@@ -178,12 +179,15 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
     console.error('Error:', e)
 
     // Handle specific error scenarios
-    if (axios.isAxiosError(e) && e.response?.status === 411) {
+    if (axios.isAxiosError(e) && e.response?.status === 401) {
       
-      toast.error('Please Try Again')
-    }else if (axios.isAxiosError(e) && e.response?.status === 404) {
+      toast.error('Log In First')
+    }else if (axios.isAxiosError(e) && e.response?.status === 411) {
       
-      toast.error('Server Error / Try Agian')
+      toast.error('Try Again')
+    }else if (axios.isAxiosError(e) && e.response?.status === 500) {
+      
+      toast.error('Internal Server Error')
     }
   }
     
