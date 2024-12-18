@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react'
 import { BACKEND_URL } from '../config'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import { format, differenceInHours } from 'date-fns';
+
 // import SavedBlogs from '../components/UserProfile.tsx/SavedBlogs';
 
 export interface Blog {
@@ -243,5 +245,20 @@ export const useSavedBlogs = () => {
   return {
     loadingsavedblogs,
     savedblogs
+  }
+}
+
+
+
+export default function formatTimestamp(timestamp: string) {
+  const date = new Date(timestamp);
+  const now = new Date();
+
+  if (differenceInHours(now, date) < 24) {
+    // Show time if less than 24 hours
+    return format(date, 'hh:mm a'); // Example: "02:15 PM"
+  } else {
+    // Show date if more than 24 hours
+    return format(date, 'MMM d, yyyy'); // Example: "Dec 18, 2024"
   }
 }

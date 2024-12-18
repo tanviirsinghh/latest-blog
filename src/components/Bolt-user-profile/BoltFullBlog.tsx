@@ -10,6 +10,7 @@ import DOMPurify from 'dompurify'
 import BoltFooter from './BoltFooter'
 import Navbar from './Navbar'
 import AuthorAsidebar from './AuthorAsidebar'
+import { formatISO } from 'date-fns'
 
 export default function BoltFullBlog ({ blog }: { blog: Blog }) {
   const [likeStatus, setLikeStatus] = useState(false)
@@ -91,7 +92,6 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
   const handleLike = async () => {
     if (isProcessing) return // Avoid duplicate requests
     setIsProcessing(true)
-
     setLikeStatus(prevStatus => !prevStatus)
     // setLikeCount(prevCount => (likeStatus ? prevCount - 1 : prevCount + 1));
 
@@ -156,19 +156,37 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
       likes: 15
     }
   ])
-  const handleComment = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleComment = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!newComment.trim()) return
-    const comment = {
-      id: comments.length + 1,
-      author: 'Current User',
-      avatar: 'https://randomuser.me/api/portraits/women/68.jpg',
-      date: 'Just now',
-      content: newComment,
-      likes: 0
+  try{
+    const response = await axios.post(`${BACKEND_URL}/api/v1/blog/${blog.id}/comment`,
+    {
+          content: newComment, 
+          timestamp: formatISO(new Date()),
+    },{
+      headers:{
+        Authorization: token
+      }
+    })
+    if(response && response.data){
+      toast.success('Comment Posted')
+      setNewComment('')
+
     }
-    setComments([comment, ...comments])
-    setNewComment('')
+  }catch (e) {
+    console.error('Error:', e)
+
+    // Handle specific error scenarios
+    if (axios.isAxiosError(e) && e.response?.status === 411) {
+      
+      toast.error('Please Try Again')
+    }else if (axios.isAxiosError(e) && e.response?.status === 404) {
+      
+      toast.error('Server Error / Try Agian')
+    }
+  }
+    
   }
 
   const navigate = useNavigate()
