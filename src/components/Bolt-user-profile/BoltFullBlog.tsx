@@ -12,6 +12,7 @@ import Navbar from './Navbar'
 import AuthorAsidebar from './AuthorAsidebar'
 import { formatISO } from 'date-fns'
 import { ThreeDot } from 'react-loading-indicators'
+import formatTimestamp from '../../hooks/index';
 
 
 
@@ -502,12 +503,12 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
                   </div>
                 </form>
 
-                <div className='space-y-6'>
+                <div className='space-y-6 bg-yellow-900 overflow-auto'>
                   {comments && comments.map((comment: Comments)  => (
                     <div key={comment.id} className='flex space-x-4'>
                       <img
-                        src={comment.user.name}
-                        alt={`${comment.user.profilePicture}'s avatar`}
+                        src={comment.user.profilePicture}
+                        alt={`${comment.user.name}'s avatar`}
                         className='w-10 h-10 rounded-full'
                       />
                       <div className='flex-1'>
@@ -518,7 +519,7 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
                                 {comment.user.name}
                               </h4>
                               <p className='text-white text-sm'>
-                                {comment.timestamp}
+                                {formatTimestamp(comment.timestamp)}
                               </p>
                             </div>
                             <button className='text-gray-400 hover:text-gray-600'>
