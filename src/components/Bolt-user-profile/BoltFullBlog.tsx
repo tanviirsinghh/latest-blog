@@ -69,7 +69,6 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
             setLikeStatus(true)
           } else {
             setLikeStatus(false)
-          
           }
         }
       } catch (e) {
@@ -78,7 +77,6 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
         // Handle specific error scenarios
         if (axios.isAxiosError(e) && e.response?.status === 411) {
           setLikeStatus(false)
-
           toast.error('Error while fetching Like')
         }
       } finally {
