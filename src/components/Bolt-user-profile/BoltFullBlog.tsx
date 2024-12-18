@@ -11,8 +11,25 @@ import BoltFooter from './BoltFooter'
 import Navbar from './Navbar'
 import AuthorAsidebar from './AuthorAsidebar'
 import { formatISO } from 'date-fns'
+import { ThreeDot } from 'react-loading-indicators'
 
+
+
+export interface Comments {
+  id:    string
+  content: string
+  timestamp: string
+  user:{
+    name:string,
+    profilePicture:string,
+    id:string
+  }
+ 
+  
+}
 export default function BoltFullBlog ({ blog }: { blog: Blog }) {
+  
+  const navigate = useNavigate()
   const [likeStatus, setLikeStatus] = useState(false)
   const [likeCount, setLikeCount] = useState(0)
   const [showShareMenu, setShowShareMenu] = useState(false)
@@ -25,6 +42,8 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
   const [isLoading, setIsLoading] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const authorId = blog.authorId
+  const [comments, setComments] = useState<Comments[]>([])
+
 
   const fetchLikeCount = async () => {
     setIsLoading(true)
@@ -89,6 +108,8 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
     // Fetch status on component mount or blog.id change
   }, [blog.id, token, likeStatus])
 
+
+
   const handleLike = async () => {
     if (isProcessing) return // Avoid duplicate requests
     setIsProcessing(true)
@@ -136,31 +157,50 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
     }
   }
 
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      author: 'Sarah Johnson',
-      avatar: 'https://randomuser.me/api/portraits/women/12.jpg',
-      date: '2 days ago',
-      content:
-        'This is such an insightful article! I especially loved the part about sustainable practices in modern architecture.',
-      likes: 24
-    },
-    {
-      id: 2,
-      author: 'Michael Chen',
-      avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
-      date: '1 day ago',
-      content:
-        "Great points about urban development. I'd love to see more examples of successful implementations in different cities.",
-      likes: 15
+
+
+  const fetchComments = async () => {
+    setIsLoading(true)
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/api/v1/blog/${blog.id}/comments`,
+        { headers: { Authorization: token } }
+      )
+
+      if (response && response.data) {
+        // Toggle like state and adjust like count
+        setComments(response.data.comments)
+        console.log("all comments" + JSON.stringify(response.data))
+        setIsLoading(false)
+      }
+    } catch (e) {
+      console.error('Error:', e)
+
+      // Handle specific error scenarios
+      if (axios.isAxiosError(e) && e.response?.status === 411) {
+        // setLikeStatus(false)
+        toast.error('Error while fetching Like')
+        setIsLoading(false)
+
+      }
     }
-  ])
+  }
+  useEffect(() => {
+    fetchComments()
+    // Fetch status on component mount or blog.id change
+  }, [blog.id])
+
+
   const handleComment = async (e: React.FormEvent<HTMLFormElement>) => {
+    // if(isLoading){
+    //   return <ThreeDot variant="brick-stack" color="#366bcc" size="medium" text="" textColor="#1e58b3" />
+    // }
     e.preventDefault()
     if (!newComment.trim()) return
-    
+    console.log('frontend comment api triggered ')
   try{
+  
+
     const response = await axios.post(`${BACKEND_URL}/api/v1/blog/${blog.id}/comment`,
     {
           content: newComment, 
@@ -170,10 +210,11 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
         Authorization: token
       }
     })
-    if(response && response.data && response.data.post){
+    if(response && response.data){
       toast.success('Comment Posted')
+      console.log('comment posted successfully' + JSON.stringify(response.data))
       setNewComment('')
-
+      // setIsLoading(false)
     }
   }catch (e) {
     console.error('Error:', e)
@@ -182,18 +223,20 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
     if (axios.isAxiosError(e) && e.response?.status === 401) {
       
       toast.error('Log In First')
+      // setIsLoading(false)
     }else if (axios.isAxiosError(e) && e.response?.status === 411) {
       
       toast.error('Try Again')
+      // setIsLoading(false)
     }else if (axios.isAxiosError(e) && e.response?.status === 500) {
       
       toast.error('Internal Server Error')
+      // setIsLoading(false)
     }
   }
     
   }
 
-  const navigate = useNavigate()
   // fetch the save blog condition to render  on the save button
 
   useEffect(() => {
@@ -434,7 +477,7 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
                   Comments
                 </h3>
 
-                <form onSubmit={handleComment} className='mb-8'>
+                <form onSubmit={handleComment}  className='mb-8'>
                   <div className='flex items-start space-x-4'>
                     <img
                       src={userDetails?.profilePicture}
@@ -460,11 +503,11 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
                 </form>
 
                 <div className='space-y-6'>
-                  {comments.map(comment => (
+                  {comments && comments.map((comment: Comments)  => (
                     <div key={comment.id} className='flex space-x-4'>
                       <img
-                        src={comment.avatar}
-                        alt={`${comment.author}'s avatar`}
+                        src={comment.user.name}
+                        alt={`${comment.user.profilePicture}'s avatar`}
                         className='w-10 h-10 rounded-full'
                       />
                       <div className='flex-1'>
@@ -472,10 +515,10 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
                           <div className='flex items-center justify-between mb-2'>
                             <div>
                               <h4 className='font-semibold'>
-                                {comment.author}
+                                {comment.user.name}
                               </h4>
                               <p className='text-white text-sm'>
-                                {comment.date}
+                                {comment.timestamp}
                               </p>
                             </div>
                             <button className='text-gray-400 hover:text-gray-600'>

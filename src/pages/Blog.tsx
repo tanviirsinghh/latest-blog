@@ -4,7 +4,7 @@ import {  useBlog } from "../hooks";
 
 import {useNavigate, useParams} from "react-router-dom";
 import Navbar from '../components/Bolt-user-profile/Navbar'
-import NewFullBlog from './NewFullBlog';
+// import NewFullBlog from './NewFullBlog';
 import BoltFullBlog from "../components/Bolt-user-profile/BoltFullBlog";
 
 
