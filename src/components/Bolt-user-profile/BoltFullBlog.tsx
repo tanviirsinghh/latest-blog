@@ -1,4 +1,4 @@
-import { Heart, Share2, Bookmark, MoreVertical, Clock } from 'lucide-react'
+import { Heart, Share2, Bookmark, Clock } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../Loading'
@@ -11,8 +11,9 @@ import BoltFooter from './BoltFooter'
 import Navbar from './Navbar'
 import AuthorAsidebar from './AuthorAsidebar'
 import { formatISO } from 'date-fns'
-import { ThreeDot } from 'react-loading-indicators'
-import formatTimestamp from '../../hooks/index';
+// import { ThreeDot } from 'react-loading-indicators'
+// import formatTimestamp from '../../hooks/index';
+import Comments from '../Comments'
 
 
 
@@ -503,37 +504,13 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
                   </div>
                 </form>
 
-                <div className='space-y-6 bg-yellow-900 h-96 overflow-scroll '>
-                  {comments && comments.map((comment: Comments)  => (
-                    <div key={comment.id} className='flex space-x-4'>
-                      <img
-                        src={comment.user.profilePicture}
-                        alt={`${comment.user.name}'s avatar`}
-                        className='w-10 h-10 rounded-full'
-                      />
-                      <div className='flex-1'>
-                        <div className='text-white bg-gray-800 shadow-md p-4 rounded-lg'>
-                          <div className='flex items-center justify-between mb-2'>
-                            <div>
-                              <h4 className='font-semibold'>
-                                {comment.user.name}
-                              </h4>
-                              <p className='text-white text-sm'>
-                                {formatTimestamp(comment.timestamp)}
-                              </p>
-                            </div>
-                            <button className='text-gray-400 hover:text-gray-600'>
-                              <MoreVertical className='w-4 h-4' />
-                            </button>
-                          </div>
-                          <p>{comment.content}</p>
-                        </div>
-                        {/* <div className="flex items-center space-x-4 mt-2 text-sm text-gray-600">
-                          <button className="hover:text-blue-500">Reply</button>
-                          <button className="hover:text-blue-500">Like</button>
-                        </div> */}
-                      </div>
-                    </div>
+                <div className='space-y-6  h-96 overflow-scroll '>
+                  {comments && comments.map((comment)  => (
+                    <Comments
+                    id={comment.id}
+                    content={comment.content}
+                    timestamp={ comment.timestamp}
+                    user={comment.user}/>
                   ))}
                 </div>
               </section>

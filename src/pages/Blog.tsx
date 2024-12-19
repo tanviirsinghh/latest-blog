@@ -42,6 +42,8 @@ export default function  Blog  () {
    {/* <FullBlog blog={blog!} /> */}
    {/*  in blog! we are telling the typescript that blog object is not null, trust me and render, */}
    {/* <NewFullBlog blog={blog!}/> */}
-   <BoltFullBlog blog={blog!}/>
+  { blog && <BoltFullBlog blog={blog!}/>}
+   {/* {blogData && <BoltFullBlog blog={blogData} />} */}
+
     </div>
 }

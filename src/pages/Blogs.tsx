@@ -8,6 +8,8 @@ import NewSingleBlog from '../components/NewSingleBlog';
 
 export const Blogs = () => {
   const { loading, blogs } = useBlogs()
+  console.log('sare blogs the data with comments'+ JSON.stringify(blogs))
+
   const navigate = useNavigate()
   if (!localStorage.getItem('token')) {
     navigate('/signin')
@@ -40,6 +42,7 @@ export const Blogs = () => {
   <div className="flex w-full  pt-[4rem] ">
     <main className="flex justify-center w-full">
       {/* Blogs Container */}
+      
       <div className="h-full  max-w-[50rem] mt-9  flex flex-col items-center">
         {blogs.map(blog => (
           <NewSingleBlog
@@ -50,11 +53,13 @@ export const Blogs = () => {
             content={blog.content}
             publishDate=" save the date also and then fetch here"
             url={blog.url}
+            like={blog.like}
+            comment={blog.comment}
 
             // make user upload the photo then fetch here
-            authorAvatar=''
-            initialLikes= {1}
-            initialComments={5}
+            // authorAvatar=''
+            // initialLikes= {1}
+            // initialComments={5}
           />
         ))}
       </div>

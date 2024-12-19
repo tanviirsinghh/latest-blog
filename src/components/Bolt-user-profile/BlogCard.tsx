@@ -1,5 +1,5 @@
 import DOMPurify from 'dompurify'
-import { Heart, MessageCircle, Bookmark, Share2 } from 'lucide-react'
+import {  Bookmark } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 interface BlogCardProps {
@@ -8,10 +8,16 @@ interface BlogCardProps {
   content: string
   url: string
   authorName:string
-  authorAvatar: string
+  
+    like:number,
+    comment:number
+    saved:number
+  
+
+  // authorAvatar: string
   publishDate: string
-  initialLikes: number
-  initialComments: number
+  // initialLikes: number
+  // initialComments: number
 }
 
 export function BlogCard ({
@@ -22,9 +28,13 @@ export function BlogCard ({
   url,
   // authorAvatar,
   authorName,
-  // initialLikes,
+like,
+ comment,
+ saved
   // initialComments
 }: BlogCardProps) {
+
+  // console.log(like, title)
   return (
     <Link to={`/blog/${id}`}>
     <article key={id} className='glass-card rounded-xl overflow-hidden hover:glow'>
@@ -70,20 +80,22 @@ export function BlogCard ({
 
         <div className='flex items-center justify-between pt-4 border-t border-white/10'>
           <div className='flex items-center space-x-4'>
-            <button className='flex items-center space-x-1 text-gray-400 hover:text-primary transition-colors'>
-              <Heart className='h-5 w-5' />
-              <span>{"likes"}</span>
-            </button>
-            <button className='flex items-center space-x-1 text-gray-400 hover:text-primary transition-colors'>
-              <MessageCircle className='h-5 w-5' />
-              <span>{"comments"}</span>
-            </button>
-            <button className='flex items-center space-x-1 text-gray-400 hover:text-primary transition-colors'>
+            <h4 className='flex items-center font-mono space-x-1 text-gray-400 hover:text-primary transition-colors'>
+              {/* <Heart className='h-5 w-5' /> */}
+              <span className='text-red-500 font-mono'><h4> {like} Likes</h4> </span>
+            </h4>
+            <h4 className=' font-mono flex items-center space-x-1 text-gray-400 hover:text-primary transition-colors'>
+              {/* <MessageCircle className='h-5 w-5' /> */}
+              <span className='text-grey-400 font-mono'><h4> {comment} Comments:</h4> </span>
+            </h4>
+            {/* <button className='flex items-center space-x-1 text-gray-400 hover:text-primary transition-colors'>
               <Share2 className='h-5 w-5' />
-            </button>
+            </button> */}
           </div>
-          <button className='text-gray-400 hover:text-primary transition-colors'>
+          <button className='text-grey-400 flex justify-center items-center  hover:text-primary transition-colors'>
             <Bookmark className='h-5 w-5' />
+            <span className='text-blue-500 font-mono p-1'  ><h4> {saved}</h4> </span>
+
           </button>
         </div>
       </div>

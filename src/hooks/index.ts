@@ -12,6 +12,11 @@ export interface Blog {
   title: string
   id: string
   url: string //changed from number
+  _count:{
+    like:number,
+    comment:number
+    savedPosts:number
+  }
   author: {
     name: string
   }
@@ -23,7 +28,12 @@ export interface SavedBlog {
   title: string
   id: string
   url: string
-  authorId: string //changed from number
+  authorId: string
+  _count:{
+    like:number,
+    comment:number
+    savedPosts:number
+  }//changed from number
   author: {
     name: string
   }
@@ -111,9 +121,10 @@ export function useUserDetails (authorId?: string) {
 }
 
 export const useBlog = ({ id }: { id: string }) => {
+  const navigate = useNavigate()
+
   const [loading, setLoading] = useState(true)
   const [blog, setBlog] = useState<Blog>()
-  const navigate = useNavigate()
   useEffect(() => {
     const getBlogData = async () => {
       const token = localStorage.getItem('token')

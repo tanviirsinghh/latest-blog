@@ -1,6 +1,6 @@
 import './App.css'
 import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import Loading from './components/Loading'
 // import NewFullBlog from './pages/NewFullBlog'
@@ -15,6 +15,7 @@ import BoltTextEditor from './components/Bolt-user-profile/BoltTextEditor'
 import BoltLandingPage from './pages/BoltLandingPage'
 import BoltMainPage from './pages/BoltMainPage'
 import BoltFullBlog from './components/Bolt-user-profile/BoltFullBlog'
+import { useBlog } from './hooks'
 // import userProfileBolt from './components/Bolt-user-profile/UserProfileBolt';
 // Implementing lazy loading
 // const Signup = React.lazy(() => import('./pages/Signup'))
@@ -26,7 +27,7 @@ const UserProfileBolt = React.lazy(() => import('./components/Bolt-user-profile/
 
 function App () {
   const token = localStorage.getItem('token')
-
+      
   return (
     <>
       <ToastContainer />
@@ -53,7 +54,7 @@ function App () {
             path='/boltfullblog'
             element={
               <React.Suspense fallback={<Loading />}>
-                <BoltFullBlog />
+                <BoltFullBlog  />
               </React.Suspense>
             }
           ></Route>
@@ -143,7 +144,7 @@ function App () {
           ></Route>
 
           <Route
-            path='userprofile'
+            path='/userprofile'
             element={
               <React.Suspense fallback={<Loading />}>
                 {token ?  <UserProfileBolt />: <Signin />}

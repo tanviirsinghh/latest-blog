@@ -1,7 +1,7 @@
 import ProfileInfo from '../components/UserProfile.tsx/ProfileInfo'
 import SavedBlogs from '../components/UserProfile.tsx/SavedBlogs'
 import MyActivities from '../components/UserProfile.tsx/MyActivities'
-import Navbar from '../components/Navbar'
+import Navbar from '../components/Bolt-user-profile/Navbar'
 // import NewLikeComments from '../components/UserProfile.tsx/NewLikeComment';
 import { useUserDetails } from '../hooks/index';
 import { useNavigate } from 'react-router-dom';

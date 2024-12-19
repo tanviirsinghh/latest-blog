@@ -36,11 +36,15 @@ export function BlogList () {
         content={blog.content}
         publishDate=" save the date also and then fetch here"
         url={blog.url}
+        like={blog._count.like}
+        comment={blog._count.comment}
+        saved={blog._count.savedPosts}
 
         // make user upload the photo then fetch here
-        authorAvatar=''
-        initialLikes= {1}
-        initialComments={5} />
+        // authorAvatar=''
+        // initialLikes= {1}
+        // initialComments={5}
+         />
       ))}
       {/* <BlogCard/> */}
     </div>
