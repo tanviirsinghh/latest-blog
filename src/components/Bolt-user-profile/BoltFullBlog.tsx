@@ -15,22 +15,19 @@ import { formatISO } from 'date-fns'
 // import formatTimestamp from '../../hooks/index';
 import Comments from '../Comments'
 
-
-
 export interface Comments {
-  id:    string
+  id: string
   content: string
   timestamp: string
-  user:{
-    name:string,
-    profilePicture:string,
-    id:string
+  user: {
+    name: string
+    profilePicture: string
+    id: string
   }
- 
-  
 }
-export default function BoltFullBlog ({ blog }: { blog: Blog }) {
-  
+
+
+export default function BoltFullBlog ({ blog }: {blog:Blog}, editButton: boolean) {
   const navigate = useNavigate()
   const [likeStatus, setLikeStatus] = useState(false)
   const [likeCount, setLikeCount] = useState(0)
@@ -45,8 +42,6 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
   const [isProcessing, setIsProcessing] = useState(false)
   const authorId = blog.authorId
   const [comments, setComments] = useState<Comments[]>([])
-
-
   const fetchLikeCount = async () => {
     setIsLoading(true)
     try {
@@ -110,8 +105,6 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
     // Fetch status on component mount or blog.id change
   }, [blog.id, token, likeStatus])
 
-
-
   const handleLike = async () => {
     if (isProcessing) return // Avoid duplicate requests
     setIsProcessing(true)
@@ -159,8 +152,6 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
     }
   }
 
-
-
   const fetchComments = async () => {
     setIsLoading(true)
     try {
@@ -172,7 +163,7 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
       if (response && response.data) {
         // Toggle like state and adjust like count
         setComments(response.data.comments)
-        console.log("all comments" + JSON.stringify(response.data))
+        console.log('all comments' + JSON.stringify(response.data))
         setIsLoading(false)
       }
     } catch (e) {
@@ -183,7 +174,6 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
         // setLikeStatus(false)
         toast.error('Error while fetching Like')
         setIsLoading(false)
-
       }
     }
   }
@@ -192,7 +182,6 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
     // Fetch status on component mount or blog.id change
   }, [blog.id])
 
-
   const handleComment = async (e: React.FormEvent<HTMLFormElement>) => {
     // if(isLoading){
     //   return <ThreeDot variant="brick-stack" color="#366bcc" size="medium" text="" textColor="#1e58b3" />
@@ -200,43 +189,42 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
     e.preventDefault()
     if (!newComment.trim()) return
     console.log('frontend comment api triggered ')
-  try{
-  
-
-    const response = await axios.post(`${BACKEND_URL}/api/v1/blog/${blog.id}/comment`,
-    {
-          content: newComment, 
-          timestamp: formatISO(new Date()),
-    },{
-      headers:{
-        Authorization: token
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/v1/blog/${blog.id}/comment`,
+        {
+          content: newComment,
+          timestamp: formatISO(new Date())
+        },
+        {
+          headers: {
+            Authorization: token
+          }
+        }
+      )
+      if (response && response.data) {
+        toast.success('Comment Posted')
+        console.log(
+          'comment posted successfully' + JSON.stringify(response.data)
+        )
+        setNewComment('')
+        // setIsLoading(false)
       }
-    })
-    if(response && response.data){
-      toast.success('Comment Posted')
-      console.log('comment posted successfully' + JSON.stringify(response.data))
-      setNewComment('')
-      // setIsLoading(false)
-    }
-  }catch (e) {
-    console.error('Error:', e)
+    } catch (e) {
+      console.error('Error:', e)
 
-    // Handle specific error scenarios
-    if (axios.isAxiosError(e) && e.response?.status === 401) {
-      
-      toast.error('Log In First')
-      // setIsLoading(false)
-    }else if (axios.isAxiosError(e) && e.response?.status === 411) {
-      
-      toast.error('Try Again')
-      // setIsLoading(false)
-    }else if (axios.isAxiosError(e) && e.response?.status === 500) {
-      
-      toast.error('Internal Server Error')
-      // setIsLoading(false)
+      // Handle specific error scenarios
+      if (axios.isAxiosError(e) && e.response?.status === 401) {
+        toast.error('Log In First')
+        // setIsLoading(false)
+      } else if (axios.isAxiosError(e) && e.response?.status === 411) {
+        toast.error('Try Again')
+        // setIsLoading(false)
+      } else if (axios.isAxiosError(e) && e.response?.status === 500) {
+        toast.error('Internal Server Error')
+        // setIsLoading(false)
+      }
     }
-  }
-    
   }
 
   // fetch the save blog condition to render  on the save button
@@ -369,9 +357,9 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
   //   setShowShareModal(true);
   // };
 
-  // const closeShareModal = () => {
-  //   setShowShareModal(false);
-  // };
+  const handleClick = () => {
+    console.log('Edit the blog')
+  }
   if (isLoading) {
     return <Loading />
   }
@@ -386,22 +374,33 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
             <main className='lg:col-span-2'>
               {/* Header Section */}
               <header className='mb-8'>
-                <h1 className=' text-gray-300 text-4xl font-bold mb-4'>
+                <h1 className=' text-gray-300 text-4xl font-bold mb-4 '>
                   {blog.title}
                 </h1>
-                <div className='flex items-center space-x-4 text-gray-400 text-sm'>
-                  <div className='flex items-center'>
-                    <Clock className='w-4 h-4 mr-1' />
-                    <span>8 min read</span>
+                <div className='flex justify-between items-center space-x-4  text-gray-400 text-sm'>
+                  <div className='flex w-44  justify-between items-center'>
+                    <div className='flex items-center'>
+                      <Clock className='w-4 h-4 mr-1' />
+                      <span>8 min read</span>
+                    </div>
+                    <span>date here</span>
                   </div>
-                  <span>date here</span>
+
+                 {editButton ?<div className='flex w-40  '>
+                    <button  onClick={handleClick}className='relative w-32 inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50'>
+                      <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
+                      <span className='inline-flex tracking-widest h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl'>
+                        Edit
+                      </span>
+                    </button>
+                  </div> : " " } 
                 </div>
               </header>
 
               {/* Featured Image */}
               <img
                 src={blog.url}
-                alt={blog.author.name}
+                alt={blog.author?.name}
                 className='w-full h-[400px] object-cover rounded-lg mb-8'
               />
 
@@ -479,7 +478,7 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
                   Comments
                 </h3>
 
-                <form onSubmit={handleComment}  className='mb-8'>
+                <form onSubmit={handleComment} className='mb-8'>
                   <div className='flex items-start space-x-4'>
                     <img
                       src={userDetails?.profilePicture}
@@ -505,13 +504,15 @@ export default function BoltFullBlog ({ blog }: { blog: Blog }) {
                 </form>
 
                 <div className='space-y-6  h-96 overflow-scroll '>
-                  {comments && comments.map((comment)  => (
-                    <Comments
-                    id={comment.id}
-                    content={comment.content}
-                    timestamp={ comment.timestamp}
-                    user={comment.user}/>
-                  ))}
+                  {comments &&
+                    comments.map(comment => (
+                      <Comments
+                        id={comment.id}
+                        content={comment.content}
+                        timestamp={comment.timestamp}
+                        user={comment.user}
+                      />
+                    ))}
                 </div>
               </section>
             </main>

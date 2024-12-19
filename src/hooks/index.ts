@@ -21,8 +21,11 @@ export interface Blog {
     name: string
   }
   authorId: string
-  editButton:boolean
+  // editButton:boolean
   // "authorName":string
+}
+export interface EditButton{
+  editButton:  boolean
 }
 export interface SavedBlog {
   content: string
@@ -38,6 +41,7 @@ export interface SavedBlog {
   author: {
     name: string
   }
+  // editButon:boolean
   // "authorName":string
 }
 // interface Post {
@@ -126,6 +130,8 @@ export const useBlog = ({ id }: { id: string }) => {
 
   const [loading, setLoading] = useState(true)
   const [blog, setBlog] = useState<Blog>()
+  const [editButton, setEditButton] = useState()
+
   useEffect(() => {
     const getBlogData = async () => {
       const token = localStorage.getItem('token')
@@ -138,7 +144,12 @@ export const useBlog = ({ id }: { id: string }) => {
         const response = await axios.get(`${BACKEND_URL}/api/v1/blog/${id}`, {
           headers: { Authorization: token }
         })
-        setBlog(response.data)
+        setBlog(response.data.post)
+        setEditButton(response.data.editButton)
+        // console.log( "response edit button, frontend hook")
+
+      //  console.log( response.data.editButton)
+
       } catch (error) {
         console.error('Error fetching blog data:', error)
       } finally {
@@ -150,7 +161,8 @@ export const useBlog = ({ id }: { id: string }) => {
 
   return {
     loading,
-    blog
+    blog,
+    editButton
   }
 }
 
