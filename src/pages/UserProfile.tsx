@@ -66,7 +66,6 @@ export default function UserProfile () {
   const navigate = useNavigate();
   // useParams will get all the data related to the parameter, it will provuserIde the params to us
   //  const userId = localStorage.getItem('userId')
-  //  console.log(userId)
    const {loading, userDetails,setUserDetails} = useUserDetails(
     // userId: userId || " "
    )
