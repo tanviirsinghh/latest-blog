@@ -86,7 +86,7 @@ like,
             </h4>
             <h4 className=' font-mono flex items-center space-x-1 text-gray-400 hover:text-primary transition-colors'>
               {/* <MessageCircle className='h-5 w-5' /> */}
-              <span className='text-grey-400 font-mono'><h4> {comment} Comments:</h4> </span>
+              <span className='text-grey-400 font-mono'><h4> {comment} Comments</h4> </span>
             </h4>
             {/* <button className='flex items-center space-x-1 text-gray-400 hover:text-primary transition-colors'>
               <Share2 className='h-5 w-5' />
