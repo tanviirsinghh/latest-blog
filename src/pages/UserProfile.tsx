@@ -151,7 +151,7 @@ if(loading){
       
       <div className='h-[34rem] w-full  flex flex-col justify-center items-center'>
        <div className='h-16 w-56  flex justify-center items-center '>
-          <h1 className='text-3xl font-bold font-sans  '>User Profile</h1>
+          <h1 className='text-3xl font-bold font-sans '>User Profile</h1>
         </div>
         <div className='h-3/4 w-3/4 flex justify-evenly items-center  '>
           <ProfileInfo

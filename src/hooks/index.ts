@@ -21,6 +21,7 @@ export interface Blog {
     name: string
   }
   authorId: string
+  editButton:boolean
   // "authorName":string
 }
 export interface SavedBlog {

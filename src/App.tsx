@@ -16,6 +16,7 @@ import BoltLandingPage from './pages/BoltLandingPage'
 import BoltMainPage from './pages/BoltMainPage'
 import BoltFullBlog from './components/Bolt-user-profile/BoltFullBlog'
 import { useBlog } from './hooks'
+import GithubCopilot from './components/GithubCopilot'
 // import userProfileBolt from './components/Bolt-user-profile/UserProfileBolt';
 // Implementing lazy loading
 // const Signup = React.lazy(() => import('./pages/Signup'))
@@ -50,6 +51,14 @@ function App () {
               </React.Suspense>
             }
           ></Route>
+           {/* <Route
+            path='/github'
+            element={
+              <React.Suspense fallback={<Loading />}>
+                <GithubCopilot />
+              </React.Suspense>
+            }
+          ></Route> */}
           <Route
             path='/boltfullblog'
             element={
