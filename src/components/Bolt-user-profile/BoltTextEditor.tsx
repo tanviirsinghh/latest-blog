@@ -3,9 +3,10 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Save, Settings, X, Bold, Italic, List, AlignLeft, AlignCenter, AlignRight, Link, Image, Quote } from 'lucide-react';
+import { BACKEND_URL } from '../../config';
 
 // Config
-const BACKEND_URL = 'http://localhost:3000';
+// const BACKEND_URL = 'http://localhost:3000';
 
 export default function BoltTextEditor() {
   const navigate = useNavigate();

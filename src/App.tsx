@@ -1,6 +1,6 @@
 import './App.css'
 import React from 'react'
-import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import Loading from './components/Loading'
 // import NewFullBlog from './pages/NewFullBlog'
@@ -17,6 +17,7 @@ import BoltMainPage from './pages/BoltMainPage'
 import BoltFullBlog from './components/Bolt-user-profile/BoltFullBlog'
 import { useBlog } from './hooks'
 import GithubCopilot from './components/GithubCopilot'
+import EditBlog from './components/EditBlog'
 // import userProfileBolt from './components/Bolt-user-profile/UserProfileBolt';
 // Implementing lazy loading
 // const Signup = React.lazy(() => import('./pages/Signup'))
@@ -126,7 +127,14 @@ function App () {
               </React.Suspense>
             }
           ></Route>
-         
+         <Route
+            path='/editblog'
+            element={
+              <React.Suspense fallback={<Loading />}>
+                <EditBlog />
+              </React.Suspense>
+            }
+          ></Route>
           <Route
             path='/'
             element={
