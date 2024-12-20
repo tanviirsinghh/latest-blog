@@ -358,7 +358,10 @@ export default function BoltFullBlog ({ blog }: {blog:Blog}, editButton: boolean
   // };
 
   const handleClick = () => {
-    console.log('Edit the blog')
+    // toast.success('Edit the blog')
+  //  console.log(JSON.stringify(blog))
+     
+    navigate(`/editblog/${blog.id}`, {state: {blog}})
   }
   if (isLoading) {
     return <Loading />

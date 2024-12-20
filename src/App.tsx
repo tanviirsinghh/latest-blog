@@ -128,7 +128,7 @@ function App () {
             }
           ></Route>
          <Route
-            path='/editblog'
+            path='/editblog/:id'
             element={
               <React.Suspense fallback={<Loading />}>
                 <EditBlog />
