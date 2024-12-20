@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+// import { AnimatedModal } from '../components/Aceternity/Animated-Modal';
 import { 
   TrendingUp, 
   BookOpen, 
@@ -88,6 +89,9 @@ export default function BoltLandingPage() {
                 <PenSquare className="mr-2 h-5 w-5" />
                 Start Writing
               </Link>
+       {/* <AnimatedModal/> */}
+           
+              
               </div>
             </div>
           </div>
