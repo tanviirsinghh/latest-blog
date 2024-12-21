@@ -30,7 +30,7 @@ const ImageUpload = ({getImgFile}: getImgFile) => {
 
       // storing the img file to send it to the cloudinary server
       // setImage(file)
-      console.log("img stored in the state")
+      // console.log("img stored in the state")
     }
   };
 

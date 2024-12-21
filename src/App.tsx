@@ -15,8 +15,8 @@ import BoltTextEditor from './components/Bolt-user-profile/BoltTextEditor'
 import BoltLandingPage from './pages/BoltLandingPage'
 import BoltMainPage from './pages/BoltMainPage'
 import BoltFullBlog from './components/Bolt-user-profile/BoltFullBlog'
-import { useBlog } from './hooks'
-import GithubCopilot from './components/GithubCopilot'
+// import { useBlog } from './hooks'
+// import GithubCopilot from './components/GithubCopilot'
 import EditBlog from './components/EditBlog'
 // import userProfileBolt from './components/Bolt-user-profile/UserProfileBolt';
 // Implementing lazy loading
