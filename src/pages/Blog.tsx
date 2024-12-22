@@ -13,7 +13,7 @@ export default function  Blog  () {
      const navigate = useNavigate()
   
     const { id } = useParams();
-    const {loading, blog} = useBlog({
+    const {loading, blog,editButton} = useBlog({
         id: id || ""
     });
     if(!localStorage.getItem("token")){
@@ -42,7 +42,7 @@ export default function  Blog  () {
    {/* <FullBlog blog={blog!} /> */}
    {/*  in blog! we are telling the typescript that blog object is not null, trust me and render, */}
    {/* <NewFullBlog blog={blog!}/> */}
-  { blog && <BoltFullBlog blog={blog!}/>}
+  { blog && <BoltFullBlog blog={blog!} editButton={editButton?? false}/>}
    {/* {blogData && <BoltFullBlog blog={blogData} />} */}
 
     </div>

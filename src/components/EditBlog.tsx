@@ -18,6 +18,7 @@ import { toast } from 'react-toastify'
 import { BACKEND_URL } from '../config'
 import { FourSquare } from 'react-loading-indicators'
 import DOMPurify from 'dompurify'
+import Navbar from './Bolt-user-profile/Navbar';
 
 function EditBlog () {
   const [activeTab, setActiveTab] = useState<'write' | 'preview'>('write')
@@ -76,7 +77,7 @@ function EditBlog () {
 
   const sendData = async (imgUrl: string) => {
     console.log(blog.id)
-    console.log('frontend api hit' + imgUrl)
+    console.log('frontend api hit sendData' + imgUrl)
     try {
       const response = await axios.put(
         `${BACKEND_URL}/api/v1/blog/editedblog/${blog.id}`,
@@ -84,7 +85,7 @@ function EditBlog () {
           title: title,
           content: description,
           id: blog.id,
-          url: imgUrl || ' '
+          url: imgUrl || blog.url || " "
         },
         {
           headers: {
@@ -114,7 +115,51 @@ function EditBlog () {
       setLoading(false)
     }
   }
-
+  
+  const deleteBlog = async () => {
+    setLoading(true)
+    console.log()
+    try {
+      console.log("delete blog di id")
+      console.log(blog.id)
+      const response = await axios.delete(
+        `${BACKEND_URL}/api/v1/blog/deleteblog/${blog.id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem('token')
+          }
+        }
+      )
+      if(response && response.data){
+        toast.success('Blog Deleted Successfully')
+        setLoading(false)
+        
+          navigate('/blogs') // Navigate to the blog list page
+     
+      }
+     
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        switch (e.response?.status) {
+          case 401:
+            toast.error('Token not Found ')
+            break
+            case 400:
+            toast.error('Blog Id incorrect')
+            break
+          case 411:
+            toast.error('Token Not verified')
+            break
+            case 500:
+              toast.error('Internal Server Error')
+              break
+          default:
+            toast.error('Server Error')
+        }
+      }
+      setLoading(false)
+    }
+  }
   if (loading) {
     return (
       <div className='flex items-center justify-center min-h-screen'>
@@ -124,7 +169,9 @@ function EditBlog () {
   }
 
   return (
+    
     <div className='min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-12 px-4 sm:px-6 lg:px-8'>
+      <Navbar/>
       <div className='max-w-5xl mx-auto'>
         <div className='text-center mb-12'>
           <h1 className='text-4xl font-bold text-gray-400 mb-4'>
@@ -169,10 +216,10 @@ function EditBlog () {
                     </label>
                     <div className='mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl hover:border-purple-500 transition duration-150'>
                       <div className='space-y-1 text-center'>
-                        {imagePreview ? (
+                        { imagePreview || blog.url ? (
                           <div className='relative'>
                             <img
-                              src={imagePreview}
+                              src={imagePreview || blog.url}
                               alt='Preview'
                               className='mx-auto h-64 w-full object-cover rounded-lg'
                             />
@@ -285,33 +332,49 @@ function EditBlog () {
                     />
                   </div>
 
-                  <div className='flex justify-end pt-4'>
+                  <div className=' flex justify-end items-center   pt-5'>
                     <button
                       type='submit'
                       disabled={loading}
-                      className='inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-150'
+                      className='mx-5 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-150'
                     >
                       <Send className='w-5 h-5 mr-2' />
                       {loading ? 'Publishing...' : 'Publish Story'}
+                    </button>
+                    {/* <button
+                      type='submit'
+                      disabled={loading}
+                      className='inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-purple-800 hover:bg-purple-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-150'
+                    >
+                      <Send className='w-5 h-5 mr-2' />
+                      {loading ? 'Deleting...' : 'Delete Story'}
+                    </button> */}
+
+                    <button onClick={deleteBlog}  className='relative w-36 inline-flex h-12 overflow-hidden rounded-xl p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50'>
+                      <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)] ' />
+                      <span className='inline-flex tracking-widest h-full w-full cursor-pointer items-center justify-center rounded-xl bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl'>
+                      {loading ? 'Deleting...' : 'Delete Story'}
+
+                      </span>
                     </button>
                   </div>
                 </form>
               ) : (
                 <div className='p-6'>
                   <div className='prose max-w-none'>
-                    <h1 className='text-3xl font-bold mb-4'>
+                    <h1 className='text-3xl font-bold text-gray-300 font-mono  mb-4'>
                       {title || 'Your Title Here'}
                     </h1>
-                    {imagePreview && (
+                    {  imagePreview || blog.url&& (
                       <img
-                        src={imagePreview}
+                        src={  imagePreview || blog.url }
                         alt='Cover'
                         className='w-full h-64 object-cover rounded-xl mb-6'
                       />
                     )}
                     <div className='whitespace-pre-wrap'>
                       <p
-                        className='mb-4'
+                        className='mb-4 text-gray-300 font-mono'
                         dangerouslySetInnerHTML={{
                           __html: DOMPurify.sanitize(description)
                         }}
