@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { AnimatedModal } from '../components/Buttons/AnimatedModel';
+// import { AnimatedModal } from '../components/Buttons/AnimatedModel';
+import { BackgroundLinesDemo } from '../components/BackgroundLinesDemo';
 import { 
   TrendingUp, 
   BookOpen, 
@@ -9,7 +10,7 @@ import {
   MessageCircle, 
   Bookmark,
   PenSquare,
-  Book
+  // Book
 } from 'lucide-react';
 
 export default function BoltLandingPage() {
@@ -51,9 +52,16 @@ export default function BoltLandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+    <>  
+     
+
+
+
+    <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+    < BackgroundLinesDemo/>
       {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center">
+    
+      {/* <section className="relative h-[80vh] flex items-center">
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80"
@@ -89,14 +97,14 @@ export default function BoltLandingPage() {
               >
                <AnimatedModal/>
               </Link>
-       {/* <AnimatedModal/> */}
            
               
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
+     
 
       {/* Featured Posts */}
       <section className="py-20">
@@ -229,5 +237,7 @@ export default function BoltLandingPage() {
         </div>
       </section>
     </div>
+    </>
+
   );
 }
