@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 // import { AnimatedModal } from '../components/Buttons/AnimatedModel';
 import { BackgroundLinesDemo } from '../components/BackgroundLinesDemo';
+import SectionMain from '../components/SectionMain';
+import { MarqueeDemo } from '../components/MarqueeDemo';
 import { 
   TrendingUp, 
   BookOpen, 
@@ -107,11 +109,16 @@ export default function BoltLandingPage() {
      
 
       {/* Featured Posts */}
-      <section className="py-20">
+      {/* <SectionMain/> */}
+      <section className='bg-white'>    
+         < MarqueeDemo/>
+      </section>
+
+      <section className="py-20 bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-12">
-            <h2 className="text-3xl font-bold text-white">Featured Stories</h2>
-            <Link to="/blog" className="text-cyan-400 hover:text-cyan-300 flex items-center">
+            <h2 className="text-3xl font-bold text-gray-300">Featured Stories</h2>
+            <Link to="/blog" className="text-indigo-500 hover:text-purple-500 flex items-center">
               View All <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </div>
@@ -127,7 +134,7 @@ export default function BoltLandingPage() {
                       className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60" />
-                    <span className="absolute top-4 left-4 px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-sm backdrop-blur-sm">
+                    <span className="absolute top-4 left-4 px-3 py-1 text text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full text-sm backdrop-blur-sm">
                       {post.category}
                     </span>
                   </div>
@@ -145,25 +152,25 @@ export default function BoltLandingPage() {
                       </div>
                     </div>
 
-                    <h3 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors mb-2">
+                    <h3 className="text-xl font-bold text-white group-hover:text-indigo-500 transition-colors mb-2">
                       {post.title}
                     </h3>
                     <p className="text-gray-400 mb-6">{post.excerpt}</p>
 
                     <div className="flex items-center justify-between pt-4 border-t border-gray-700/50">
                       <div className="flex items-center space-x-4">
-                        <button className="flex items-center space-x-1 text-gray-400 hover:text-cyan-400 transition-colors">
+                        <div className="flex items-center space-x-1 text-gray-400 hover:text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-indigo-500 transition-colors">
                           <Heart className="h-5 w-5" />
                           <span>{post.likes}</span>
-                        </button>
-                        <button className="flex items-center space-x-1 text-gray-400 hover:text-cyan-400 transition-colors">
+                        </div>
+                        <div className="flex items-center space-x-1 text-gray-400 hover:text-cyan-400 transition-colors">
                           <MessageCircle className="h-5 w-5" />
                           <span>{post.comments}</span>
-                        </button>
+                        </div>
                       </div>
-                      <button className="text-gray-400 hover:text-cyan-400 transition-colors">
+                      <div className="text-gray-400 hover:text-purple-400 transition-colors">
                         <Bookmark className="h-5 w-5" />
-                      </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -174,9 +181,9 @@ export default function BoltLandingPage() {
       </section>
 
       {/* Categories Section */}
-      <section className="py-20 bg-gray-800/30">
+      <section className="py-20 bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-white text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-300 text-center mb-12">
             Explore Topics
           </h2>
 
