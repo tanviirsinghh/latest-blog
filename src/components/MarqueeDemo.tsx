@@ -59,8 +59,8 @@ const firstRow = reviews;
 
 const ReviewCard = ({
   img,
-  name,
-  username,
+  // name,
+  // username,
   body,
 }: {
   img: string;

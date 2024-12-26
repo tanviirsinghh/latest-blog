@@ -4,10 +4,7 @@ import DOMPurify from 'dompurify'
 import { useNavigate } from 'react-router-dom'
 import Navbar from './Bolt-user-profile/Navbar'
 
-
-
 // Not using this
-
 
 export const FullBlog = ({ blog }: { blog: Blog }) => {
   const navigate = useNavigate()
@@ -61,13 +58,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
   )
 }
 
-
-
-
-
-
 //  latest design from the v0 appliaction
-
 
 // import React, { useState } from 'react';
 // import { Heart, MessageCircle, Share2, Bookmark, Twitter, Linkedin, GitlabIcon as GitHub, ChevronRight, X } from 'lucide-react';
