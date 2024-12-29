@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Bolt-user-profile/Navbar'
 import Sidebar from '../components/Sidebar'
 import LowerSidebar from '../components/LowerSidebar'
-import NewSingleBlog from '../components/NewSingleBlog';
+import NewSingleBlog from '../components/NewSingleBlog'
 
 export const Blogs = () => {
   const { loading, blogs } = useBlogs()
-  console.log('sare blogs the data with comments'+ JSON.stringify(blogs))
+  console.log('sare blogs the data with comments' + JSON.stringify(blogs))
 
   const navigate = useNavigate()
   if (!localStorage.getItem('token')) {
@@ -32,38 +32,38 @@ export const Blogs = () => {
   }
   return (
     <>
-<div className="w-full h-screen bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
-  {/* Fixed Navbar */}
-  <div className="fixed w-full h-[4rem] z-10  ">
-    <Navbar />
-  </div>
+      <div className='w-full h-screen bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]'>
+        {/* Fixed Navbar */}
+        <div className='fixed w-full h-[4rem] z-10  '>
+          <Navbar />
+        </div>
 
-  {/* Main Content */}
-  <div className="flex w-full  pt-[4rem] ">
-    <main className="flex justify-center w-full">
-      {/* Blogs Container */}
-      
-      <div className="h-full  max-w-[50rem] mt-9  flex flex-col items-center">
-        {blogs.map(blog => (
-          <NewSingleBlog
-            key={blog.id}
-            id={blog.id}
-            authorName={blog.author.name || 'Anonymous'}
-            title={blog.title}
-            content={blog.content}
-            publishDate=" save the date also and then fetch here"
-            url={blog.url}
-            like={blog.like}
-            comment={blog.comment}
+        {/* Main Content */}
+        <div className='flex w-full  pt-[4rem] '>
+          <main className='flex justify-center w-full'>
+            {/* Blogs Container */}
 
-            // make user upload the photo then fetch here
-            // authorAvatar=''
-            // initialLikes= {1}
-            // initialComments={5}
-          />
-        ))}
-      </div>
-      <div className=' w-[26rem] relative flex-col'>
+            <div className='h-full  max-w-[50rem] mt-9  flex flex-col items-center'>
+              {blogs.map(blog => (
+                <NewSingleBlog
+                  key={blog.id}
+                  id={blog.id}
+                  authorName={blog.author.name || 'Anonymous'}
+                  title={blog.title}
+                  content={blog.content}
+                  publishDate=' save the date also and then fetch here'
+                  url={blog.url}
+                  like={blog.like}
+                  comment={blog.comment}
+
+                  // make user upload the photo then fetch here
+                  // authorAvatar=''
+                  // initialLikes= {1}
+                  // initialComments={5}
+                />
+              ))}
+            </div>
+            <div className=' w-[26rem] relative flex-col'>
               <div className='fixed right-36  top-20'>
                 <Sidebar />
               </div>
@@ -71,23 +71,9 @@ export const Blogs = () => {
                 <LowerSidebar />
               </div>
             </div>
-    </main>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          </main>
+        </div>
+      </div>
 
       {/* <div className='w-full h-full'>
         <div className=' fixed w-full h-[4rem]  '>
