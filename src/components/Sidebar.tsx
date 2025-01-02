@@ -13,6 +13,8 @@ interface Props{
 //     src: string;
 //     alt: string;
 //   }
+
+
   interface StaffPick {
     author: string;
     category: string;
