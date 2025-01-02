@@ -7,7 +7,7 @@ import axios from 'axios'
 import { BACKEND_URL } from '../../config'
 import { Blog, useUserDetails } from '../../hooks/index'
 import DOMPurify from 'dompurify'
-import BoltFooter from './BoltFooter'
+// import BoltFooter from './BoltFooter'
 import Navbar from './Navbar'
 import AuthorAsidebar from './AuthorAsidebar'
 import { formatISO } from 'date-fns'
@@ -530,7 +530,7 @@ export default function BoltFullBlog ({ blog,editButton }: blogProps) {
           </div>
 
           {/* Footer */}
-          <BoltFooter />
+          {/* <BoltFooter /> */}
         </div>
       </div>
     </div>
