@@ -19,20 +19,17 @@ export function BackgroundLinesDemo () {
       </p>
       <div className=' h-24 flex w-72  justify-between items-center'>
         <div className=''>
-          <button className='p-[3px] relative'>
-            <div className='absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg' />
-            <div className='flex justify-between px-7 py-2  bg-black rounded-[6px]  relative group transition duration-200 text-white hover:bg-transparent'>
-              <Book /> Read
-            </div>
-          </button>
+          <Link to='/blogs'>
+            <button className='p-[3px] relative'>
+              <div className='absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg' />
+              <div className='flex justify-between px-7 py-2  bg-black rounded-[6px]  relative group transition duration-200 text-white hover:bg-transparent'>
+                <Book /> Read
+              </div>
+            </button>
+          </Link>
         </div>
         <div>
-          <Link
-            to='/publish'
-            className=' h-11 inline-flex items-center px-0 py-3 '
-          >
-            <AnimatedModal />
-          </Link>
+          <AnimatedModal />
         </div>
       </div>
     </BackgroundLines>

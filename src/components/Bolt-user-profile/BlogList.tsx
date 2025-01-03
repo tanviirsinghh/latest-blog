@@ -36,6 +36,7 @@ export function BlogList () {
         content={blog.content}
         publishDate=" save the date also and then fetch here"
         url={blog.url}
+        profilePic={blog.author.profilePicture}
         like={blog._count.like}
         comment={blog._count.comment}
         saved={blog._count.savedPosts}

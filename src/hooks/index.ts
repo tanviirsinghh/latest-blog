@@ -18,7 +18,8 @@ export interface Blog {
     savedPosts:number
   }
   author: {
-    name: string
+    name: string,
+    profilePicture:string
   }
   authorId: string
   // editButton:boolean

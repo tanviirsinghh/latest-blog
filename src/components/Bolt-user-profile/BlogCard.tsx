@@ -8,6 +8,7 @@ interface BlogCardProps {
   content: string
   url: string
   authorName:string
+  profilePic:string
   
     like:number,
     comment:number
@@ -28,6 +29,7 @@ export function BlogCard ({
   url,
   // authorAvatar,
   authorName,
+  profilePic,
 like,
  comment,
  saved
@@ -42,14 +44,14 @@ like,
         <img
           src={url}
           alt={title}
-          className='w-full h-48 object-cover'
+          className='w-full h-48 object-cover '
         />
-        <div className='absolute inset-0 bg-gradient-to-t from-dark/80 to-transparent'></div>
+        {/* <div className='absolute inset-0 bg-gradient-to-t from-dark/80 to-transparent'></div> */}
       </div>
       <div className='p-6'>
         <div className='flex items-center space-x-3 mb-4'>
           <img
-            src={url}
+            src={profilePic}
             alt={authorName}
             className='h-10 w-10 rounded-full ring-2 ring-primary/30'
           />

@@ -22,12 +22,13 @@ const LatestSignin: React.FC = () => {
   };
 
   return (
-    <div className=" min-h-screen flex items-center justify-center bg-amber-50 p-4">
+    <div className=" min-h-screen flex items-center justify-center bg-black p-4">
       <div className="w-full max-w-4xl flex flex-col items-center ">
-        <h1 className=" text-4xl font-bold text-black mb-8">Welcome to BlogHub</h1>
-        <div className=" border-black border-4 w-full max-w-md shadow-2xl bg-yellow-50 rounded-lg overflow-hidden">
-          <div className="p-8">
-            <h3 className="text-3xl font-bold mb-6 text-center text-black">Sign In</h3>
+        <h1 className=" text-4xl font-bold text-gray-400 mb-8">Welcome to <span className='text text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-indigo-500'>Large</span></h1>
+        <div className="border-black border-4 w-full max-w-md rounded-lg overflow-hidden bg-black transform hover:scale-[1.02] transition-transform
+  shadow-[5px_5px_0px_0px_rgba(109,40,217),10px_10px_0px_0px_rgba(109,40,217,0.6)]">
+              <div className="p-8">
+            <h3 className="text-3xl font-bold mb-6 text-center text-gray-400">Sign In</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="relative">
                 <input
@@ -36,10 +37,10 @@ const LatestSignin: React.FC = () => {
                   placeholder="your@email.com"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2 rounded-full border-2 border-black focus:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-opacity-50"
+                  className="w-full pl-10 pr-4 py-2 rounded-full border-2 border-black focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
                   required
                 />
-                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black">
+                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700">
                   <MailIcon />
                 </span>
               </div>
@@ -50,23 +51,23 @@ const LatestSignin: React.FC = () => {
                   placeholder="Your Password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2 rounded-full border-2 border-black focus:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-200 focus:ring-opacity-50"
+                  className="w-full pl-10 pr-4 py-2 rounded-full border-2 border-black focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
                   required
                 />
-                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black">
+                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700">
                   <LockIcon />
                 </span>
               </div>
               <button
                 type="submit"
-                className="w-full bg-black text-yellow-50 font-bold py-3 px-4 rounded-full hover:bg-yellow-500 hover:text-black transition-all duration-300 transform hover:scale-95 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50"
+                className="w-full bg-indigo-500 text-yellow-50 font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 hover:text-white transition-all duration-300 transform hover:scale-95 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50"
               >
                 Sign In
               </button>
             </form>
-            <Link to="/newsignup">
-            <p className="mt-6 text-sm text-black text-center">
-              Don't have an account? <h5  className="font-semibold underline hover:text-yellow-600">Sign up here</h5>
+            <Link to="/signup">
+            <p className="mt-6 text-sm text-gray-400 text-center">
+              Don't have an account? <h5  className="font-semibold underline hover:text-indigo-600">Sign up here</h5>
             </p></Link>
           </div>
         </div>
@@ -81,10 +82,10 @@ const LatestSignin: React.FC = () => {
 };
 
 const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; description: string }> = ({ icon, title, description }) => (
-  <div className="flex flex-col items-center p-4 bg-yellow-50 rounded-lg shadow-md border-2 border-black">
-    <div className="text-black mb-2">{icon}</div>
-    <h3 className="font-semibold text-lg text-black">{title}</h3>
-    <p className="text-sm text-black text-center">{description}</p>
+  <div className="flex flex-col items-center p-4 bg-black rounded-lg shadow-md border-2 border-gray-600">
+    <div className="text-gray-400 mb-2">{icon}</div>
+    <h3 className="font-semibold text-bold font-mono text-gray-400">{title}</h3>
+    <p className="text-sm text-gray-400 font-mono text-center">{description}</p>
   </div>
 );
 
@@ -103,7 +104,7 @@ const LockIcon: React.FC = () => (
 );
 
 const PenIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
     <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
     <path d="M2 2l7.586 7.586"></path>
@@ -112,14 +113,14 @@ const PenIcon: React.FC = () => (
 );
 
 const BookOpenIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="indigo" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
     <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
   </svg>
 );
 
 const UsersIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
     <circle cx="9" cy="7" r="4"></circle>
     <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>

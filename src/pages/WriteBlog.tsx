@@ -19,6 +19,7 @@ export default function TextEditor () {
     toast.info('Log In or Create Account First')
      navigate('/publish')
   }
+   
   const [title, setTitle] = useState('')
   const [descript, setDescript] = useState('')
   const [img, setImg] = useState<File | null>(null)

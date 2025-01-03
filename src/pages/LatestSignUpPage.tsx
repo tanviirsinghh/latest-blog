@@ -125,10 +125,10 @@ const LatestSignupPage = () => {
   }
 
   return (
-    <div className='min-h-screen flex items-center justify-center bg-amber-50 p-4'>
-      <div className='bg-amber-50 rounded-md shadow-2xl w-full max-w-4xl flex flex-col md:flex-row overflow-hidden'>
-        <div className='w-full md:w-1/2 p-8 border-4 border-black bg-amber-50'>
-          <h2 className='text-4xl font-bold mb-6 text-black text-center'>
+    <div className='min-h-screen flex items-center justify-center bg-black p-4'>
+      <div className='bg-black rounded-md shadow-2xl w-full max-w-4xl flex flex-col md:flex-row overflow-hidden'>
+        <div className='w-full md:w-1/2 p-8 border-2 border-gray-300 bg-black'>
+          <h2 className='text-4xl font-bold mb-6 text-gray-300 text-center'>
             Unleash Your Creativity!
           </h2>
           <div className=''>
@@ -137,16 +137,16 @@ const LatestSignupPage = () => {
               alt='Blog '
               className='rounded-lg shadow-lg mb-6'
             />
-            {/* <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+            {/* <div className="absolute inset-0 bg-gray-300 bg-opacity-40 flex items-center justify-center">
               <p className="text-white text-2xl font-bold text-center px-4">Your Blog Adventure Starts Here</p>
             </div> */}
           </div>
-          <p className='text-black text-lg mb-6 text-center'>
+          <p className='text-gray-300 text-lg mb-6 text-center'>
             Join our vibrant community of bloggers and share your unique voice
             with the world!
           </p>
           <div className='flex justify-center space-x-4'>
-            <span className='bg-black rounded-full p-2'>
+            <span className='bg-gray-300 rounded-full p-2'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 className='h-6 w-6 text-yellow-50'
@@ -168,7 +168,7 @@ const LatestSignupPage = () => {
                 />
               </svg>
             </span>
-            <span className='bg-black rounded-full p-2'>
+            <span className='bg-gray-300 rounded-full p-2'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 className='h-6 w-6 text-yellow-50'
@@ -184,7 +184,7 @@ const LatestSignupPage = () => {
                 />
               </svg>
             </span>
-            <span className='bg-black rounded-full p-2'>
+            <span className='bg-gray-300 rounded-full p-2'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 className='h-6 w-6 text-yellow-50'
@@ -202,13 +202,13 @@ const LatestSignupPage = () => {
             </span>
           </div>
         </div>
-        <div className='w-full md:w-1/2 p-8 border-4 bg-amber-50  border-black'>
-          <h3 className='text-3xl font-bold mb-6 text-black text-center'>
+        <div className='w-full md:w-1/2 p-8 border-2 bg-black  border-gray-400'>
+          <h3 className='text-3xl font-bold mb-6 text-gray-300 text-center'>
             Sign Up Now!
           </h3>
           <form onSubmit={handleSubmit} className='space-y-4'>
             <div className='flex flex-col items-center mb-4'>
-              <div className='w-32 h-32 rounded-full overflow-hidden bg-gray-200 mb-2 border-4 border-black'>
+              <div className='w-32 h-32 rounded-full overflow-hidden bg-gray-200 mb-2 border-4 border-gray-300'>
                 {image ? (
                   <img
                     src={imagePreview}
@@ -217,7 +217,7 @@ const LatestSignupPage = () => {
                     
                   />
                 ) : (
-                  <div className='w-full h-full flex items-center justify-center text-black'>
+                  <div className='w-full h-full flex items-center justify-center text-gray-300'>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       className='h-16 w-16'
@@ -253,7 +253,7 @@ const LatestSignupPage = () => {
               onChange={e => {
                 setName(e.target.value)
               }}
-              className='w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black'
+              className='w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50'
               required
             />
             <input
@@ -264,7 +264,8 @@ const LatestSignupPage = () => {
               onChange={e => {
                 setEmail(e.target.value)
               }}
-              className='w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black'
+
+              className='w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50'
               required
             />
             <input
@@ -275,7 +276,7 @@ const LatestSignupPage = () => {
               onChange={e => {
                 setPassword(e.target.value)
               }}
-              className='w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black'
+              className='w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50'
               required
             />
             <input
@@ -286,7 +287,7 @@ const LatestSignupPage = () => {
             onChange={e => {
               setBio(e.target.value)
             }}
-            className='w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black'
+            className='w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50'
             required
           />
           <input
@@ -297,7 +298,7 @@ const LatestSignupPage = () => {
             onChange={e => {
               setLocation(e.target.value)
             }}
-            className='w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black'
+            className='w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50'
             required
           />
             {/* <input
@@ -308,7 +309,7 @@ const LatestSignupPage = () => {
               onChange={e => {
                 setBlogName(e.target.value)
               }}
-              className="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
+              className="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300"
               required
             /> */}
             <select
@@ -317,7 +318,7 @@ const LatestSignupPage = () => {
               onChange={e => {
                 setBlogName(e.target.value)
               }}
-              className='w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black'
+              className='w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50'
               required
             >
               <option value=''>Select Your Blog's Superpower</option>
@@ -330,13 +331,13 @@ const LatestSignupPage = () => {
             </select>
             {/* <button
               type="submit"
-              className="w-full bg-black text-white font-bold py-3 px-4 rounded-full hover:from-purple-600 hover:to-indigo-600 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+              className="w-full bg-gray-300 text-white font-bold py-3 px-4 rounded-full hover:from-purple-600 hover:to-indigo-600 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
             >
               Launch My Blogging Journey! 🚀
             </button> */}
             <button
-              type='submit'
-              className='w-full bg-black text-yellow-50 font-bold py-3 px-4 rounded-full hover:bg-yellow-500 hover:text-black transition-all duration-300 transform hover:scale-95 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50'
+              type='submit'  
+              className='w-full bg-indigo-500 text-yellow-50 font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 hover:text-white transition-all duration-300 transform hover:scale-95 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50'
             >
               Launch My Blogging Journey! 🚀
             </button>
@@ -344,8 +345,8 @@ const LatestSignupPage = () => {
           <p className='mt-6 text-sm text-gray-600 text-center'>
             By signing up, you're joining an epic community of creators!
           </p>
-          <Link to='/newsignin'>
-            <p className='mt-6 text-sm text-black text-center'>
+          <Link to='/signin'>
+            <p className='mt-6 text-sm text-gray-300 text-center'>
               Already have an Account{' '}
               <h5 className='font-semibold underline hover:text-yellow-600'>
                 {' '}

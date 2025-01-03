@@ -18,6 +18,7 @@ import BoltFullBlog from './components/Bolt-user-profile/BoltFullBlog'
 // import { useBlog } from './hooks'
 // import GithubCopilot from './components/GithubCopilot'
 import EditBlog from './components/EditBlog'
+import { SignupFormDemo } from './components/SignupFormDemo'
 // import userProfileBolt from './components/Bolt-user-profile/UserProfileBolt';
 // Implementing lazy loading
 // const Signup = React.lazy(() => import('./pages/Signup'))
@@ -44,14 +45,14 @@ function App () {
               </React.Suspense>
             }
           ></Route>
-          <Route
+          {/* <Route    //  new beautifull signin component
             path='/boltsignin'
             element={
               <React.Suspense fallback={<Loading />}>
                 <BoltSignin />
               </React.Suspense>
             }
-          ></Route>
+          ></Route> */}
            {/* <Route
             path='/github'
             element={
@@ -76,14 +77,14 @@ function App () {
               </React.Suspense>
             }
           ></Route> */}
-          <Route
+          {/* <Route
             path='/signin'
             element={
               <React.Suspense fallback={<Loading />}>
                 <Signin />
               </React.Suspense>
             }
-          ></Route>
+          ></Route> */}
           {/* <Route
             path='/blogs'
             element={
@@ -151,11 +152,20 @@ function App () {
               </React.Suspense>
             }
           ></Route>
+         
           <Route
             path='/publish'
             element={
               <React.Suspense fallback={<Loading />}>
                 <TextEditor />
+              </React.Suspense>
+            }
+          ></Route>
+          <Route
+            path='/form'
+            element={
+              <React.Suspense fallback={<Loading />}>
+                <SignupFormDemo />
               </React.Suspense>
             }
           ></Route>
@@ -168,7 +178,7 @@ function App () {
               </React.Suspense>
             }
           ></Route>
-          <Route path='/newsignin' element={<LatestSignin/>}></Route>
+          <Route path='/signin' element={<LatestSignin/>}></Route>
 
         </Routes>
       </BrowserRouter>

@@ -1,18 +1,18 @@
 import { useBlogs } from '../hooks'
 import { BlogSkeleton } from '../components/BlogSkeleton'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Bolt-user-profile/Navbar'
 import Sidebar from '../components/Sidebar'
 import LowerSidebar from '../components/LowerSidebar'
 import NewSingleBlog from '../components/NewSingleBlog'
+import { toast } from 'react-toastify'
 
 export const Blogs = () => {
   const { loading, blogs } = useBlogs()
-  console.log('sare blogs the data with comments' + JSON.stringify(blogs))
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   if (!localStorage.getItem('token')) {
-    navigate('/signin')
+    toast.warning('Please login to view blogs')
   }
   if (loading) {
     return (
@@ -53,8 +53,8 @@ export const Blogs = () => {
                   content={blog.content}
                   publishDate=' save the date also and then fetch here'
                   url={blog.url}
-                  like={blog.like}
-                  comment={blog.comment}
+                  like={blog._count.like}
+                  comment={blog._count.comment}
 
                   // make user upload the photo then fetch here
                   // authorAvatar=''
