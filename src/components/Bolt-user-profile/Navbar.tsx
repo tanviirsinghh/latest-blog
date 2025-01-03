@@ -3,6 +3,7 @@ import { toast } from 'react-toastify'
 import { PulsatingButtonDemo } from '../PulsatingButtonDemo'
 
 export default function Navbar () {
+  
   const navigate = useNavigate()
   function OpenUserProfile () {
     const token = localStorage.getItem('token')
