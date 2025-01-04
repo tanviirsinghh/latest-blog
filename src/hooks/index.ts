@@ -67,6 +67,7 @@ export interface User {
   bio: string
   location: string
   coverpicture: string
+  posts: Blog[]
 }
 
 // export function useUserDetails({userId} : {userId : string}){

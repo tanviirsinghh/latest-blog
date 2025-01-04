@@ -1,4 +1,4 @@
-import { Heart, Share2, Bookmark, Clock } from 'lucide-react'
+import { Heart, Bookmark } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../Loading'
@@ -14,6 +14,7 @@ import { formatISO } from 'date-fns'
 // import { ThreeDot } from 'react-loading-indicators'
 // import formatTimestamp from '../../hooks/index';
 import Comments from '../Comments'
+import Footer from '../Footer'
 
 export interface Comments {
   id: string
@@ -26,17 +27,16 @@ export interface Comments {
   }
 }
 
-interface blogProps{
-  blog:  Blog,
+interface blogProps {
+  blog: Blog
   editButton: boolean
 }
 
-
-export default function BoltFullBlog ({ blog,editButton }: blogProps) {
+export default function BoltFullBlog ({ blog, editButton }: blogProps) {
   const navigate = useNavigate()
   const [likeStatus, setLikeStatus] = useState(false)
   const [likeCount, setLikeCount] = useState(0)
-  const [showShareMenu, setShowShareMenu] = useState(false)
+  // const [showShareMenu, setShowShareMenu] = useState(false)
   // const { id } = useParams()
   const [newComment, setNewComment] = useState('')
   const { userDetails } = useUserDetails()
@@ -47,6 +47,8 @@ export default function BoltFullBlog ({ blog,editButton }: blogProps) {
   const [isProcessing, setIsProcessing] = useState(false)
   const authorId = blog.authorId
   const [comments, setComments] = useState<Comments[]>([])
+  const [click, setClick] = useState(false)
+
   const fetchLikeCount = async () => {
     setIsLoading(true)
     try {
@@ -168,7 +170,6 @@ export default function BoltFullBlog ({ blog,editButton }: blogProps) {
       if (response && response.data) {
         // Toggle like state and adjust like count
         setComments(response.data.comments)
-        console.log('all comments' + JSON.stringify(response.data))
         setIsLoading(false)
       }
     } catch (e) {
@@ -176,7 +177,6 @@ export default function BoltFullBlog ({ blog,editButton }: blogProps) {
 
       // Handle specific error scenarios
       if (axios.isAxiosError(e) && e.response?.status === 411) {
-        // setLikeStatus(false)
         toast.error('Error while fetching Like')
         setIsLoading(false)
       }
@@ -188,12 +188,8 @@ export default function BoltFullBlog ({ blog,editButton }: blogProps) {
   }, [blog.id])
 
   const handleComment = async (e: React.FormEvent<HTMLFormElement>) => {
-    // if(isLoading){
-    //   return <ThreeDot variant="brick-stack" color="#366bcc" size="medium" text="" textColor="#1e58b3" />
-    // }
     e.preventDefault()
     if (!newComment.trim()) return
-    console.log('frontend comment api triggered ')
     try {
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/blog/${blog.id}/comment`,
@@ -209,11 +205,8 @@ export default function BoltFullBlog ({ blog,editButton }: blogProps) {
       )
       if (response && response.data) {
         toast.success('Comment Posted')
-        console.log(
-          'comment posted successfully' + JSON.stringify(response.data)
-        )
         setNewComment('')
-        // setIsLoading(false)
+        fetchComments()
       }
     } catch (e) {
       console.error('Error:', e)
@@ -340,40 +333,15 @@ export default function BoltFullBlog ({ blog,editButton }: blogProps) {
       setIsLoading(false)
     }
   }
-
-  // const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault()
-  //   if (newComment.trim()) {
-  //     const newCommentObj = {
-  //       id: tempBlog.comments.length + 1,
-  //       author: 'You',
-  //       content: newComment,
-  //       date: new Date().toISOString().split('T')[0]
-  //     }
-  //     settempBlog(prevtempBlog => ({
-  //       ...prevtempBlog,
-  //       comments: [...prevtempBlog.comments, newCommentObj]
-  //     }))
-  //     setNewComment('')
-  //   }
-  // }
-
-  // const handleShare = () => {
-  //   setShowShareModal(true);
-  // };
-
   const handleClick = () => {
-    // toast.success('Edit the blog')
-  //  console.log(JSON.stringify(blog))
-     
-    navigate(`/editblog/${blog.id}`, {state: {blog}})
+    navigate(`/editblog/${blog.id}`, { state: { blog } })
   }
   if (isLoading) {
     return <Loading />
   }
 
   return (
-    <div className=' bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'>
+    <div className=' bg-black'>
       <Navbar />
 
       <div className=' pt-16 '>
@@ -386,22 +354,29 @@ export default function BoltFullBlog ({ blog,editButton }: blogProps) {
                   {blog.title}
                 </h1>
                 <div className='flex justify-between items-center space-x-4  text-gray-400 text-sm'>
-                  <div className='flex w-44  justify-between items-center'>
+                  {/* <div className='flex w-44  justify-between items-center'>
                     <div className='flex items-center'>
                       <Clock className='w-4 h-4 mr-1' />
                       <span>8 min read</span>
                     </div>
                     <span>date here</span>
-                  </div>
+                  </div> */}
 
-                 {editButton ? (<div className='flex w-40  '>
-                    <button  onClick={handleClick}className='relative w-32 inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50'>
-                      <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
-                      <span className='inline-flex tracking-widest h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl'>
-                        Edit
-                      </span>
-                    </button>
-                  </div> ): (" ") } 
+                  {editButton ? (
+                    <div className='flex w-40  '>
+                      <button
+                        onClick={handleClick}
+                        className='relative w-32 inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50'
+                      >
+                        <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
+                        <span className='inline-flex tracking-widest h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl'>
+                          Edit
+                        </span>
+                      </button>
+                    </div>
+                  ) : (
+                    ' '
+                  )}
                 </div>
               </header>
 
@@ -440,14 +415,25 @@ export default function BoltFullBlog ({ blog,editButton }: blogProps) {
 
                   <div className='relative'>
                     <button
-                      onClick={() => setShowShareMenu(!showShareMenu)}
+                      onClick={() => setClick(!click)}
                       className='flex items-center space-x-2 group'
                     >
-                      <Share2 className='w-6 h-6 text-blue-300 group-hover:scale-110 transition-transform' />
-                      <span className='text-gray-300'>Share</span>
+                      <svg
+                        className='h-8 w-8 text-red-500'
+                        viewBox='0 0 24 24'
+                        fill='none'
+                        stroke='gray'
+                        stroke-width='2'
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                      >
+                        {' '}
+                        <path d='M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z' />
+                      </svg>{' '}
+                      <span className='text-gray-300'>Comment</span>
                     </button>
 
-                    {showShareMenu && (
+                    {/* {showShareMenu && (
                       <div className='absolute top-8 left-0 bg-white shadow-lg rounded-md py-2 w-48'>
                         <button className='w-full text-left px-4 py-2 hover:bg-gray-100'>
                           Twitter
@@ -462,7 +448,7 @@ export default function BoltFullBlog ({ blog,editButton }: blogProps) {
                           Copy Link
                         </button>
                       </div>
-                    )}
+                    )} */}
                   </div>
                 </div>
 
@@ -486,30 +472,34 @@ export default function BoltFullBlog ({ blog,editButton }: blogProps) {
                   Comments
                 </h3>
 
-                <form onSubmit={handleComment} className='mb-8'>
-                  <div className='flex items-start space-x-4'>
-                    <img
-                      src={userDetails?.profilePicture}
-                      alt='Your avatar'
-                      className='w-10 h-10 rounded-full'
-                    />
-                    <div className='flex-1'>
-                      <textarea
-                        value={newComment}
-                        onChange={e => setNewComment(e.target.value)}
-                        placeholder='Add a comment...'
-                        className='w-full p-3 border text-white bg-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none'
-                        rows={3}
+                {click ? (
+                  <form onSubmit={handleComment} className='mb-8'>
+                    <div className='flex items-start space-x-4'>
+                      <img
+                        src={userDetails?.profilePicture}
+                        alt='Your avatar'
+                        className='w-10 h-10 rounded-full'
                       />
-                      <button
-                        type='submit'
-                        className='mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors'
-                      >
-                        Post Comment
-                      </button>
+                      <div className='flex-1'>
+                        <textarea
+                          value={newComment}
+                          onChange={e => setNewComment(e.target.value)}
+                          placeholder='Add a comment...'
+                          className='w-full p-3 border text-white bg-gray-800 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none'
+                          rows={3}
+                        />
+                        <button
+                          type='submit'
+                          className='mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors'
+                        >
+                          Post Comment
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </form>
+                  </form>
+                ) : (
+                  <div></div>
+                )}
 
                 <div className='space-y-6  h-96 overflow-scroll '>
                   {comments &&
@@ -529,8 +519,7 @@ export default function BoltFullBlog ({ blog,editButton }: blogProps) {
             <AuthorAsidebar authorId={authorId} />
           </div>
 
-          {/* Footer */}
-          {/* <BoltFooter /> */}
+          <Footer />
         </div>
       </div>
     </div>

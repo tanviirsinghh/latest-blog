@@ -14,7 +14,7 @@ export function BlogList () {
     return (
       <div>
         <Navbar />
-        <div className='flex justify-center'>
+        <div className='flex justify-center '>
           <div>
             <BlogSkeleton />
             <BlogSkeleton />
@@ -27,7 +27,7 @@ export function BlogList () {
     )
   }
   return (
-    <div className='grid grid-cols-1 gap-8'>
+    <div className='grid grid-cols-1 gap-8 '>
       {blogs.map((blog) => (
         <BlogCard key={blog.id}
         id={blog.id}
