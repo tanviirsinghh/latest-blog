@@ -1,6 +1,8 @@
 // import { Twitter, Linkedin, Globe, Mail } from 'lucide-react'
 import { useUserDetails } from '../..//hooks'
 import { TrophySpin } from 'react-loading-indicators'
+import { Link } from 'react-router-dom';
+import { ScriptCopyBtnDemo } from '../ScriptCopyBtnDemo';
 interface AuthorAsidebarProps {
   authorId: string
 }
@@ -25,14 +27,13 @@ export default function AuthorAsidebar ({ authorId }: AuthorAsidebarProps) {
   }
 
   return (
-    <aside className='lg:col-span-1'>
+    <aside className='lg:col-span-1 '>
       <div
-        className='sticky top-44 rounded-lg p-6 
-        bg-gray-900 
+        className='bg-black sticky top-44 rounded-lg p-6 
+         
         border border-gray-800
         shadow-[0_8px_32px_0_rgba(31,38,135,0.37)]
-        hover:bg-gray-800 
-        transition-all duration-300
+        
         space-y-6'
       >
         <div className='text-center'>
@@ -41,40 +42,51 @@ export default function AuthorAsidebar ({ authorId }: AuthorAsidebarProps) {
             alt={userDetails.name}
             className='w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 hover:border-indigo-400 transition-colors duration-300'
           />
-          <h2 className='text-2xl text-gray-100 font-bold'>
+          <Link  to={`/details`}>
+          <h2 className='font-mono text-2xl text-gray-100 font-bold hover:text-blue-500 cursor-pointer transition-all'>
             {userDetails.name}
           </h2>
-          <p className='text-indigo-300 font-medium'>{userDetails.blogName}</p>
+          </Link>
+          <p className='font-mono text-indigo-300 font-medium'><span className='text-bold font-sans text-indigo-500'>Blog Name : </span>{userDetails.blogName}</p>
         </div>
 
-        <div className='text-gray-300 text-center'>
-          <p>{userDetails.bio}</p>
+        <div className='flex font-mono text-gray-300 text-center'>
+         <span className='font-sans font-bold text-indigo-500 mr-2'>BIO : </span> <p>{userDetails.bio}</p>
         </div>
 
         <div>
-          <h3 className='font-semibold mb-3 text-gray-100'>Recent Posts</h3>
-          <ul className='space-y-2'>
+          <h3 className='font-semibold mb-3 text-gray-100 font-mono'>Recent Posts: </h3>
+          <ul className='space-y-2 '>
+          
             {userDetails.posts.map((post, index) => (
               <li
                 key={index}
-                className='bg-gray-800 rounded p-2 hover:bg-gray-700 transition-colors duration-200'
+                className='h-11 flex items-center bg-gradient-to-r from-indigo-500 to-indigo-700 rounded p-2 hover:bg-gray-700 transition-colors duration-200'
               >
+                  
+                <img className="h-9" src="/src/assets/book.png" alt="" />
+                <Link  to={`/blog/${post.id}`}>
                 <a
                   href='#'
-                  className='text-gray-300 hover:text-indigo-300 transition-colors duration-200'
+                  className='font-mono text-sm ml-1 text-gray-300 hover:text-indigo-800 transition-all'
                 >
-                  {post.title}
+                  {post.title.slice(0,23) + "..."}
                 </a>
+                </Link>
                 {/* <p className='text-sm text-gray-400'>{post._count.comment} likes</p> */}
               </li>
             ))}
           </ul>
+         
         </div>
+        
 
         <div className='border-t border-gray-700 pt-4'>
-          <h3 className='font-semibold mb-3 text-gray-100'>Contact</h3>
-          <p className='text-gray-300'>{userDetails.email}</p>
-        </div>
+          <h3 className='font-semibold mb-3 text-indigo-500 font-sans text-bold text-lg'>E-mail Author :  </h3>
+         {/*  <p className='text-gray-300 flex items-center '><img className="h-9" src="/src/assets/gmail.png" alt="" /><span className='text-gray-300 font-mono font-bold'>{userDetails.email}</span></p> */}
+         <ScriptCopyBtnDemo email={userDetails.email}/>
+          {/* <AnimatedGradientText>Deni aa ke thane jana  </AnimatedGradientText> */}
+          </div>
       </div>
     </aside>
   )

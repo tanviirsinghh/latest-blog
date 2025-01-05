@@ -1,6 +1,5 @@
 
 import formatTimestamp from '../hooks/index';
-import { MoreVertical } from "lucide-react";
 import { Link } from "react-router-dom";
 
 
@@ -21,7 +20,7 @@ export default function Comments({id, content, timestamp, user}: Comments ) {
   return (
     <div>
         
-      <div key={id} className='flex space-x-4'>
+      <div key={id} className='flex space-x-4 '>
       <Link to={`/authorprofile?authorId=${user.id}`}>
 
                       <img
@@ -32,24 +31,25 @@ export default function Comments({id, content, timestamp, user}: Comments ) {
                         </Link>
         
                       <div className='flex-1'>
-                        <div className='text-white bg-gray-800 shadow-md p-4 rounded-lg'>
+                        <div className='text-white bg-black  p-4 rounded-lg border border-gray-800
+        shadow-[0_8px_32px_0_rgba(31,38,135,0.37)]'>
                           <div className='flex items-center justify-between mb-2'>
                             <div>
                             <Link to={`/authorprofile?authorId=${user.id}`}>
 
-                              <h4 className='font-semibold hover:cursor-pointer text-blue-700'>
+                              <h4 className='font-bold font-mono text-base hover:cursor-pointer text-indigo-500'>
                                 {user.name}
                               </h4>
                               </Link>
-                              <p className='text-white text-sm'>
+                              <p className='text-gray-300 text-sm'>
                                 {formatTimestamp(timestamp)}
                               </p>
                             </div>
-                            <button className='text-gray-400 hover:text-gray-600'>
+                            {/* <button className='text-gray-300 hover:text-gray-600'>
                               <MoreVertical className='w-4 h-4' />
-                            </button>
+                            </button> */}
                           </div>
-                          <p>{content}</p>
+                          <p className='font-bold font-mono text-base text-gray-300'>{content}</p>
                         </div>
                         {/* <div className="flex items-center space-x-4 mt-2 text-sm text-gray-600">
                           <button className="hover:text-blue-500">Reply</button>

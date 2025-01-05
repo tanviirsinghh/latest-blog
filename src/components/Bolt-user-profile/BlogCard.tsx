@@ -1,5 +1,4 @@
 import DOMPurify from 'dompurify'
-import {  Bookmark } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 interface BlogCardProps {
@@ -84,23 +83,21 @@ like,
           <div className='flex items-center space-x-4'>
             <h4 className='flex items-center font-mono space-x-1 text-gray-400 hover:text-primary transition-colors'>
             <span className='text-red-500 font-mono'><h4> {like} </h4> </span>
-            <span className="rounded-full bg-red-600 p-2.5 border border-transparent text-center text-sm text-white transition-all shadow-sm cursor-default " >
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-      <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
-    </svg>
-  </span>            </h4>
+       
+  <img className="h-11" src="/src/assets/heart.png" alt="" />
+   </h4>
            
             <h4 className=' font-mono flex items-center space-x-1 text-gray-400 hover:text-primary transition-colors'>
               {/* <MessageCircle className='h-5 w-5' /> */}
-              <span className='text-grey-400 font-mono'><h4> {comment} Comments</h4> </span>
+              <span className='flex items-center'><img className='h-12' src="/src/assets/comment.png" alt="" /><h4 className='text-grey-400 font-mono'> {comment} </h4> </span>
             </h4>
             {/* <button className='flex items-center space-x-1 text-gray-400 hover:text-primary transition-colors'>
               <Share2 className='h-5 w-5' />
             </button> */}
           </div>
           <button className='text-grey-400 flex justify-center items-center  hover:text-primary transition-colors'>
-            <Bookmark className='h-5 w-5 text-blue-600' />
-            <span className='text-blue-500 font-mono p-1'  ><h4> {saved}</h4> </span>
+                <img  className="h-8" src="/src/assets/bookmark.png" alt="" />
+                            <span className='text-blue-500 font-mono p-1'  ><h4> {saved}</h4> </span>
 
           </button>
         </div>
