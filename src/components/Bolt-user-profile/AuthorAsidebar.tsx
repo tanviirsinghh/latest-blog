@@ -47,11 +47,11 @@ export default function AuthorAsidebar ({ authorId }: AuthorAsidebarProps) {
             {userDetails.name}
           </h2>
           </Link>
-          <p className='font-mono text-indigo-300 font-medium'><span className='text-bold font-sans text-indigo-500'>Blog Name : </span>{userDetails.blogName}</p>
+          <p className='font-mono text-indigo-300 font-medium'><span className='text-bold font-sans text-gray-300'>Blog Name : </span>{userDetails.blogName}</p>
         </div>
 
         <div className='flex font-mono text-gray-300 text-center'>
-         <span className='font-sans font-bold text-indigo-500 mr-2'>BIO : </span> <p>{userDetails.bio}</p>
+         <span className='font-sans font-bold text-gray-300 mr-2'>BIO : </span> <p>{userDetails.bio}</p>
         </div>
 
         <div>

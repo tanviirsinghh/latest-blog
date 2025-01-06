@@ -84,19 +84,19 @@ like,
             <h4 className='flex items-center font-mono space-x-1 text-gray-400 hover:text-primary transition-colors'>
             <span className='text-red-500 font-mono'><h4> {like} </h4> </span>
        
-  <img className="h-11" src="/src/assets/heart.png" alt="" />
+  <img className="h-5" src="/src/assets/3d-fire.png" alt="" />
    </h4>
            
             <h4 className=' font-mono flex items-center space-x-1 text-gray-400 hover:text-primary transition-colors'>
               {/* <MessageCircle className='h-5 w-5' /> */}
-              <span className='flex items-center'><img className='h-12' src="/src/assets/comment.png" alt="" /><h4 className='text-grey-400 font-mono'> {comment} </h4> </span>
+              <span className='flex items-center'><h4 className='text-grey-400 font-mono'> {comment} </h4><img className='h-7' src="/src/assets/comment.png" alt="" /> </span>
             </h4>
             {/* <button className='flex items-center space-x-1 text-gray-400 hover:text-primary transition-colors'>
               <Share2 className='h-5 w-5' />
             </button> */}
           </div>
           <button className='text-grey-400 flex justify-center items-center  hover:text-primary transition-colors'>
-                <img  className="h-8" src="/src/assets/bookmark.png" alt="" />
+                <img  className="h-7" src="/src/assets/bookmark.png" alt="" />
                             <span className='text-blue-500 font-mono p-1'  ><h4> {saved}</h4> </span>
 
           </button>

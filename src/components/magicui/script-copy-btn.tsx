@@ -37,7 +37,12 @@ export default function ScriptCopyBtn({
           },
           defaultColor: theme === "dark" ? "dark" : "light",
         });
-        setHighlightedCode(highlighted);
+        setHighlightedCode(`
+          <style>
+            pre, code { background-color: white !important; color: #6366f1 !important; }
+          </style>
+          ${highlighted}
+        `);
       } catch (error) {
         console.error("Error highlighting code:", error);
         setHighlightedCode(`<pre>${command}</pre>`);
@@ -60,14 +65,14 @@ export default function ScriptCopyBtn({
         <div className="relative flex items-center ">
           <div className="min-w-[200px] grow font-mono ">
             {highlightedCode ? (
-              <div
-                className={`[&>pre]:overflow-x-auto [&>pre]:rounded-md [&>pre]:p-2 [&>pre]:px-4 [&>pre]:font-mono ${
-                  theme === "dark" ? "dark" : "light"
-                }`}
-                dangerouslySetInnerHTML={{ __html: highlightedCode }}
-              />
+            <div
+            className={`[&>pre]:overflow-x-auto [&>pre]:rounded-md [&>pre]:p-2 [&>pre]:px-4 [&>pre]:font-mono [&>pre]:!bg-white [&>pre]:!text-indigo-500 ${
+              theme === "dark" ? "dark" : "light"
+            }`}
+            dangerouslySetInnerHTML={{ __html: highlightedCode }}
+          />
             ) : (
-              <pre className="rounded-md  border border-border  bg-white p-2 px-4 font-mono dark:bg-black">
+              <pre className="rounded-md  border border-border text-indigo-500 bg-white p-2 px-4 font-mono dark:bg-black">
                 {command}
               </pre>
             )}

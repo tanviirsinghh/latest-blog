@@ -19,6 +19,7 @@ import { BACKEND_URL } from '../config'
 import { FourSquare } from 'react-loading-indicators'
 import DOMPurify from 'dompurify'
 import Navbar from './Bolt-user-profile/Navbar';
+import Footer from './Footer';
 
 function EditBlog () {
   const [activeTab, setActiveTab] = useState<'write' | 'preview'>('write')
@@ -170,14 +171,15 @@ function EditBlog () {
 
   return (
     
-    <div className='min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-12 px-4 sm:px-6 lg:px-8'>
+    <div className='min-h-screen bg-black py-12 px-4 sm:px-6 lg:px-8'>
       <Navbar/>
+      <div className='h-16'></div>
       <div className='max-w-5xl mx-auto'>
         <div className='text-center mb-12'>
-          <h1 className='text-4xl font-bold text-gray-400 mb-4'>
+          <h1 className='text-4xl font-bold text-gray-300 mb-4'>
             Create Your Story
           </h1>
-          <p className='text-lg text-gray-500'>
+          <p className='text-lg text-gray-300'>
             Share your thoughts and inspire others
           </p>
         </div>
@@ -185,7 +187,7 @@ function EditBlog () {
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
           <div className='lg:col-span-2'>
             <div className='from-gray-950 via-slate-950 to-slate-00 rounded-2xl shadow-slate-950 shadow-2xl overflow-hidden'>
-              <div className='flex border-b border-gray-200'>
+              <div className='flex border-b border-gray-300'>
                 <button
                   onClick={() => setActiveTab('write')}
                   className={`flex-1 py-4 px-6 text-center ${
@@ -268,7 +270,7 @@ function EditBlog () {
                   <div>
                     <label
                       htmlFor='title'
-                      className='block text-sm font-medium text-gray-300 mb-1'
+                      className='block text-bold font-mono  text-gray-300 mb-1'
                     >
                       Title
                     </label>
@@ -277,11 +279,11 @@ function EditBlog () {
                       id='title'
                       value={title}
                       onChange={e => setTitle(e.target.value)}
-                      className='block w-full px-4 py-3 bg-gray-800 border border-gray-300 rounded-xl text-gray-300 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-150'
+                      className='block w-full px-4 py-3 bg-black border border-gray-300 rounded-xl text-gray-300 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-150'
                       placeholder='Enter a captivating title...'
                       required
                     />
-                    <p className='mt-1 text-sm text-gray-300'>
+                    <p className='mt-1 text-bold font-mono text-gray-300'>
                       Great titles are short and descriptive (50-60 characters)
                     </p>
                   </div>
@@ -289,7 +291,7 @@ function EditBlog () {
                   <div>
                     <label
                       htmlFor='description'
-                      className='block text-sm font-medium text-gray-300 mb-1'
+                      className='block text-bold font-mono font-medium text-gray-300 mb-1'
                     >
                       Content
                     </label>
@@ -326,8 +328,12 @@ function EditBlog () {
                           'alignright alignjustify | bullist numlist outdent indent | ' +
                           'removeformat | help',
                         content_style:
-                          'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-                      }}
+                          'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                          skin: "oxide-dark",
+                          content_css: "dark",
+                           toolbar_bg: "#000000",
+                          toolbar_text_color: "#ffffff"
+                        }}
                       onEditorChange={content => setDescription(content)}
                     />
                   </div>
@@ -463,6 +469,10 @@ function EditBlog () {
             </div>
           </div>
         </div>
+      </div>
+      <div className=''>
+        <div className='h-32'></div>
+        <Footer/>
       </div>
     </div>
   )

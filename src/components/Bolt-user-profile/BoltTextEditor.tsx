@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Save, Settings, X, Bold, Italic, List, AlignLeft, AlignCenter, AlignRight, Link, Image, Quote } from 'lucide-react';
 import { BACKEND_URL } from '../../config';
+import { FileUploadDemo } from '../FileUploadDemo';
 
 // Config
 // const BACKEND_URL = 'http://localhost:3000';
@@ -217,7 +218,7 @@ export default function BoltTextEditor() {
                 </div>
               )}
             </div>
-            <label className="absolute inset-0 cursor-pointer opacity-0 group-hover:opacity-100 bg-black/50 transition-opacity duration-300 flex items-center justify-center">
+            {/* <label className="absolute inset-0 cursor-pointer opacity-0 group-hover:opacity-100 bg-black/50 transition-opacity duration-300 flex items-center justify-center">
               <span className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg text-white">
                 {imagePreview ? 'Change Cover' : 'Add Cover'}
               </span>
@@ -233,7 +234,8 @@ export default function BoltTextEditor() {
                 }}
                 accept="image/*"
               />
-            </label>
+            </label> */}
+         {/* <   FileUploadDemo/> */}
           </div>
 
           {/* Title Input */}

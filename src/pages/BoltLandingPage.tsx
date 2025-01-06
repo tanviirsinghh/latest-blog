@@ -38,7 +38,7 @@ export default function BoltLandingPage () {
                     your voice heard.
                   </p>
                   <Link
-                    to='/write'
+                    to='/publish'
                     className='inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300'
                   >
                     <PenSquare className='mr-2 h-5 w-5' />

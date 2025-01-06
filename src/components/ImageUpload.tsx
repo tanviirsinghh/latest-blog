@@ -35,7 +35,7 @@ const ImageUpload = ({getImgFile}: getImgFile) => {
   };
 
   return (
-   <div className=' w-2/4 h-full flex justify-center items-end'>
+   <div className=' w-full h-full flex justify-center items-end '>
   <div className="w-full max-w-2xl mx-auto flex justify-center items-center">
     <div
       className="w-full relative border-2  border-gray-300 rounded-lg overflow-hidden"
@@ -45,7 +45,7 @@ const ImageUpload = ({getImgFile}: getImgFile) => {
       }}
     >
       {image ? (
-        <div className="absolute inset-0 w-full h-full">
+        <div className="absolute inset-0 w-full h-full bg-black">
           <img
             src={imagePreview}
             alt="Blog"
@@ -75,7 +75,7 @@ const ImageUpload = ({getImgFile}: getImgFile) => {
       ) : (
         <label
           htmlFor="dropzone-file"
-          className="flex flex-col items-center justify-center w-full h-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+          className="flex flex-col items-center justify-center w-full h-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-black hover:bg-neutral-900"
         >
           <div className="flex flex-col items-center justify-center pt-5 pb-6">
             <svg

@@ -13,14 +13,14 @@ interface PulsatingButtonProps
 export default function PulsatingButton({
   className,
   children,
-  pulseColor = "#0096ff",
+  pulseColor = "#4a45f0",
   duration = "1.5s",
   ...props
 }: PulsatingButtonProps) {
   return (
     <button
       className={cn(
-        "relative flex cursor-pointer items-center justify-center rounded-lg bg-blue-500 px-6 py-2 text-center text-white dark:bg-blue-500 dark:text-black",
+        "relative flex cursor-pointer items-center justify-center rounded-lg bg-indigo-500 px-6 py-2 text-center text-white dark:bg-indigo-500 dark:text-black",
         className,
       )}
       style={
