@@ -50,6 +50,11 @@ const reviews = [
     username: "@james",
     body: "O R M",
     img: "src/assets/prismaorm.png",
+  },{
+    name: "James",
+    username: "@james",
+    body: " SQL Database",
+    img: "src/assets/sql-server.png",
   },
   
 ];
@@ -79,7 +84,7 @@ const ReviewCard = ({
       )}
     >
       <div className="flex  h-20 flex-row justify-center items-center gap-4">
-        <img className="rounded-full" width="77" height="77" alt="fuck" src={img}/>
+        <img className="rounded-full" width="70" height="70" alt="fuck" src={img}/>
         {/* <div className="flex flex-col">
           <figcaption className="text-sm font-medium dark:text-white">
             {name}

@@ -4,8 +4,25 @@ import { MarqueeDemo } from '../components/MarqueeDemo'
 import Features from '../components/Features'
 import Footer from '../components/Footer'
 import { PenSquare } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { OrbitProgress } from 'react-loading-indicators'
 
 export default function BoltLandingPage () {
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading or fetch data
+    setTimeout(() => setLoading(false), 2000);
+  }, []);
+
+  if(loading){
+    return <div>
+       <div className='h-screen w-full flex justify-center items-center'>
+    <OrbitProgress variant="spokes" color="#3e43ef" size="medium" text="" textColor="" />
+  </div>
+    </div>
+  }
   return (
     <>
       <div className='bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'>

@@ -169,7 +169,7 @@ if(loading){
           onInit={(_evt, editor) => (editorRef.current = editor)}
           init={{
             height: 500,
-            width: '100%', //changed from 1000
+            width: '70%', //changed from 1000
             menubar: true,
             plugins: [
               'advlist',
@@ -205,7 +205,7 @@ if(loading){
           onEditorChange={content => setDescript(content)} // Update state on change
         />
       </div>
-      <div className='w-full h-inherit  flex justify-center items-center h-24 '>
+      <div className='w-full h-inherit  flex justify-center items-end h-32 '>
         {/* <button
           onClick={SendPost}
           type='submit'
@@ -219,13 +219,13 @@ if(loading){
     <span className="h-full w-full inset-0 absolute mt-0.5 ml-0.5 bg-gradient-to-br filter group-active:opacity-0 rounded opacity-50 from-purple-600 to-blue-500"></span>
     <span className="absolute inset-0 w-full h-full transition-all duration-200 ease-out rounded shadow-xl bg-gradient-to-br filter group-active:opacity-0 group-hover:blur-sm from-purple-600 to-blue-500"></span>
     <span className="absolute inset-0 w-full h-full transition duration-200 ease-out rounded bg-gradient-to-br to-purple-600 from-blue-500"></span>
-    <span className="relative">Button Text</span>
+    <span className="relative">Publish Post</span>
 </button>
       </div>
     
     </div>
-    <div className='h-80  bg-black'>
-      <div className='h-20'></div>
+    <div className='h-96  bg-black'>
+      <div className='h-36'></div>
      < Footer/>
      
   </div>
