@@ -10,6 +10,7 @@ import ImageUpload from '../components/ImageUpload'
 import ImageUploadHook from '../hooks/ImageUploadHook'
 import Footer from '../components/Footer';
 import { OrbitProgress } from 'react-loading-indicators'
+import SideEdit from '../components/SideEdit';
 
 
 //  we are using this
@@ -139,23 +140,27 @@ if(loading){
 
   return (
     <>
-    <div className='h-full w-full  flex-col justify-center items-center bg-black'>
+    <div className='h-full w-full flex flex-col justify-center items-center bg-black '>
       <Navbar />
-      <div className='h-24'></div>
-      <div className='w-full h-44 flex justify-center  bg-black '>
-        {/* <div className='bg-violet-500 w-2/4 h-full flex justify-center items-center'> */}
+      <div className='h-24 '></div>
+      <div className='relative flex justify-center items-center  w-full h-full md:flex'>
+              <div className='   p-8 w-full  border border-indigo-500/70   rounded-md md:w-3/5
+       shadow-[0_0_15px_rgba(255,255,255,0.2)] 
+    hover:shadow-[0_0_20px_rgba(255,255,255,0.25)] 
+    transition-shadow duration-300 ease-in-out'>
+   
+      
+      <div className='w-full h-44 flex justify-center '>
        
           <ImageUpload getImgFile={getImgFile} />
-        {/* </div> */}
       </div>
-      <div className='flex justify-center items-center h-32 w-full px-4 sm:px-6 lg:px-8'>
+      <div className='flex justify-center items-center h-32 w-full px-4 sm:px-6 lg:px-8 '>
       <div className='w-full max-w-5xl'>
       <input
             onChange={e => {
               setTitle(e.target.value)
             }}
             type='text'
-            // className='bg-black border border-gray-300 text-gray-300 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
             autoFocus 
             className="w-full bg-transparent text-4xl font-bold text-gray-300  placeholder-gray-300  bg-black focus:outline-none focus:ring-0"
             placeholder='Title'
@@ -168,8 +173,8 @@ if(loading){
 '
           onInit={(_evt, editor) => (editorRef.current = editor)}
           init={{
-            height: 500,
-            width: '70%', //changed from 1000
+            height: 700,
+            width: '100%', //changed from 1000
             menubar: true,
             plugins: [
               'advlist',
@@ -223,6 +228,14 @@ if(loading){
 </button>
       </div>
     
+    </div>
+    <div className='pl-9  hidden md:block  h-[58rem] w-1/4  '>
+    <div className=' w-full h-screen sticky top-20 '>
+   < SideEdit/>
+   </div>
+    </div>
+    </div>
+
     </div>
     <div className='h-96  bg-black'>
       <div className='h-36'></div>

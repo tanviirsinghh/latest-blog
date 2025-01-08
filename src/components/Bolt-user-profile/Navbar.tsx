@@ -1,10 +1,13 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { PulsatingButtonDemo } from '../PulsatingButtonDemo'
 
 export default function Navbar () {
   
   const navigate = useNavigate()
+  const location = useLocation()
+  const showWriteButton = location.pathname !== '/publish';  // Adjust path as needed
+
   function OpenUserProfile () {
     const token = localStorage.getItem('token')
     if (!token) {
@@ -25,7 +28,10 @@ export default function Navbar () {
             </div>
           </div>
           <div className='flex items-center justify-between space-x-9 w-44  '>
-            <PulsatingButtonDemo />
+          {showWriteButton && (
+        <PulsatingButtonDemo />
+      )}
+           
             <button
               onClick={OpenUserProfile}
               className='ml-3 p-1 rounded-full text-gray-300 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'

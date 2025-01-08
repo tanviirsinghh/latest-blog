@@ -6,41 +6,35 @@ import { useNavigate } from 'react-router-dom' // Update: Added navigate for nav
 // import ImageUploadHook from '../../hooks/ImageUploadHook'
 import { BACKEND_URL } from '../../config'
 import {
-  Edit3,
-  MapPin,
-  Calendar,
+  
   // Twitter,
   // Github,
   // Linkedin,
   Camera,
   X,
   // Award,
-  Heart,
+ 
   MessageCircle,
   Bookmark,
-  Share2,
+
   // Clock,
   BarChart3,
   TrendingUp,
   PencilIcon,
-  LogOut
+ 
 } from 'lucide-react'
 import { useSavedBlogs, useUserDetails, useBlogsPersonal } from '../../hooks/index';
 import Loading from '../Loading'
 import ImageUploadHook from '../../hooks/ImageUploadHook'
 import Navbar from '../Bolt-user-profile/Navbar'
 import SavedBlogComponent from './SavedBlogComponent'
-import DOMPurify from 'dompurify'
 import AuthorPosts from './AuthorPosts'
 
 export default function ProfileInfo () {
-  // const [isEditing, setIsEditing] = useState(false)
   const { loading, userDetails, setUserDetails } = useUserDetails()
-  // userId: userId || " "
   const [isSaving, setIsSaving] = useState(false)
   const { savedblogs } = useSavedBlogs()
   const {blogsPersonal}= useBlogsPersonal()
-  //  console.log(savedblogs)
   const [editeduser, setEditeduser] = useState({
     name: userDetails?.name || '',
     email: userDetails?.email || '',
@@ -255,21 +249,29 @@ export default function ProfileInfo () {
       setConfirm(false)
     }
   }
-  // const [dummyuser, setdummyuser] = useState({
-  //   name: "Sarah Johnson",
-  //   blogName: "TechInsights",
-  //   email: "sarah.johnson@example.com",
-  //   avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  //   bio: "Senior Software Engineer | Tech Blogger | Cloud Architecture Enthusiast",
-  //   coverImage: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80",
-  //   location: "San Francisco, CA",
-  //   joinedDate: "January 2022",
-  //   social: {
-  //     twitter: "@sarahtechblog",
-  //     github: "sarahj",
-  //     linkedin: "sarahjohnson"
-  //   }
-  // });
+  const UserStats = () => {
+    const [stat, setStats] = useState({
+      totalPosts: 0,
+      totalComments: 0,
+      totalLikes: 0
+    });
+    const [loading, setLoading] = useState(true);
+  
+    useEffect(() => {
+      const fetchStats = async () => {
+        try {
+          const response = await axios.get(`${BACKEND_URL}/api/v1/user/user-stats/`);
+          // const data = await response.json();
+          setStats(response.data);
+        } catch (error) {
+          console.error('Error fetching stats:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchStats();
+    }, []);
 
   const stats = [
     {
@@ -356,7 +358,7 @@ export default function ProfileInfo () {
   return (
     <>
       <Navbar />
-      <div className=' min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'>
+      <div className=' min-h-screen bg-black'>
         {/* Profile Header */}
         <div className='relative'>
           <div className='  h-80  relative'>
@@ -564,54 +566,50 @@ export default function ProfileInfo () {
                 <div className='flex-1 '>
                   <div className='flex items-start justify-start'>
                     <div>
-                      <h1 className='text-3xl font-bold text-white'>
+                      <h1 className='text-3xl font-bold text-gray-300 font-mono'>
                         {userDetails.name}
                       </h1>
-                      <p className='text-cyan-400 font-medium'>
+                      <p className='text-indigo-500 font-medium font-mono'>
                         {userDetails.blogName}
                       </p>
                     </div>
-                    <button
+                    {/* <button
                       onClick={() => setIsEditModalOpen(true)}
                       className='flex items-center gap-2 px-4 ml-7 py-2 bg-cyan-400 hover:bg-cyan-600 text-gray-900 font-medium rounded-lg transition-colors'
                     >
                       <Edit3 size={18} />
                       Edit Profile
-                    </button>
-                    <button
+                    </button> */}
+                    <button  onClick={() => setIsEditModalOpen(true)}  className=" rounded ml-7 px-5 py-2.5 overflow-hidden group bg-green-500 relative hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300">
+    <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
+    <span className="relative">Edit Profile</span>
+</button>
+                    {/* <button
                       onClick={handleLogout}
                       className='flex items-center gap-1 px-4 ml-3 py-2 bg-red-600 hover:bg-red-700 text-gray-900 font-medium rounded-lg transition-colors'
                     >
                       <LogOut size={18} />
                       Log Out
-                    </button>
+                    </button> */}
+                    <button onClick={handleLogout} className="ml-3 relative inline-flex items-center justify-start px-7 py-3 overflow-hidden font-medium transition-all bg-red-600 rounded-xl group">
+    <span className="absolute top-0 right-0 inline-block w-4 h-4 transition-all duration-500 ease-in-out bg-red-800 rounded group-hover:-mr-4 group-hover:-mt-4">
+        <span className="absolute top-0 right-0 w-5 h-5 rotate-45 translate-x-1/2 -translate-y-1/2 bg-white"></span>
+    </span>
+    <span className="absolute bottom-0 left-0 w-full h-full transition-all duration-500 ease-in-out delay-200 -translate-x-full translate-y-full bg-red-700 rounded-2xl group-hover:mb-12 group-hover:translate-x-0"></span>
+    <span className="relative w-full text- font-mono text-white transition-colors duration-200 ease-in-out group-hover:text-white">Log Out</span>
+</button>
                   </div>
 
-                  <p className='mt-2 text-gray-300 max-w-2xl'>
+                  <p className='mt-2 text-gray-300 font-mono max-w-2xl'>
                     {userDetails.bio}
                   </p>
 
                   <div className='mt-4 flex flex-wrap items-center gap-4 text-gray-400'>
-                    <div className='flex items-center gap-1'>
-                      <MapPin size={16} />
-                      <span>{userDetails.location}</span>
-                    </div>
-                    <div className='flex items-center gap-1'>
-                      <Calendar size={16} />
-                      <span>Joined {'userDetails.joinedDate'}</span>
-                    </div>
+                   
                   </div>
 
                   <div className='mt-4 flex gap-4'>
-                    {/* <a href={`https://twitter.com/${user.social.twitter}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
-                  <Twitter size={20} />
-                </a>
-                <a href={`https://github.com/${user.social.github}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
-                  <Github size={20} />
-                </a>
-                <a href={`https://linkedin.com/in/${user.social.linkedin}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
-                  <Linkedin size={20} />
-                </a> */}
+                   
                   </div>
                 </div>
               )}
@@ -620,7 +618,7 @@ export default function ProfileInfo () {
         </div>
 
         {/* Main Content */}
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 relative z-10'>
+        <div className=' bg-black max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 relative z-10'>
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
             <div className='lg:col-span-2 space-y-6'>
               {/* Stats Grid */}

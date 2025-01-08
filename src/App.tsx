@@ -12,7 +12,6 @@ import LatestSignin from './components/LatestSignin'
 import BoltSignin from './components/Bolt-user-profile/BoltSignin'
 import AuthorProfile from './components/Bolt-user-profile/AuthorProfile'
 import BoltTextEditor from './components/Bolt-user-profile/BoltTextEditor'
-import BoltLandingPage from './pages/BoltLandingPage'
 import BoltMainPage from './pages/BoltMainPage'
 import BoltFullBlog from './components/Bolt-user-profile/BoltFullBlog'
 // import { useBlog } from './hooks'
@@ -27,6 +26,8 @@ const Signin = React.lazy(() => import('./pages/Signin'))
 const Blog = React.lazy(() => import('./pages/Blog'))
 const TextEditor = React.lazy(() => import('./pages/WriteBlog'))
 const UserProfileBolt = React.lazy(() => import('./components/Bolt-user-profile/UserProfileBolt'))
+const BoltLandingPage = React.lazy(() => import('./pages/BoltLandingPage'))
+
 
 function App () {
   const token = localStorage.getItem('token')

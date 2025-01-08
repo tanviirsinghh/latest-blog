@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import {
-  Send,
+  
   HelpCircle,
   CheckCircle2,
   AlertCircle,
@@ -192,7 +192,7 @@ function EditBlog () {
                   onClick={() => setActiveTab('write')}
                   className={`flex-1 py-4 px-6 text-center ${
                     activeTab === 'write'
-                      ? 'border-b-2 border-purple-500 text-purple-600 font-medium'
+                      ? 'border-b-2 border-indigo-500 text-indigo-600 font-medium'
                       : 'text-gray-500 hover:text-gray-700'
                   }`}
                 >
@@ -202,8 +202,8 @@ function EditBlog () {
                   onClick={() => setActiveTab('preview')}
                   className={`flex-1 py-4 px-6 text-center ${
                     activeTab === 'preview'
-                      ? 'border-b-2 border-purple-500 text-purple-600 font-medium'
-                      : 'text-gray-500 hover:text-gray-700'
+                      ? 'border-b-2 border-indigo-500 text-indigo-600 font-medium'
+                      : 'text-indigo-500 hover:text-indigo-400'
                   }`}
                 >
                   Preview
@@ -244,7 +244,7 @@ function EditBlog () {
                             <div className='flex text-sm text-gray-600'>
                               <label
                                 htmlFor='image-upload'
-                                className='relative cursor-pointer rounded-md font-medium text-purple-600 hover:text-purple-500 focus-within:outline-none'
+                                className='relative cursor-pointer rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none'
                               >
                                 <span>Upload a file</span>
                                 <input
@@ -339,21 +339,22 @@ function EditBlog () {
                   </div>
 
                   <div className=' flex justify-end items-center   pt-5'>
-                    <button
+                    {/* <button
                       type='submit'
                       disabled={loading}
                       className='mx-5 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-150'
-                    >
-                      <Send className='w-5 h-5 mr-2' />
-                      {loading ? 'Publishing...' : 'Publish Story'}
-                    </button>
-                    <button  onClick={SendPost}
-          type='submit' className="px-5 py-2.5 relative rounded group  text-white font-medium inline-block">
+                    > */}
+                      {/* <Send className='w-5 h-5 mr-2' /> */}
+                      {/* {loading ? 'Publishing...' : 'Publish Story'} */}
+                    {/* </button> */}
+                    <button  
+                      disabled={loading}
+          type='submit' className="mx-12 px-5 py-2.5 relative rounded group  text-white font-medium inline-block">
     <span className="absolute top-0 left-0 w-full h-full rounded opacity-50 filter blur-sm bg-gradient-to-br from-purple-600 to-blue-500"></span>
     <span className="h-full w-full inset-0 absolute mt-0.5 ml-0.5 bg-gradient-to-br filter group-active:opacity-0 rounded opacity-50 from-purple-600 to-blue-500"></span>
     <span className="absolute inset-0 w-full h-full transition-all duration-200 ease-out rounded shadow-xl bg-gradient-to-br filter group-active:opacity-0 group-hover:blur-sm from-purple-600 to-blue-500"></span>
     <span className="absolute inset-0 w-full h-full transition duration-200 ease-out rounded bg-gradient-to-br to-purple-600 from-blue-500"></span>
-    <span className="relative">Publish Post</span>
+    <span className="relative"> {loading ? 'Publishing...' : 'Publish Story'}</span>
 </button>
                     {/* <button
                       type='submit'
@@ -441,7 +442,7 @@ function EditBlog () {
                     </div>
 
                     <div className='flex items-start space-x-3'>
-                      <AlertCircle className='w-5 h-5 text-purple-500 mt-0.5' />
+                      <AlertCircle className='w-5 h-5 text-indigo-500 mt-0.5' />
                       <div>
                         <h3 className='font-medium text-gray-800'>
                           Visual Appeal
@@ -455,7 +456,7 @@ function EditBlog () {
                 )}
               </div>
 
-              <div className='bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl shadow-lg p-6 text-white'>
+              <div className='bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-lg p-6 text-white'>
                 <h2 className='text-lg font-semibold mb-4'>
                   Ready to Publish?
                 </h2>
