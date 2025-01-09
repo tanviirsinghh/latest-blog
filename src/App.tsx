@@ -18,7 +18,6 @@ import { SignupFormDemo } from './components/SignupFormDemo'
 // Implementing lazy loading
 // const Signup = React.lazy(() => import('./pages/Signup'))
 const Signin = React.lazy(() => import('./pages/Signin'))
-// const Blogs = React.lazy(() => import('./pages/Blogs'))
 const Blog = React.lazy(() => import('./pages/Blog'))
 const TextEditor = React.lazy(() => import('./pages/WriteBlog'))
 const UserProfileBolt = React.lazy(
