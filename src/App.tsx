@@ -23,19 +23,20 @@ const Signin = React.lazy(() => import('./pages/Signin'))
 // const Blogs = React.lazy(() => import('./pages/Blogs'))
 const Blog = React.lazy(() => import('./pages/Blog'))
 const TextEditor = React.lazy(() => import('./pages/WriteBlog'))
-const UserProfileBolt = React.lazy(() => import('./components/Bolt-user-profile/UserProfileBolt'))
+const UserProfileBolt = React.lazy(
+  () => import('./components/Bolt-user-profile/UserProfileBolt')
+)
 const BoltLandingPage = React.lazy(() => import('./pages/BoltLandingPage'))
-
 
 function App () {
   const token = localStorage.getItem('token')
-      
+
   return (
     <>
       <ToastContainer />
       <BrowserRouter>
         <Routes>
-          <Route path='/newsingleblog' element={<NewSingleBlog/>}></Route>
+          <Route path='/newsingleblog' element={<NewSingleBlog />}></Route>
           <Route
             path='/signup'
             element={
@@ -52,7 +53,7 @@ function App () {
               </React.Suspense>
             }
           ></Route> */}
-           {/* <Route
+          {/* <Route
             path='/github'
             element={
               <React.Suspense fallback={<Loading />}>
@@ -64,7 +65,7 @@ function App () {
             path='/boltfullblog'
             element={
               <React.Suspense fallback={<Loading />}>
-                <BoltFullBlog  />
+                <BoltFullBlog />
               </React.Suspense>
             }
           ></Route>
@@ -111,7 +112,7 @@ function App () {
               </React.Suspense>
             }
           ></Route>
-<Route
+          <Route
             path='/details'
             element={
               <React.Suspense fallback={<Loading />}>
@@ -127,7 +128,7 @@ function App () {
               </React.Suspense>
             }
           ></Route>
-         <Route
+          <Route
             path='/editblog/:id'
             element={
               <React.Suspense fallback={<Loading />}>
@@ -143,7 +144,7 @@ function App () {
               </React.Suspense>
             }
           ></Route>
-           <Route
+          <Route
             path='/blogs'
             element={
               <React.Suspense fallback={<Loading />}>
@@ -151,7 +152,7 @@ function App () {
               </React.Suspense>
             }
           ></Route>
-         
+
           <Route
             path='/publish'
             element={
@@ -173,12 +174,11 @@ function App () {
             path='/userprofile'
             element={
               <React.Suspense fallback={<Loading />}>
-                {token ?  <UserProfileBolt />: <Signin />}
+                {token ? <UserProfileBolt /> : <Signin />}
               </React.Suspense>
             }
           ></Route>
-          <Route path='/signin' element={<LatestSignin/>}></Route>
-
+          <Route path='/signin' element={<LatestSignin />}></Route>
         </Routes>
       </BrowserRouter>
     </>
