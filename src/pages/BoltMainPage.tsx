@@ -3,6 +3,7 @@ import { CheckCircle2 } from 'lucide-react';
 import { BlogList } from '../components/Bolt-user-profile/BlogList'
 import Navbar from '../components/Bolt-user-profile/Navbar'
 import { CardSpotlightDemo } from '../components/CardSpotLight';
+import Footer from '../components/Footer';
 
 export default function BoltMainPage() {
   return (
@@ -25,12 +26,12 @@ export default function BoltMainPage() {
 
                   <CardSpotlightDemo/>
                   
-                  <div className='w-full text-center sm:w-full md:w-full lg:w-full xl:w-96  bg-gradient-to-br from-indigo-500 to-purple-600 rounded-sm shadow-lg p-6 text-white'>
+                  <div className='w-full text-center  sm:w-full md:w-full lg:w-full xl:w-96  bg-gradient-to-br from-indigo-500 to-purple-600 rounded-sm shadow-lg p-6 text-white'>
                     <h2 className=' text-2xl font-semibold mb-4 font-sans '>
                       Read What You Like
                     </h2>
                     <ul className='space-y-3 text-sm'>
-                      <li className='flex items-center justify-center text-lg font-mono'>
+                      <li className='flex items-center justify-center text-lg font-sans'>
                         <CheckCircle2 className='w-4 h-4 mr-2' />
                         Blogs from your favourite Author
                       </li>
@@ -49,6 +50,8 @@ export default function BoltMainPage() {
             </div>
           </div>
         </main>
+        <div className='h-18 '>adasdsa</div>
+        <Footer/>
       </div>
     </>
   )

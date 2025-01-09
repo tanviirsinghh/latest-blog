@@ -105,7 +105,7 @@ export function BlogList () {
 </button>
           
           <span className='text-indigo-500 font-bold font-mono'>
-            Page {currentPage} of {totalPages}
+            Page <span className='text-gray-300 font-sans'>{currentPage}</span> of <span className='text-gray-300 font-sans'>{totalPages}</span>
           </span>
 
           {/* <button
