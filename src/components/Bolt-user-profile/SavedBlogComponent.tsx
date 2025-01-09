@@ -21,7 +21,7 @@ export default function SavedBlogComponent ({
 }: BlogCardProps) {
   return (
     <Link to={`/blog/${id}`}>
-      <div className='space-y-4'>
+      <div className='space-y-4 bg-black'>
         <div
           key={id}
           className='flex items-center gap-3 p-3 rounded-lg hover:bg-gray-900/50 transition-colors cursor-pointer'

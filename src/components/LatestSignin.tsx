@@ -1,11 +1,16 @@
 import React, { FormEvent, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { BACKEND_URL } from '../config';
+import { toast } from 'react-toastify';
 
 const LatestSignin: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+    const navigate= useNavigate()
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -15,10 +20,32 @@ const LatestSignin: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Blog signin submitted:', formData);
-    // Here you would typically handle the signin process
+    try{
+      const response =  await  axios.post(`${BACKEND_URL}/api/v1/user/signin`, 
+        formData
+      )
+        const token = response.data.token
+        // const jwt = "Bearer" + response.data.token;
+        // localStorage.setItem("token", jwt)
+        // console.log(token)
+        localStorage.setItem("token", token)
+        console.log(token)
+            navigate('/blogs')
+            toast.success('Signup successfull')
+
+}catch (e : unknown ){
+    if(axios.isAxiosError(e) && e.response?.status === 401){
+   toast.error('User not found / Sign up first')
+} else if (axios.isAxiosError(e) && e.response?.status === 500){
+    toast.error('Please try again / Internal Server Error')
+}
+else if (axios.isAxiosError(e) && e.response?.status === 411){
+    toast.error('Input Not Correct')
+}
+
+ }
   };
 
   return (

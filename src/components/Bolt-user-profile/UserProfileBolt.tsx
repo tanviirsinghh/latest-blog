@@ -14,7 +14,6 @@ import {
   X,
   // Award,
  
-  MessageCircle,
   Bookmark,
 
   // Clock,
@@ -24,7 +23,7 @@ import {
  
 } from 'lucide-react'
 import { useSavedBlogs, useUserDetails, useBlogsPersonal } from '../../hooks/index';
-import Loading from '../Loading'
+import Loading from '../Loading';
 import ImageUploadHook from '../../hooks/ImageUploadHook'
 import Navbar from '../Bolt-user-profile/Navbar'
 import SavedBlogComponent from './SavedBlogComponent'
@@ -45,6 +44,39 @@ export default function ProfileInfo () {
 
     // coverpicture: user?.coverpicture || ''
   })
+  const[isloading,setLoading] = useState(false)
+  
+
+  const [stat, setStats] = useState({
+    totalPosts: 0,
+    totalComments: 0,
+    totalLikes: 0
+  });
+  
+
+  useEffect(() => {
+    
+    const fetchStats = async () => {
+      setLoading(true)
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/v1/user/user-stats`,{
+          headers:{
+            Authorization:`${token}`
+          }
+        });
+        // const data = await response.json();
+        setStats(response.data);
+        console.log('...................................user stats', response.data)
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+   
   useEffect(() => {
     if (userDetails) {
       setEditeduser({
@@ -111,7 +143,6 @@ export default function ProfileInfo () {
           Authorization: ` ${token}` // Ensure token format is correct
         }
       })
-      console.log('Got refresh response of user details', response.data)
       setUserDetails(response.data)
     } catch (error) {
       console.error('Error fetching user details:', error)
@@ -138,9 +169,7 @@ export default function ProfileInfo () {
     // setLoading(true)
     setIsSaving(true) // Disable the button
 
-    console.log('submit working')
     const token = localStorage.getItem('token')
-    console.log(userDetails)
     try {
       // Simplified input check logic
       const payload: Partial<typeof editeduser> = {}
@@ -249,59 +278,40 @@ export default function ProfileInfo () {
       setConfirm(false)
     }
   }
-  const UserStats = () => {
-    const [stat, setStats] = useState({
-      totalPosts: 0,
-      totalComments: 0,
-      totalLikes: 0
-    });
-    const [loading, setLoading] = useState(true);
-  
-    useEffect(() => {
-      const fetchStats = async () => {
-        try {
-          const response = await axios.get(`${BACKEND_URL}/api/v1/user/user-stats/`);
-          // const data = await response.json();
-          setStats(response.data);
-        } catch (error) {
-          console.error('Error fetching stats:', error);
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-      fetchStats();
-    }, []);
+ 
+    
+
+
 
   const stats = [
     {
-      label: 'Total Views',
-      value: '238K',
+      label: 'Total Likes',
+      value: stat.totalLikes,
       icon: BarChart3,
-      change: '+12.5%',
+      change: 'Anaylize stats to get more engagement',
       color: 'text-cyan-400'
     },
     {
       label: 'Blog Posts',
-      value: '47',
+      value:  stat.totalPosts,
       icon: TrendingUp,
-      change: '+5.2%',
+      change: 'Post More, for more Reach',
       color: 'text-purple-400'
     },
     {
-      label: 'Followers',
-      value: '12.5K',
+      label: 'Total Comments',
+      value:  stat.totalComments,
       icon: TrendingUp,
-      change: '+18.3%',
+      change: 'Engage with the Comments,  Engagement++',
       color: 'text-pink-400'
     },
-    {
-      label: 'Comments',
-      value: '1.2K',
-      icon: MessageCircle,
-      change: '+7.1%',
-      color: 'text-amber-400'
-    }
+    // {
+    //   label: 'Comments',
+    //   value: '1.2K',
+    //   icon: MessageCircle,
+    //   change: '+7.1%',
+    //   color: 'text-amber-400'
+    // }
   ]
 
   // const savedPosts = [
@@ -354,10 +364,13 @@ export default function ProfileInfo () {
   //     comments: 78
   //   }
   // ]
-
+  if(isloading){
+    return <div><Loading/></div>
+  }
   return (
     <>
       <Navbar />
+      <div className='h-16 bg-black '></div>
       <div className=' min-h-screen bg-black'>
         {/* Profile Header */}
         <div className='relative'>
@@ -622,50 +635,53 @@ export default function ProfileInfo () {
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
             <div className='lg:col-span-2 space-y-6'>
               {/* Stats Grid */}
-              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
-                {stats.map(stat => (
+              {isloading? <div className=""> <Loading/></div>
+               : <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+              
+                {stats.map(status => (
                   <div
-                    key={stat.label}
-                    className='bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50'
+                    key={status.label}
+                    className='bg-black backdrop-blur-lg rounded-xl p-6 border border-gray-700/50'
                   >
-                    <div className='flex items-center gap-3'>
+                    <div className='flex items-center gap-3 '>
                       <div
-                        className={`p-2 rounded-lg ${stat.color} bg-opacity-10`}
+                        className={`p-1 rounded-lg   bg-opacity-10`}
                       >
                         {/* <stat.icon className={`h-6 w-6 ${stat.color}`} /> */}
                       </div>
-                      <div>
-                        <p className='text-sm text-gray-400'>{stat.label}</p>
-                        <p className='text-2xl font-bold text-white'>
-                          {stat.value}
+                      <div className=' flex flex-col justify-center items-center'>
+                        <p className='text-sm flex justify-center items-center font-mono text-indigo-500'>{status.label}</p>
+                        <p className='text-2xl font-mono font-bold text-white'>
+                          {status.value}
                         </p>
                       </div>
                     </div>
-                    <div className='mt-2 flex items-center text-sm'>
-                      <span className='text-green-400'>{stat.change}</span>
-                      <span className='text-gray-500 ml-2'>vs last month</span>
+                    <div className='mt-2 flex items-center justify-center text-center text-sm '>
+                      <span className='text-green-400 text center font-mono'>{status.change}</span>
+                      {/* <span className='text-gray-500 ml-2'>vs last month</span> */}
                     </div>
                   </div>
                 ))}
+              
               </div>
-
+}
               {/* dummyuser Posts */}
-              <div className='bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50'>
+              <div className='bg-black backdrop-blur-lg rounded-xl p-6 border border-indigo-500'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h2 className='text-xl font-semibold text-white'>
+                  <h2 className='text-xl font-semibold text-gray-300 font-mono'>
                     Recent Posts
                   </h2>
                   <div className='flex gap-2'>
-                    <button className='px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors'>
-                      Most Recent
-                    </button>
-                    <button className='px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors'>
-                      Most Popular
+                    {/* <button className='px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors'>
+                     
+                    </button> */}
+                    <button className='px-4 py-2 text-sm font-mono text-gray-400 hover:text-white transition-colors'>
+                    Wrote by You
                     </button>
                   </div>
                 </div>
 
-                <div className='space-y-6'>
+                <div className='space-y-6 bg-black backdrop-blur-lg'>
                   {blogsPersonal.map((blog) => (
                           <AuthorPosts
                           key={blog.id}
@@ -677,9 +693,10 @@ export default function ProfileInfo () {
                           url={blog.url}
               
                           // make user upload the photo then fetch here
-                          authorAvatar=''
-                          initialLikes= {1}
-                          initialComments={5}/>
+                          like={blog._count.like}
+                          comment={blog._count.comment}
+                          save={blog._count.savedPosts}
+                          />
                   ))}
                 </div>
               </div>
@@ -688,11 +705,11 @@ export default function ProfileInfo () {
             {/* Sidebar */}
             <div className='space-y-6 overflow-y-auto '>
               {/* Saved Posts */}
-              <div className='bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50'>
+              <div className='bg-black backdrop-blur-lg rounded-xl p-6 border border-gray-700/50'>
                 <div className='flex items-center justify-between mb-6'>
                   <div className='flex items-center gap-2'>
-                    <Bookmark className='h-5 w-5 text-cyan-400' />
-                    <h2 className='text-lg font-semibold text-white'>
+                    <Bookmark className='h-5 w-5 text-indigo-500' />
+                    <h2 className='text-lg font-semibold text-gray-300'>
                       Saved Posts
                     </h2>
                   </div>
@@ -749,10 +766,10 @@ export default function ProfileInfo () {
 
         {/* Edit Profile Modal */}
         {isEditModalOpen && (
-          <div className='fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center'>
-            <div className='bg-gray-800/90 rounded-2xl p-8 max-w-2xl w-full mx-4 shadow-xl border border-gray-700/50'>
+          <div className='fixed inset-0 bg-black/5 backdrop-blur-sm z-50 flex items-center justify-center'>
+            <div className='bg-black/90 rounded-2xl p-8 max-w-2xl w-full mx-4 shadow-xl border border-indigo-500/50'>
               <div className='flex justify-between items-center mb-6'>
-                <h2 className='text-xl font-semibold text-white'>
+                <h2 className='text-xl font-semibold font-mono text-gray-300'>
                   Edit Profile
                 </h2>
                 <button
@@ -796,7 +813,7 @@ export default function ProfileInfo () {
                 {/* Form Fields */}
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                   <div>
-                    <label className='block text-sm font-medium text-gray-300 mb-1'>
+                    <label className='block text-sm font-medium font-mono text-gray-300 mb-1'>
                       Name
                     </label>
                     <input
@@ -804,12 +821,12 @@ export default function ProfileInfo () {
                       name='name'
                       value={editeduser.name}
                       onChange={handleInputChange}
-                      className='w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
+                      className='w-full bg-gray-900/50 border border-indigo-700 font-mono text-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
                     />
                   </div>
 
                   <div>
-                    <label className='block text-sm font-medium text-gray-300 mb-1'>
+                    <label className='block text-sm font-medium font-mono text-gray-300 mb-1'>
                       Blog Name
                     </label>
                     <input
@@ -817,12 +834,12 @@ export default function ProfileInfo () {
                       name='blogName'
                       value={editeduser.blogName}
                       onChange={handleInputChange}
-                      className='w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
+                      className='w-full bg-gray-900/50 border border-indigo-500 font-mono text-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
                     />
                   </div>
 
                   <div className='md:col-span-2'>
-                    <label className='block text-sm font-medium text-gray-300 mb-1'>
+                    <label className='block text-sm font-medium font-mono text-gray-300 mb-1'>
                       Email
                     </label>
                     <input
@@ -830,12 +847,12 @@ export default function ProfileInfo () {
                       name='email'
                       value={editeduser.email}
                       onChange={handleInputChange}
-                      className='w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
+                      className='w-full bg-gray-900/50 border border-indigo-500 font-mono text-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
                     />
                   </div>
 
                   <div className='md:col-span-2'>
-                    <label className='block text-sm font-medium text-gray-300 mb-1'>
+                    <label className='block text-sm font-medium font-mono text-gray-300 mb-1'>
                       Bio
                     </label>
                     <textarea
@@ -843,12 +860,12 @@ export default function ProfileInfo () {
                       name='bio'
                       onChange={handleInputChange}
                       rows={3}
-                      className='w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
+                      className='w-full bg-gray-900/50 border border-indigo-500 font-mono text-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
                     />
                   </div>
 
                   <div>
-                    <label className='block text-sm font-medium text-gray-300 mb-1'>
+                    <label className='block text-sm font-medium font-mono text-gray-300 mb-1'>
                       Location
                     </label>
                     <input
@@ -856,7 +873,7 @@ export default function ProfileInfo () {
                       name='location'
                       value={editeduser.location}
                       onChange={handleInputChange}
-                      className='w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
+                      className='w-full bg-gray-900/50 border border-indigo-500 font-mono text-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
                     />
                   </div>
 
@@ -877,14 +894,22 @@ export default function ProfileInfo () {
 
                 {/* Action Buttons */}
                 <div className='flex justify-end gap-4 pt-4'>
-                  <button
+                  {/* <button
                     type='button'
                     onClick={handleCancel}
                     className='px-6 py-2.5 text-gray-300 hover:text-white transition-colors'
                   >
                     Cancel
-                  </button>
-                  <button
+                  </button> */}
+                  <button onClick={handleCancel} className="box-border relative z-30 inline-flex items-center justify-center w-auto px-8 py-3 overflow-hidden font-bold text-white transition-all duration-300 bg-indigo-600 rounded-md cursor-pointer group ring-offset-2 ring-1 ring-indigo-300 ring-offset-indigo-200 hover:ring-offset-indigo-500 ease focus:outline-none">
+    <span className="absolute bottom-0 right-0 w-8 h-20 -mb-8 -mr-5 transition-all duration-300 ease-out transform rotate-45 translate-x-1 bg-white opacity-10 group-hover:translate-x-0"></span>
+    <span className="absolute top-0 left-0 w-20 h-8 -mt-1 -ml-12 transition-all duration-300 ease-out transform -rotate-45 -translate-x-1 bg-white opacity-10 group-hover:translate-x-0"></span>
+    <span className="relative z-20 flex items-center text-sm">
+        <svg className="relative w-5 h-5 mr-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        Cancel
+    </span>
+</button>
+                  {/* <button
                     type='submit'
                     disabled={isSaving} // Disable the button conditionally
                     className={`px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 ${
@@ -892,7 +917,16 @@ export default function ProfileInfo () {
                     }`}
                   >
                     {isSaving ? 'Saving...' : 'Save Changes'}
-                  </button>
+                  </button> */}
+
+                  <button  type='submit' disabled={isSaving}  className="relative inline-flex items-center justify-center inline-block p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 rounded-lg shadow-2xl group">
+    <span className={`absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 transition-all duration-700 bg-red-500 rounded-full blur-md ease ${ isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}></span>
+    <span className="absolute inset-0 w-full h-full transition duration-700 group-hover:rotate-180 ease">
+        <span className="absolute bottom-0 left-0 w-24 h-24 -ml-10 bg-purple-500 rounded-full blur-md"></span>
+        <span className="absolute bottom-0 right-0 w-24 h-24 -mr-10 bg-pink-500 rounded-full blur-md"></span>
+    </span>
+    <span className="relative text-white">{isSaving ? 'Saving...' : 'Save Changes'}</span>
+</button>
                 </div>
               </form>
             </div>
@@ -902,424 +936,3 @@ export default function ProfileInfo () {
     </>
   )
 }
-
-// import  { useState } from 'react';
-// import { Edit3, MapPin, Calendar, Twitter, Github, Linkedin, Camera, X, Award, Heart, MessageCircle, Bookmark, Share2, Clock, BarChart3, TrendingUp, users } from 'lucide-react';
-// import Navbar from '../Navbar';
-// import SavedBlogs from '../UserProfile.tsx/SavedBlogs';
-// import SavedBlogComponent from './SavedBlogComponent';
-
-// export default function userProfileBolt() {
-//   const [user, setuser] = useState({
-//     name: "Sarah Johnson",
-//     blogName: "TechInsights",
-//     email: "sarah.johnson@example.com",
-//     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     bio: "Senior Software Engineer | Tech Blogger | Cloud Architecture Enthusiast",
-//     coverImage: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80",
-//     location: "San Francisco, CA",
-//     joinedDate: "January 2022",
-//     social: {
-//       twitter: "@sarahtechblog",
-//       github: "sarahj",
-//       linkedin: "sarahjohnson"
-//     }
-//   });
-
-//   const stats = [
-//     { label: 'Total Views', value: '238K', icon: BarChart3, change: '+12.5%', color: 'text-cyan-400' },
-//     { label: 'Blog Posts', value: '47', icon: TrendingUp, change: '+5.2%', color: 'text-purple-400' },
-//     { label: 'Followers', value: '12.5K', icon: users, change: '+18.3%', color: 'text-pink-400' },
-//     { label: 'Comments', value: '1.2K', icon: MessageCircle, change: '+7.1%', color: 'text-amber-400' },
-//   ];
-
-//   const savedPosts = [
-//     {
-//       title: "The Future of Web Development",
-//       author: "Mike Chen",
-//       date: "2 days ago",
-//       thumbnail: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
-//     },
-//     {
-//       title: "Understanding TypeScript Generics",
-//       author: "Emily Rodriguez",
-//       date: "1 week ago",
-//       thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
-//     },
-//     {
-//       title: "Advanced Git Workflows",
-//       author: "Alex Thompson",
-//       date: "2 weeks ago",
-//       thumbnail: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
-//     }
-//   ];
-
-//   const userPosts = [
-//     {
-//       title: "Understanding React 18's Concurrent Features",
-//       excerpt: "An in-depth look at the new concurrent features in React 18 and how they improve application performance.",
-//       thumbnail: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
-//       date: "2 days ago",
-//       readTime: "5 min",
-//       views: "1.2K",
-//       likes: 234,
-//       comments: 45,
-//     },
-//     {
-//       title: "Building Scalable Applications with Next.js",
-//       excerpt: "Learn how to leverage Next.js features to build performant and scalable web applications.",
-//       thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
-//       date: "5 days ago",
-//       readTime: "8 min",
-//       views: "2.5K",
-//       likes: 456,
-//       comments: 78,
-//     }
-//   ];
-
-//   const handleUpdateProfile = (updatedData: typeof user) => {
-//     setuser(updatedData);
-//     setIsEditModalOpen(false);
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-//       {/* Profile Header */}
-//       <div className="relative">
-//         <div className="h-80 relative">
-//           <img
-//             src={user.coverImage}
-//             alt="Cover"
-//             className="w-full h-full object-cover"
-//           />
-//           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/90" />
-//           <button className="absolute bottom-4 right-4 flex items-center gap-2 px-4 py-2 bg-gray-900/50 backdrop-blur-sm rounded-lg text-white hover:bg-gray-900/70 transition-colors">
-//             <Camera size={18} />
-//             <span>Change Cover</span>
-//           </button>
-//         </div>
-
-//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-//           <div className="flex flex-col md:flex-row items-start md:items-end gap-6 -mt-20 relative">
-//             <div className="relative group">
-//               <img
-//                 src={user.avatar}
-//                 alt={user.name}
-//                 className="w-32 h-32 rounded-full border-4 border-gray-900 shadow-xl"
-//               />
-//               <button className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-//                 <Camera size={24} className="text-white" />
-//               </button>
-//             </div>
-
-//             <div className="flex-1">
-//               <div className="flex items-start justify-start">
-//                 <div>
-//                   <h1 className="text-3xl font-bold text-white">{user.name}</h1>
-//                   <p className="text-cyan-400 font-medium">{user.blogName}</p>
-//                 </div>
-//                 <button
-//                   onClick={() => setIsEditModalOpen(true)}
-//                   className="flex items-center gap-2 px-4 ml-16 py-2 bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-medium rounded-lg transition-colors"
-//                 >
-//                   <Edit3 size={18} />
-//                   Edit Profile
-//                 </button>
-//               </div>
-
-//               <p className="mt-2 text-gray-300 max-w-2xl">{user.bio}</p>
-
-//               <div className="mt-4 flex flex-wrap items-center gap-4 text-gray-400">
-//                 <div className="flex items-center gap-1">
-//                   <MapPin size={16} />
-//                   <span>{user.location}</span>
-//                 </div>
-//                 <div className="flex items-center gap-1">
-//                   <Calendar size={16} />
-//                   <span>Joined {user.joinedDate}</span>
-//                 </div>
-//               </div>
-
-//               <div className="mt-4 flex gap-4">
-//                 <a href={`https://twitter.com/${user.social.twitter}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
-//                   <Twitter size={20} />
-//                 </a>
-//                 <a href={`https://github.com/${user.social.github}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
-//                   <Github size={20} />
-//                 </a>
-//                 <a href={`https://linkedin.com/in/${user.social.linkedin}`} className="text-gray-400 hover:text-cyan-400 transition-colors">
-//                   <Linkedin size={20} />
-//                 </a>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Main Content */}
-//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 relative z-10">
-//         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-//           <div className="lg:col-span-2 space-y-6">
-//             {/* Stats Grid */}
-//             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-//               {stats.map((stat) => (
-//                 <div key={stat.label} className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50">
-//                   <div className="flex items-center gap-3">
-//                     <div className={`p-2 rounded-lg ${stat.color} bg-opacity-10`}>
-//                       <stat.icon className={`h-6 w-6 ${stat.color}`} />
-//                     </div>
-//                     <div>
-//                       <p className="text-sm text-gray-400">{stat.label}</p>
-//                       <p className="text-2xl font-bold text-white">{stat.value}</p>
-//                     </div>
-//                   </div>
-//                   <div className="mt-2 flex items-center text-sm">
-//                     <span className="text-green-400">{stat.change}</span>
-//                     <span className="text-gray-500 ml-2">vs last month</span>
-//                   </div>
-//                 </div>
-//               ))}
-//             </div>
-
-//             {/* user Posts */}
-//             <div className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50">
-//               <div className="flex items-center justify-between mb-6">
-//                 <h2 className="text-xl font-semibold text-white">Recent Posts</h2>
-//                 <div className="flex gap-2">
-//                   <button className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors">
-//                     Most Recent
-//                   </button>
-//                   <button className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors">
-//                     Most Popular
-//                   </button>
-//                 </div>
-//               </div>
-
-//               <div className="space-y-6">
-//                 {userPosts.map((post, index) => (
-//                   <div key={index} className="group">
-//                     <div className="flex gap-4 p-4 rounded-xl bg-gray-900/50 hover:bg-gray-900/70 transition-colors cursor-pointer">
-//                       <img
-//                         src={post.thumbnail}
-//                         alt={post.title}
-//                         className="w-24 h-24 rounded-lg object-cover"
-//                       />
-//                       <div className="flex-1">
-//                         <h3 className="font-medium text-lg text-white group-hover:text-cyan-400 transition-colors">
-//                           {post.title}
-//                         </h3>
-//                         <p className="text-gray-400 text-sm mt-1 line-clamp-2">{post.excerpt}</p>
-
-//                         <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
-//                           <span>{post.date}</span>
-//                           <span>•</span>
-//                           <span>{post.readTime} read</span>
-//                           <span>•</span>
-//                           <span>{post.views} views</span>
-//                         </div>
-
-//                         <div className="flex items-center gap-6 mt-3">
-//                           <button className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors">
-//                             <Heart size={18} />
-//                             <span>{post.likes}</span>
-//                           </button>
-//                           <button className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors">
-//                             <MessageCircle size={18} />
-//                             <span>{post.comments}</span>
-//                           </button>
-//                           <button className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors">
-//                             <Bookmark size={18} />
-//                           </button>
-//                           <button className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors">
-//                             <Share2 size={18} />
-//                           </button>
-//                         </div>
-//                       </div>
-//                     </div>
-//                   </div>
-//                 ))}
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Sidebar */}
-//           <div className="space-y-6">
-//             {/* Saved Posts */}
-//             <div className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50">
-//               <div className="flex items-center justify-between mb-6">
-//                 <div className="flex items-center gap-2">
-//                   <Bookmark className="h-5 w-5 text-cyan-400" />
-//                   <h2 className="text-lg font-semibold text-white">Saved Posts</h2>
-//                 </div>
-//                 <button className="text-sm text-cyan-400 hover:text-cyan-300">View All</button>
-//               </div>
-
-//               <div className="space-y-4">
-//                 {savedPosts.map((post, index) => (
-//                   <div
-//                     key={index}
-//                     className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-900/50 transition-colors cursor-pointer"
-//                   >
-//                     <img
-//                       src={post.thumbnail}
-//                       alt={post.title}
-//                       className="w-12 h-12 rounded-lg object-cover"
-//                     />
-//                     <div className="flex-1 min-w-0">
-//                       <h3 className="font-medium text-white truncate">{post.title}</h3>
-//                       <div className="flex items-center gap-2 mt-1 text-sm">
-//                         <span className="text-gray-400">{post.author}</span>
-//                         <span className="text-gray-600">•</span>
-//                         <div className="flex items-center gap-1 text-gray-500">
-//                           <Clock size={14} />
-//                           <span>{post.date}</span>
-//                         </div>
-//                       </div>
-//                     </div>
-//                   </div>
-//                 ))}
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Edit Profile Modal */}
-//       {isEditModalOpen && (
-//         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center">
-//           <div className="bg-gray-800/90 rounded-2xl p-8 max-w-2xl w-full mx-4 shadow-xl border border-gray-700/50">
-//             <div className="flex justify-between items-center mb-6">
-//               <h2 className="text-xl font-semibold text-white">Edit Profile</h2>
-//               <button onClick={() => setIsEditModalOpen(false)} className="text-gray-400 hover:text-white">
-//                 <X size={24} />
-//               </button>
-//             </div>
-
-//             <form onSubmit={(e) => {
-//               e.preventDefault();
-//               handleUpdateProfile(user);
-//             }} className="space-y-6">
-//               {/* Avatar Upload */}
-//               <div className="flex items-center gap-4">
-//                 <div className="relative group">
-//                   <img
-//                     src={user.avatar}
-//                     alt={user.name}
-//                     className="w-20 h-20 rounded-full"
-//                   />
-//                   <label className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
-//                     <Camera size={20} className="text-white" />
-//                     <input type="file" className="hidden" accept="image/*" />
-//                   </label>
-//                 </div>
-//                 <div className="flex-1">
-//                   <label className="block text-sm font-medium text-gray-300 mb-1">
-//                     Profile Picture
-//                   </label>
-//                   <p className="text-sm text-gray-400">
-//                     Recommended: Square image, at least 400x400px
-//                   </p>
-//                 </div>
-//               </div>
-
-//               {/* Form Fields */}
-//               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//                 <div>
-//                   <label className="block text-sm font-medium text-gray-300 mb-1">
-//                     Name
-//                   </label>
-//                   <input
-//                     type="text"
-//                     value={user.name}
-//                     onChange={(e) => setuser({ ...user, name: e.target.value })}
-//                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
-//                   />
-//                 </div>
-
-//                 <div>
-//                   <label className="block text-sm font-medium text-gray-300 mb-1">
-//                     Blog Name
-//                   </label>
-//                   <input
-//                     type="text"
-//                     value={user.blogName}
-//                     onChange={(e) => setuser({ ...user, blogName: e.target.value })}
-//                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
-//                   />
-//                 </div>
-
-//                 <div className="md:col-span-2">
-//                   <label className="block text-sm font-medium text-gray-300 mb-1">
-//                     Email
-//                   </label>
-//                   <input
-//                     type="email"
-//                     value={user.email}
-//                     onChange={(e) => setuser({ ...user, email: e.target.value })}
-//                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
-//                   />
-//                 </div>
-
-//                 <div className="md:col-span-2">
-//                   <label className="block text-sm font-medium text-gray-300 mb-1">
-//                     Bio
-//                   </label>
-//                   <textarea
-//                     value={user.bio}
-//                     onChange={(e) => setuser({ ...user, bio: e.target.value })}
-//                     rows={3}
-//                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
-//                   />
-//                 </div>
-
-//                 <div>
-//                   <label className="block text-sm font-medium text-gray-300 mb-1">
-//                     Location
-//                   </label>
-//                   <input
-//                     type="text"
-//                     value={user.location}
-//                     onChange={(e) => setuser({ ...user, location: e.target.value })}
-//                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
-//                   />
-//                 </div>
-
-//                 <div>
-//                   <label className="block text-sm font-medium text-gray-300 mb-1">
-//                     Twitter username
-//                   </label>
-//                   <input
-//                     type="text"
-//                     value={user.social.twitter}
-//                     onChange={(e) => setuser({
-//                       ...user,
-//                       social: { ...user.social, twitter: e.target.value }
-//                     })}
-//                     className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
-//                   />
-//                 </div>
-//               </div>
-
-//               {/* Action Buttons */}
-//               <div className="flex justify-end gap-4 pt-4">
-//                 <button
-//                   type="button"
-//                   onClick={() => setIsEditModalOpen(false)}
-//                   className="px-6 py-2.5 text-gray-300 hover:text-white transition-colors"
-//                 >
-//                   Cancel
-//                 </button>
-//                 <button
-//                   type="submit"
-//                   className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
-//                 >
-//                   Save Changes
-//                 </button>
-//               </div>
-//             </form>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }

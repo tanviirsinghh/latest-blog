@@ -1,15 +1,45 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LogIn, Mail, Lock, Sparkles } from 'lucide-react';
+import axios from 'axios';
+import { BACKEND_URL } from '@/config';
+import { toast } from 'react-toastify';
 
 export default function BoltSignin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate= useNavigate()
 
-  const handleSubmit = (e: React.FormEvent) => {
+ 
+  async function handleSubmit(e: React.FormEvent){
+
     e.preventDefault();
-    // Add your login logic here
-  };
+    try{
+      console.log('frontend')
+      const response =  await axios.post(`${BACKEND_URL}/api/v1/user/signin`, {
+        email,password
+      })
+        const token = response.data.token
+        // const jwt = "Bearer" + response.data.token;
+        // localStorage.setItem("token", jwt)
+        // console.log(token)
+        localStorage.setItem("token", token)
+        console.log(token)
+            navigate('/blogs')
+            toast.success('Signup successfull')
+
+}catch (e : unknown ){
+    if(axios.isAxiosError(e) && e.response?.status === 401){
+   toast.error('User not found / Sign up first')
+} else if (axios.isAxiosError(e) && e.response?.status === 500){
+    toast.error('Please try again / Internal Server Error')
+}
+else if (axios.isAxiosError(e) && e.response?.status === 411){
+    toast.error('Input Not Correct')
+}
+
+ }
+}
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 flex items-center justify-center p-4">
@@ -70,6 +100,7 @@ export default function BoltSignin() {
 
             <button
               type="submit"
+              onClick={handleSubmit}
               className="w-full py-3 px-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-medium transform transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-purple-500/25 focus:outline-none focus:ring-2 focus:ring-purple-500/50 flex items-center justify-center space-x-2"
             >
               <LogIn className="h-5 w-5" />

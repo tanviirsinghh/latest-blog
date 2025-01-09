@@ -3,13 +3,27 @@ import { BlogSkeleton } from '../BlogSkeleton'
 import Navbar from './Navbar'
 import { useBlogs } from '../../hooks'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+
 
 export function BlogList () {
   const { loading, blogs } = useBlogs()
+  const [currentPage, setCurrentPage] = useState(1);
+  const blogsPerPage = 8; // Adjust as needed
   const navigate = useNavigate()
   if (!localStorage.getItem('token')) {
     navigate('/signin')
   }
+
+
+  const totalPages = Math.ceil((blogs?.length || 0) / blogsPerPage);
+
+  const currentBlogs = blogs.slice(
+    (currentPage - 1) * blogsPerPage,
+    currentPage * blogsPerPage
+  );
+  // const currentUTCTime = new Date().toISOString().replace('T', ' ').slice(0, 19);
+
   if (loading) {
     return (
       <div>
@@ -28,14 +42,19 @@ export function BlogList () {
   }
   return (
     <div className='grid grid-cols-1 gap-8 '>
-      {blogs.map((blog) => (
+      {currentBlogs.map((blog) => (
         <BlogCard key={blog.id}
         id={blog.id}
         authorName={blog.author.name || 'Anonymous'}
         title={blog.title}
         content={blog.content}
-        publishDate=" save the date also and then fetch here"
-        url={blog.url}
+        publishDate='sdfsd'
+        // publishDate={new Date(blog.createdAt).toLocaleDateString('en-US', {
+        //   day: 'numeric',
+        //   month: 'short',
+        //   year: 'numeric'
+        // })}
+                url={blog.url}
         profilePic={blog.author.profilePicture}
         like={blog._count.like}
         comment={blog._count.comment}
@@ -47,7 +66,88 @@ export function BlogList () {
         // initialComments={5}
          />
       ))}
-      {/* <BlogCard/> */}
+     {blogs.length > blogsPerPage && (
+        <div className='flex justify-center items-center gap-4 mt-8 pb-8'>
+          {/* <button
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className='px-4 py-2 rounded-md border text-indigo-400 border-gray-300 
+                     disabled:opacity-50 hover:bg-black transition-colors'
+          >
+            Previous
+          </button> */}
+              <button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1} className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
+  <span className="absolute inset-0 overflow-hidden rounded-full">
+    <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+  </span>
+  <div className="relative flex space-x-2 items-center z-10 rounded-full bg-zinc-950 py-0.5 px-4 ring-1 ring-white/10 ">
+    <span>
+      Previous
+    </span>
+    <svg
+      fill="none"
+      height="16"
+      viewBox="0 0 24 24"
+      width="16"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M10.75 8.75L14.25 12L10.75 15.25"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      />
+    </svg>
+  </div>
+  <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />
+</button>
+          
+          <span className='text-indigo-500 font-bold font-mono'>
+            Page {currentPage} of {totalPages}
+          </span>
+
+          {/* <button
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className='px-4 py-2 rounded-md border border-gray-700 
+                     disabled:opacity-50 hover:bg-gray-800 transition-colors'
+          >
+            Next
+          </button> */}
+          
+          <button onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages} className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
+  <span className="absolute inset-0 overflow-hidden rounded-full">
+    <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+  </span>
+  <div className="relative flex space-x-2 items-center z-10 rounded-full bg-zinc-950 py-0.5 px-4 ring-1 ring-white/10 ">
+    <span>
+      Next
+    </span>
+    <svg
+      fill="none"
+      height="16"
+      viewBox="0 0 24 24"
+      width="16"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M10.75 8.75L14.25 12L10.75 15.25"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      />
+    </svg>
+  </div>
+  <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />
+</button>
+       
+        
+        </div>
+      )}
     </div>
   )
 }

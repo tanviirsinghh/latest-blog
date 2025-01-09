@@ -9,11 +9,12 @@ interface BlogCardProps {
     content: string
     url: string
     authorName:string
-  
-    authorAvatar: string
+   like:number
+   comment:number
+    // authorAvatar: string
     publishDate: string
-    initialLikes: number
-    initialComments: number
+    save:number
+   
   }
 export default function AuthorPosts(  {
     id,
@@ -21,6 +22,9 @@ export default function AuthorPosts(  {
     content,
     // publishDate,
     url,
+    like,
+    comment,
+    save
     // authorAvatar,
     // authorName,
     // initialLikes,
@@ -30,44 +34,44 @@ export default function AuthorPosts(  {
     <Link to={`/blog/${id}`}>
     <div>
       <div key={id} className='group'>
-                      <div className='flex gap-4 p-4 rounded-xl bg-gray-900/50 hover:bg-gray-900/70 transition-colors cursor-pointer'>
+                      <div className='flex gap-4 p-4 rounded-xl bg-black/90 hover:bg-black/60 transition-colors cursor-pointer'>
                         <img
                           src={url}
                           alt={title}
                           className='w-24 h-24 rounded-lg object-cover'
                         />
                         <div className='flex-1'>
-                          <h3 className='font-medium text-lg text-white group-hover:text-cyan-400 transition-colors'>
+                          <h3 className='text-indigo-500 font-bold font-mono  text-lg group-hover:text-indigo-500 transition-colors'>
                             {title}
                           </h3>
-                          <p className='text-gray-400 text-sm mt-1 line-clamp-2' 
+                          <p className='font-mono text-gray-300 text-sm mt-1 line-clamp-2' 
                           dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(content ? content.slice(1, 80) + "..." : " ")
                   }}></p>
 
-                          <div className='flex items-center gap-4 mt-2 text-sm text-gray-500'>
+                          {/* <div className='flex items-center gap-4 mt-2 text-sm text-gray-500'>
                             <span>{"post.date"}</span>
                             <span>•</span>
                             <span>{"post.readTime"} read</span>
                             <span>•</span>
                             <span>{"post.views"} views</span>
-                          </div>
+                          </div> */}
 
                           <div className='flex items-center gap-6 mt-3'>
                             <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
-                              <Heart size={18} />
-                              <span>{"post.likes"}</span>
+                            <img className="h-5" src="/src/assets/heart.png" alt="" />
+                            <span>{like}</span>
                             </button>
                             <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
-                              <MessageCircle size={18} />
-                              <span>{"post.comments"}</span>
+                              
+                            <img className="h-6" src="/src/assets/comment.png" alt="" />
+                            <span>{comment}</span>
                             </button>
                             <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
-                              <Bookmark size={18} />
+                            <img className="h-6" src="/src/assets/bookmark.png" alt="" />
+                                  <span>{save}</span>
                             </button>
-                            <button className='flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors'>
-                              <Share2 size={18} />
-                            </button>
+                            
                           </div>
                         </div>
                       </div>
