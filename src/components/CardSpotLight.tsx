@@ -1,11 +1,11 @@
 import { CardSpotlight } from "../components/ui/card-spotlight"
 export function CardSpotlightDemo() {
   return (
-    <CardSpotlight className="h-[25rem] w-96">
-    <p className="text-xl font-bold relative z-20 mt-2 text-white">
+    <CardSpotlight className="h-[25rem] w-full sm:w-full  h-90 ">
+    <p className="text-xl font-bold relative z-20 mt-2 text-white sm:text-center">
       Session Information
     </p>
-    <div className="text-neutral-200 mt-4 font-mono relative z-20">
+    <div className="text-neutral-200 mt-4 font-mono relative z-20 sm:text-center">
       Your complete blogging toolkit:
       <ul className="list-none mt-2">
         <Step title="Create & Edit: Write blogs with rich text editor" />
@@ -23,7 +23,7 @@ export function CardSpotlightDemo() {
 
 const Step = ({ title }: { title: string }) => {
   return (
-    <li className="flex gap-2 items-start">
+    <li className="flex gap-2 items-start sm:justify-center">
       <CheckIcon />
       <p className="text-white">{title}</p>
     </li>
