@@ -18,8 +18,8 @@ export default function BoltLandingPage () {
 
   if(loading){
     return <div>
-       <div className='h-screen w-full flex justify-center items-center'>
-    <OrbitProgress variant="spokes" color="#3e43ef" size="medium" text="" textColor="" />
+       <div className='h-screen bg-black w-full flex justify-center items-center'>
+    <OrbitProgress variant="spokes" color="#4a45f0" size="medium" text="" textColor="" />
   </div>
     </div>
   }

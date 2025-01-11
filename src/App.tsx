@@ -136,9 +136,9 @@ function App () {
           <Route
             path='/'
             element={
-              <React.Suspense fallback={<Loading />}>
+              // <React.Suspense fallback={<Loading />}>
                 <BoltLandingPage />
-              </React.Suspense>
+              // </React.Suspense>
             }
           ></Route>
           <Route

@@ -14,7 +14,6 @@ export const NewPublish = () => {
     
 // Not using this
 // 
-// 
 
     return <div>
         <Appbar />
