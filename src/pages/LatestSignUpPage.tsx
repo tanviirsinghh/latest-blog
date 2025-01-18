@@ -117,7 +117,7 @@ const LatestSignupPage = () => {
           </h2>
           <div className=''>
             <img
-              src='../imgs/modern-blogger-concept-with-flat-design_23-2147996703.jpg'
+              src='src/imgs/modern-blogger-concept-with-flat-design_23-2147996703.jpg'
               alt='Blog '
               className='rounded-lg shadow-lg mb-6'
             />
