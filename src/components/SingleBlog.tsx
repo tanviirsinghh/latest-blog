@@ -69,7 +69,6 @@ export default function SingleBlog ({
   return (
     <Link to={`/blog/${id}`}>
       <div className='w-[50rem]  h-full m-2 '>
-        
         <Card key={id} className='border w-full   '>
           <CardContent className='p-8  '>
             <div className='flex items-start space-x-4'>
