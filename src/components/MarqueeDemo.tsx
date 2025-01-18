@@ -1,5 +1,6 @@
 import { cn } from "../lib/utils";
 import {Marquee} from "../components/magicui/marquee";
+import aceternityImg from '../assets/typescript.png';
 
 const reviews = [
   {
@@ -12,7 +13,7 @@ const reviews = [
     name: "Jill",
     username: "@jill",
     body: "Typescript",
-    img: "src/assets/typescript.png",
+    img:aceternityImg,
   },
   {
     name: "John",
