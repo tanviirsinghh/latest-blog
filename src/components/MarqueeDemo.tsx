@@ -49,7 +49,7 @@ const reviews = [
     name: "James",
     username: "@james",
     body: "O R M",
-    img: "./src/assets/prismaorm.png",
+    img: "assets/prismaorm.png",
   },{
     name: "James",
     username: "@james",
