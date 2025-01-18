@@ -2,18 +2,12 @@ import { cn } from "../lib/utils";
 import {Marquee} from "../components/magicui/marquee";
 import react from '../assets/react.png';
 import typescript from '../assets/typescript.png';
-
 import tailwind from '../assets/tailwind.png';
-
 import packages from '../assets/npm.svg';
-
 import backend from '../assets/cloudflare.svg';
 import language from '../assets/hono.png';
-
 import library from '../assets/aceternity.png';
-
 import orm from '../assets/prismaorm.png';
-
 import database from '../assets/sql-server.png';
 
 
