@@ -5,8 +5,6 @@ import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { format, differenceInHours } from 'date-fns';
 
-// import SavedBlogs from '../components/UserProfile.tsx/SavedBlogs';
-
 export interface Blog {
   content: string
   title: string
@@ -22,8 +20,6 @@ export interface Blog {
     profilePicture:string
   }
   authorId: string
-  // editButton:boolean
-  // "authorName":string
 }
 export interface EditButton{
   editButton:  boolean
@@ -42,17 +38,7 @@ export interface SavedBlog {
   author: {
     name: string
   }
-  // editButon:boolean
-  // "authorName":string
 }
-// interface Post {
-//   id: string;
-//   title: string;
-//   url: string;
-//   author: {
-//     name: string;
-//   };
-// }
 
 export interface SavedPost {
   savedblog: SavedBlog
@@ -70,16 +56,13 @@ export interface User {
   posts: Blog[]
 }
 
-// export function useUserDetails({userId} : {userId : string}){
 export function useUserDetails (authorId?: string) {
   const navigate = useNavigate()
   const [userDetails, setUserDetails] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  // const id = useParams()
   useEffect(() => {
     const getUserDetails = async () => {
       try {
-
         const token = localStorage.getItem('token')
         if (!token) {
           throw new Error('Token Undefined')
@@ -148,10 +131,6 @@ export const useBlog = ({ id }: { id: string }) => {
         })
         setBlog(response.data.post)
         setEditButton(response.data.editButton)
-        // console.log( "response edit button, frontend hook")
-
-      //  console.log( response.data.editButton)
-
       } catch (error) {
         console.error('Error fetching blog data:', error)
       } finally {
@@ -180,7 +159,6 @@ export const useBlogs = () => {
         navigate('/signin')
         return
       }
-
       try {
         const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
           headers: { Authorization: token }
@@ -257,9 +235,7 @@ export const useSavedBlogs = () => {
             headers: { Authorization: token }
           }
         )
-        // const saved = response.data.savedPosts
         setSavedBlogs(response.data)
-        // console.log("saved blogs" + JSON.stringify(response.data.saved))
       } catch (error) {
         console.error('Error fetching blogs:', error)
       } finally {

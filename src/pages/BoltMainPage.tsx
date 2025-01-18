@@ -1,4 +1,3 @@
-// import { LeftBar } from '../components/Bolt-user-profile/LeftBar'
 import { CheckCircle2 } from 'lucide-react';
 import { BlogList } from '../components/Bolt-user-profile/BlogList'
 import Navbar from '../components/Bolt-user-profile/Navbar'
@@ -50,7 +49,7 @@ export default function BoltMainPage() {
             </div>
           </div>
         </main>
-        <div className='h-18 '>adasdsa</div>
+        <div className='h-18 '>kjgk</div>
         <Footer/>
       </div>
     </>

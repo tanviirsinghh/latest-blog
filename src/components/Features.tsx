@@ -1,35 +1,7 @@
-// import Image from "next/image";
-// import BlurredShapeGray from "@/public/images/blurred-shape-gray.svg";
-// import BlurredShape from "@/public/images/blurred-shape.svg";
-// import FeaturesImage from "@/public/images/features.png";
-
 export default function Features () {
+  //using
   return (
     <section className='relative bg-black '>
-      {/* <div
-    className="pointer-events-none absolute left-1/2 top-0 -z-10 -mt-20 -translate-x-1/2"
-    aria-hidden="true"
-  >
-    <img
-      className="max-w-none"
-      src='../../src/imgs/modern-blogger-concept-with-flat-design_23-2147996703.jpg'
-      width={760}
-      height={668}
-      alt="Blurred shape"
-    />
-  </div>
-  <div
-    className="pointer-events-none absolute bottom-0 left-1/2 -z-10 -mb-80 -translate-x-[120%] opacity-50"
-    aria-hidden="true"
-  >
-    <img
-      className="max-w-none"
-      src='../imgs/Wavy_Tech-07_Single-01.jpg'
-      width={760}
-      height={668}
-      alt="Blurred shape"
-    />
-  </div> */}
       <div className='mx-auto max-w-6xl px-4 sm:px-6'>
         <div className='border-t py-12 [border-image:linear-gradient(to_right,transparent,theme(colors.slate.400/.25),transparent)1] md:py-20'>
           {/* Section header */}
@@ -47,16 +19,7 @@ export default function Features () {
               seamless and engaging experience for both authors and readers.
             </p>
           </div>
-          {/* <div className="flex justify-center pb-4 md:pb-12" data-aos="fade-up">
-        <img
-          className="max-w-none"
-          src='../../src/imgs/Wavy_Tech-07_Single-01.jpg'
-          width={1104}
-          height={384}
-          alt="Features"
-        />
-      </div> */}
-          {/* Items */}
+
           <div className='mx-auto grid max-w-sm gap-12 sm:max-w-none sm:grid-cols-2 md:gap-x-14 md:gap-y-16 lg:grid-cols-3'>
             <article>
               <svg

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BACKEND_URL } from '../config';
 import { toast } from 'react-toastify';
-
+//using
 const LatestSignin: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -27,9 +27,6 @@ const LatestSignin: React.FC = () => {
         formData
       )
         const token = response.data.token
-        // const jwt = "Bearer" + response.data.token;
-        // localStorage.setItem("token", jwt)
-        // console.log(token)
         localStorage.setItem("token", token)
         console.log(token)
             navigate('/blogs')

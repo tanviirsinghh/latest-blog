@@ -1,5 +1,5 @@
 import { CardSpotlight } from "../components/ui/card-spotlight"
-export function CardSpotlightDemo() {
+export function CardSpotlightDemo() {            //using
   return (
     <CardSpotlight className="h-[25rem] w-full sm:w-full  h-90 ">
     <p className="text-xl font-bold relative z-20 mt-2 text-white sm:text-center">
