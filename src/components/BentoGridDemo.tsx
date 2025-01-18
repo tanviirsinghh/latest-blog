@@ -1,7 +1,7 @@
 // import { cn } from "../lib/utils";
 import { useNavigate } from "react-router-dom";
 import { BlogSkeleton } from "./BlogSkeleton";
-import Navbar from "./Bolt-user-profile/Navbar";
+import Navbar from "./user-profile/Navbar";
 import { BentoGrid, BentoGridItem } from "./ui/bento-grid";
 import { useBlogs } from '../hooks/index';
 import {

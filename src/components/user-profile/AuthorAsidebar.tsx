@@ -1,5 +1,5 @@
 // import { Twitter, Linkedin, Globe, Mail } from 'lucide-react'
-import { useUserDetails } from '../..//hooks'
+import { useUserDetails } from '../../hooks'
 import { TrophySpin } from 'react-loading-indicators'
 import { Link } from 'react-router-dom';
 import { ScriptCopyBtnDemo } from '../ScriptCopyBtnDemo';
@@ -9,7 +9,6 @@ interface AuthorAsidebarProps {
 
 export default function AuthorAsidebar ({ authorId }: AuthorAsidebarProps) {
   const { userDetails } = useUserDetails(authorId)
-  console.log('authoraside bar te author di if', authorId)
   if (!userDetails) {
     return (
       <aside className='lg:col-span-1'>
@@ -74,7 +73,6 @@ export default function AuthorAsidebar ({ authorId }: AuthorAsidebarProps) {
                   {post.title.slice(0,23) + "..."}
                 </a>
                 </Link>
-                {/* <p className='text-sm text-gray-400'>{post._count.comment} likes</p> */}
               </li>
             ))}
           </ul>
@@ -84,9 +82,7 @@ export default function AuthorAsidebar ({ authorId }: AuthorAsidebarProps) {
 
         <div className='border-t border-gray-700 pt-4'>
           <h3 className='font-semibold mb-3 text-indigo-500 font-sans text-bold text-lg'>E-mail Author :  </h3>
-         {/*  <p className='text-gray-300 flex items-center '><img className="h-9" src="/src/assets/gmail.png" alt="" /><span className='text-gray-300 font-mono font-bold'>{userDetails.email}</span></p> */}
          <ScriptCopyBtnDemo email={userDetails.email}/>
-          {/* <AnimatedGradientText>Deni aa ke thane jana  </AnimatedGradientText> */}
           </div>
       </div>
     </aside>

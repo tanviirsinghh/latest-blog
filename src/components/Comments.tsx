@@ -45,16 +45,11 @@ export default function Comments({id, content, timestamp, user}: Comments ) {
                                 {formatTimestamp(timestamp)}
                               </p>
                             </div>
-                            {/* <button className='text-gray-300 hover:text-gray-600'>
-                              <MoreVertical className='w-4 h-4' />
-                            </button> */}
+                           
                           </div>
                           <p className='font-bold font-mono text-base text-gray-300'>{content}</p>
                         </div>
-                        {/* <div className="flex items-center space-x-4 mt-2 text-sm text-gray-600">
-                          <button className="hover:text-blue-500">Reply</button>
-                          <button className="hover:text-blue-500">Like</button>
-                        </div> */}
+                        
                       </div>
                     </div>
     </div>

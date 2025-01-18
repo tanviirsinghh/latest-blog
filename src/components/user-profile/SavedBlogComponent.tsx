@@ -10,7 +10,11 @@ interface BlogCardProps {
   authorName: string
   authorId: string
 }
-
+interface peerop {
+  
+  authorName: string
+  authorId: string
+}
 export default function SavedBlogComponent ({
   id,
   title,
@@ -34,11 +38,7 @@ export default function SavedBlogComponent ({
           <div className='flex-1 min-w-0'>
             <h3 className='font-medium text-white truncate'>{title}</h3>
             <div className='flex items-center gap-2 mt-1 text-sm'>
-              <Link to={`/details?authorId=${authorId}`}>
-                <span className='text-gray-400 hover:text-blue-400'>
-                  {authorName}
-                </span>
-              </Link>
+            <AuthorName authorId={authorId} authorName={authorName}/>
               <span className='text-gray-600'>•</span>
               <div className='flex items-center gap-1 text-gray-500'>
                 <Clock size={14} />
@@ -49,5 +49,16 @@ export default function SavedBlogComponent ({
         </div>
       </div>
     </Link>
+  )
+}
+
+
+const AuthorName = ({authorId, authorName}:peerop) =>{
+  return(
+<Link to={`/details?authorId=${authorId}`}>
+                <span className='text-gray-400 hover:text-blue-400'>
+                  {authorName}
+                </span>
+              </Link>
   )
 }

@@ -7,12 +7,9 @@ import axios from 'axios'
 import { BACKEND_URL } from '../../config'
 import { Blog, useUserDetails } from '../../hooks/index'
 import DOMPurify from 'dompurify'
-// import BoltFooter from './BoltFooter'
 import Navbar from './Navbar'
 import AuthorAsidebar from './AuthorAsidebar'
 import { formatISO } from 'date-fns'
-// import { ThreeDot } from 'react-loading-indicators'
-// import formatTimestamp from '../../hooks/index';
 import Comments from '../Comments'
 import Footer from '../Footer'
 
@@ -36,8 +33,6 @@ export default function BoltFullBlog ({ blog, editButton }: blogProps) {
   const navigate = useNavigate()
   const [likeStatus, setLikeStatus] = useState(false)
   const [likeCount, setLikeCount] = useState(0)
-  // const [showShareMenu, setShowShareMenu] = useState(false)
-  // const { id } = useParams()
   const [newComment, setNewComment] = useState('')
   const { userDetails } = useUserDetails()
   const token = localStorage.getItem('token')
@@ -66,7 +61,6 @@ export default function BoltFullBlog ({ blog, editButton }: blogProps) {
 
       // Handle specific error scenarios
       if (axios.isAxiosError(e) && e.response?.status === 411) {
-        // setLikeStatus(false)
         toast.error('Error while fetching Like')
       }
     }
@@ -89,7 +83,6 @@ export default function BoltFullBlog ({ blog, editButton }: blogProps) {
           const haiLike = response.data.isLiked
           // Toggle like state and adjust like count
           if (haiLike) {
-            // setLikeCount(count => count + 1)
             setLikeStatus(true)
           } else {
             setLikeStatus(false)
@@ -116,7 +109,6 @@ export default function BoltFullBlog ({ blog, editButton }: blogProps) {
     if (isProcessing) return // Avoid duplicate requests
     setIsProcessing(true)
     setLikeStatus(prevStatus => !prevStatus)
-    // setLikeCount(prevCount => (likeStatus ? prevCount - 1 : prevCount + 1));
 
     try {
       if (!likeStatus) {
@@ -124,7 +116,6 @@ export default function BoltFullBlog ({ blog, editButton }: blogProps) {
         await axios.post(`${BACKEND_URL}/api/v1/blog/${blog.id}/like`, null, {
           headers: { Authorization: token }
         })
-        // setLikeCount((prevCount) => prevCount + 1);
         setLikeCount(prevCount => prevCount + 1)
       } else {
         // Send DELETE request to remove like
@@ -138,7 +129,6 @@ export default function BoltFullBlog ({ blog, editButton }: blogProps) {
     } catch (error) {
       // Revert UI changes on error
       setLikeStatus(prevStatus => !prevStatus)
-      // setLikeCount(prevCount => (likeStatus ? prevCount + 1 : prevCount - 1));
 
       if (axios.isAxiosError(error)) {
         const { status } = error.response || {}
@@ -214,13 +204,10 @@ export default function BoltFullBlog ({ blog, editButton }: blogProps) {
       // Handle specific error scenarios
       if (axios.isAxiosError(e) && e.response?.status === 401) {
         toast.error('Log In First')
-        // setIsLoading(false)
       } else if (axios.isAxiosError(e) && e.response?.status === 411) {
         toast.error('Try Again')
-        // setIsLoading(false)
       } else if (axios.isAxiosError(e) && e.response?.status === 500) {
         toast.error('Internal Server Error')
-        // setIsLoading(false)
       }
     }
   }
@@ -240,7 +227,6 @@ export default function BoltFullBlog ({ blog, editButton }: blogProps) {
           { headers: { Authorization: token } }
         )
 
-        // More robust status checking
         if (response && response.data) {
           const bookmarkStatus = response.data.isBookmarked
           const savedId = response.data.savedBlogId || null
@@ -252,7 +238,6 @@ export default function BoltFullBlog ({ blog, editButton }: blogProps) {
         console.error('Error fetching bookmark status:')
         // Handle specific error scenarios
         if (axios.isAxiosError(e) && e.response?.status === 404) {
-          // localStorage.removeItem('token');
           setIsBookmarked(false)
         } else if (axios.isAxiosError(e) && e.response?.status === 500) {
           toast.error('Error while fetching blog post / Try Again')
@@ -329,7 +314,6 @@ export default function BoltFullBlog ({ blog, editButton }: blogProps) {
         toast.error('Failed to update bookmark')
       }
     } finally {
-      // Always reset loading state
       setIsLoading(false)
     }
   }
@@ -354,14 +338,6 @@ export default function BoltFullBlog ({ blog, editButton }: blogProps) {
                   {blog.title}
                 </h1>
                 <div className='flex justify-between items-center space-x-4  text-gray-400 text-sm'>
-                  {/* <div className='flex w-44  justify-between items-center'>
-                    <div className='flex items-center'>
-                      <Clock className='w-4 h-4 mr-1' />
-                      <span>8 min read</span>
-                    </div>
-                    <span>date here</span>
-                  </div> */}
-
                   {editButton ? (
                     <div className='flex w-40  '>
                       <button
@@ -432,23 +408,6 @@ export default function BoltFullBlog ({ blog, editButton }: blogProps) {
                       </svg>{' '}
                       <span className='text-gray-300'>Comment</span>
                     </button>
-
-                    {/* {showShareMenu && (
-                      <div className='absolute top-8 left-0 bg-white shadow-lg rounded-md py-2 w-48'>
-                        <button className='w-full text-left px-4 py-2 hover:bg-gray-100'>
-                          Twitter
-                        </button>
-                        <button className='w-full text-left px-4 py-2 hover:bg-gray-100'>
-                          Facebook
-                        </button>
-                        <button className='w-full text-left px-4 py-2 hover:bg-gray-100'>
-                          LinkedIn
-                        </button>
-                        <button className='w-full text-left px-4 py-2 hover:bg-gray-100'>
-                          Copy Link
-                        </button>
-                      </div>
-                    )} */}
                   </div>
                 </div>
 

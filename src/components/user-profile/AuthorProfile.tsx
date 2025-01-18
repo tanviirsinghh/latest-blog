@@ -9,7 +9,6 @@ import Navbar from './Navbar'
 import { useBlogsPersonal } from '../../hooks/index'
 import Footer from '../Footer'
 import AuthorPosts from './AuthorPosts'
-                                          //using
 export interface User {
   id: string
   name: string
@@ -80,12 +79,8 @@ export default function AuthorProfile () {
             }
           }
         )
-        // const data = await response.json();
         setStats(response.data)
-        console.log(
-          '...................................user stats',
-          response.data
-        )
+        
       } catch (error) {
         console.error('Error fetching stats:', error)
       } finally {
@@ -100,10 +95,7 @@ export default function AuthorProfile () {
     navigate('/signin')
     return
   }
-  console.log(
-    'detail route, author data, autor di profile te click kita',
-    authorData
-  )
+
   //  this check insure that component only when authorData is not null,
   //  otherwise it will not render and give error
   if (loading || !authorData) {

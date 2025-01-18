@@ -1,7 +1,7 @@
 import { useBlog } from '../hooks'
 import { useNavigate, useParams } from 'react-router-dom'
-import Navbar from '../components/Bolt-user-profile/Navbar'
-import BoltFullBlog from '../components/Bolt-user-profile/BoltFullBlog'
+import Navbar from '../components/user-profile/Navbar'
+import BoltFullBlog from '../components/user-profile/BoltFullBlog'
 import Loading from '../components/Loading'
 
 export default function Blog () {

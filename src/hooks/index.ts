@@ -164,7 +164,6 @@ export const useBlogs = () => {
           headers: { Authorization: token }
         })
         setBlogs(response.data.posts)
-        console.log(response.data.posts)
       } catch (error) {
         console.error('Error fetching blogs:', error)
       } finally {

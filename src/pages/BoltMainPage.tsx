@@ -1,6 +1,6 @@
 import { CheckCircle2 } from 'lucide-react';
-import { BlogList } from '../components/Bolt-user-profile/BlogList'
-import Navbar from '../components/Bolt-user-profile/Navbar'
+import { BlogList } from '../components/user-profile/BlogList'
+import Navbar from '../components/user-profile/Navbar'
 import { CardSpotlightDemo } from '../components/CardSpotLight';
 import Footer from '../components/Footer';
 

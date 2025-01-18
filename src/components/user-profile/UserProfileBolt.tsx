@@ -20,7 +20,7 @@ import {
                                             
 import Loading from '../Loading'
 import ImageUploadHook from '../../hooks/ImageUploadHook'
-import Navbar from '../Bolt-user-profile/Navbar'
+import Navbar from './Navbar'
 import SavedBlogComponent from './SavedBlogComponent'
 import AuthorPosts from './AuthorPosts'
 
@@ -67,10 +67,7 @@ export default function ProfileInfo () {
         )
         // const data = await response.json();
         setStats(response.data)
-        console.log(
-          '...................................user stats',
-          response.data
-        )
+  
       } catch (error) {
         console.error('Error fetching stats:', error)
       } finally {
@@ -161,9 +158,6 @@ export default function ProfileInfo () {
         payload.location = editeduser.location
       if (editeduser.coverpicture !== userDetails.coverpicture)
         payload.coverpicture = editeduser.coverpicture
-
-      console.log(payload)
-      console.log('pohonch gya,update send krn api kol')
       if (Object.keys(payload).length > 0) {
         await axios.put(
           `${BACKEND_URL}/api/v1/user/update-user-info`,

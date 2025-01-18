@@ -18,7 +18,7 @@ import { toast } from 'react-toastify'
 import { BACKEND_URL } from '../config'
 import { FourSquare } from 'react-loading-indicators'
 import DOMPurify from 'dompurify'
-import Navbar from './Bolt-user-profile/Navbar';
+import Navbar from './user-profile/Navbar';
 import Footer from './Footer';
 
 function EditBlog () {
