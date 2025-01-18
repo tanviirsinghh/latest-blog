@@ -101,7 +101,7 @@ export default function SingleBlog ({
                       <ThumbsUp className='h-4 w-4 mr-1' />
                     </Button>
                     <Button variant='ghost' size='sm' className='text-gray-500'>
-                      {/* <MessageSquare className='h-4 w-4 mr-1' />
+                      <MessageSquare className='h-4 w-4 mr-1' />
                     </Button>
                     <Button variant='ghost' size='sm' className='text-gray-500'>
                       <MoreHorizontal className='h-4 w-4' />
@@ -114,5 +114,5 @@ export default function SingleBlog ({
         </Card>
       </div>
     </Link>
-  ) */}
+  )
 }
