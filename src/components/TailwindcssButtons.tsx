@@ -1,10 +1,16 @@
 "use client";
 import reactElementToJSXString from "react-element-to-jsx-string";
-import { toast, Toaster } from "sonner";
+import { toast, Toaster  } from "sonner";
 import { ButtonsCard } from "../components/ui/tailwindcss-buttons";
-
+interface ButtonType {
+  name: string;
+  description: string;
+  component: React.ReactNode;
+  code?: string;
+  showDot?: boolean;
+}
 export function TailwindcssButtons() {
-  const copy = (button: any) => {
+  const copy = (button: ButtonType) => {
     if (button.code) {
       copyToClipboard(button.code);
       return;
@@ -42,7 +48,7 @@ export function TailwindcssButtons() {
     </div>
   );
 }
-export const buttons = [
+export const buttons: ButtonType[] = [
   {
     name: "Sketch",
     description: "Sketch button for your website",
