@@ -12,7 +12,6 @@ export const Auth =({type}: {type:"signup" | "signin"}) =>{
         name:"",
         email:"",
         password:"",
-        // blogName:""
         
     })
 
@@ -20,9 +19,6 @@ export const Auth =({type}: {type:"signup" | "signin"}) =>{
     try{
       const response =  await axios.post(`${BACKEND_URL}/api/v1/user/${type=== "signup"? "signup" : "signin"}`, inputs)
         const token = response.data.token
-        // const jwt = "Bearer" + response.data.token;
-        // localStorage.setItem("token", jwt)
-        // console.log(token)
         localStorage.setItem("token", token)
         console.log(token)
             navigate('/blogs')
@@ -37,9 +33,7 @@ export const Auth =({type}: {type:"signup" | "signin"}) =>{
 else if (axios.isAxiosError(e) && e.response?.status === 411){
     toast.error('Input Not Correct')
 }
-// else if (axios.isAxiosError(e) && e.response?.status === 403){
-//     toast.error('Email Already in use')
-// }
+
  }
 }
     return(
