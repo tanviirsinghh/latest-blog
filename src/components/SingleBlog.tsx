@@ -67,6 +67,7 @@ export default function SingleBlog ({
 }: BlogPost) {
 
   return (
+    <>
     <Link to={`/blog/${id}`}>
       <div className='w-[50rem]  h-full m-2 '>
         <Card key={id} className='border w-full   '>
@@ -113,5 +114,6 @@ export default function SingleBlog ({
         </Card>
       </div>
     </Link>
+    </>
   )
 }
