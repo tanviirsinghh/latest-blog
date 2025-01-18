@@ -42,14 +42,14 @@ const reviews = [
     name: "James",
     username: "@james",
     body: "UI Library",
-    img: "../assets/aceternity.png",
+    img: "src/assets/aceternity.png",
   }
   ,
   {
     name: "James",
     username: "@james",
     body: "O R M",
-    img: "../assets/prismaorm.png",
+    img: "/src/assets/prismaorm.png",
   },{
     name: "James",
     username: "@james",
