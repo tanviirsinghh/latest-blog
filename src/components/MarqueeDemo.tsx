@@ -49,12 +49,12 @@ const reviews = [
     name: "James",
     username: "@james",
     body: "O R M",
-    img: "assets/prismaorm.png",
+    img: "src/assets/prismaorm.png",
   },{
     name: "James",
     username: "@james",
     body: " SQL Database",
-    img: "../assets/sql-server.png",
+    img: "/src/assets/sql-server.png",
   },
   
 ];
