@@ -1,29 +1,24 @@
 import React, { FormEvent, useEffect, useState } from 'react'
-// import { PencilIcon } from 'lucide-react'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom' // Update: Added navigate for navigation
-// import ImageUploadHook from '../../hooks/ImageUploadHook'
 import { BACKEND_URL } from '../../config'
 import {
-  
-  // Twitter,
-  // Github,
-  // Linkedin,
   Camera,
   X,
-  // Award,
- 
   Bookmark,
-
-  // Clock,
   BarChart3,
   TrendingUp,
-  PencilIcon,
- 
+  PencilIcon
 } from 'lucide-react'
-import { useSavedBlogs, useUserDetails, useBlogsPersonal } from '../../hooks/index';
-import Loading from '../Loading';
+import {
+  useSavedBlogs,
+  useUserDetails,
+  useBlogsPersonal
+} from '../../hooks/index'
+                                            //using
+                                            
+import Loading from '../Loading'
 import ImageUploadHook from '../../hooks/ImageUploadHook'
 import Navbar from '../Bolt-user-profile/Navbar'
 import SavedBlogComponent from './SavedBlogComponent'
@@ -33,7 +28,7 @@ export default function ProfileInfo () {
   const { loading, userDetails, setUserDetails } = useUserDetails()
   const [isSaving, setIsSaving] = useState(false)
   const { savedblogs } = useSavedBlogs()
-  const {blogsPersonal}= useBlogsPersonal()
+  const { blogsPersonal } = useBlogsPersonal()
   const [editeduser, setEditeduser] = useState({
     name: userDetails?.name || '',
     email: userDetails?.email || '',
@@ -41,42 +36,50 @@ export default function ProfileInfo () {
     bio: userDetails?.bio || '',
     location: userDetails?.location || '',
     coverpicture: userDetails?.coverpicture || ''
-
-    // coverpicture: user?.coverpicture || ''
   })
-  const[isloading,setLoading] = useState(false)
-  console.log('userDetailssxxxxxxxxxxxxxxxxxxxx', userDetails)
-
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [image, setImage] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState( userDetails?.profilePicture || '' )
+  const [coverImagePreview, setcoverImagePreview] = useState(userDetails?.coverpicture || '')
+  const [coverImage, setCoverImage] = useState<File | null>(null)
+  const [confirm, setConfirm] = useState(false)
+  const [load, setLoad] = useState(false)
+  const [coverConfirm, setCoverConfirm] = useState(false)
+  const navigate = useNavigate()
+  const [isloading, setLoading] = useState(false)
   const [stat, setStats] = useState({
     totalPosts: 0,
     totalComments: 0,
     totalLikes: 0
-  });
-  
+  })
 
   useEffect(() => {
-    
     const fetchStats = async () => {
       setLoading(true)
       try {
-        const response = await axios.get(`${BACKEND_URL}/api/v1/user/user-stats`,{
-          headers:{
-            Authorization:`${token}`
+        const response = await axios.get(
+          `${BACKEND_URL}/api/v1/user/user-stats`,
+          {
+            headers: {
+              Authorization: `${token}`
+            }
           }
-        });
+        )
         // const data = await response.json();
-        setStats(response.data);
-        console.log('...................................user stats', response.data)
+        setStats(response.data)
+        console.log(
+          '...................................user stats',
+          response.data
+        )
       } catch (error) {
-        console.error('Error fetching stats:', error);
+        console.error('Error fetching stats:', error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
+    fetchStats()
+  }, [])
 
-    fetchStats();
-  }, []);
-   
   useEffect(() => {
     if (userDetails) {
       setEditeduser({
@@ -89,26 +92,6 @@ export default function ProfileInfo () {
       })
     }
   }, [userDetails])
-  // const handleUpdateProfile = (updatedData: typeof user) => {
-  //   setdummyuser(updatedData);
-  //   setIsEditModalOpen(fa
-  
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-
-  const [image, setImage] = useState<File | null>(null)
-  const [imagePreview, setImagePreview] = useState(
-    userDetails?.profilePicture || ''
-  )
-  const [coverImagePreview, setcoverImagePreview] = useState(
-    userDetails?.coverpicture || ''
-  )
-  const [coverImage, setCoverImage] = useState<File | null>(null)
-  const [confirm, setConfirm] = useState(false)
-  const [load, setLoad] = useState(false)
-  // confirmation for cover imageUpload
-  const [coverConfirm, setCoverConfirm] = useState(false)
-  const navigate = useNavigate() // Update: Replacing window.location.href
-
   const handleLogout = () => {
     localStorage.removeItem('token')
     toast.success('Logged out successfully!')
@@ -119,9 +102,6 @@ export default function ProfileInfo () {
   ) => {
     const { name, value } = e.target
     setEditeduser(prev => ({ ...prev, [name]: value }))
-
-    // setdummyuser(updatedData);
-    // setIsEditModalOpen(false);
   }
   const handleCancel = () => {
     if (userDetails) {
@@ -150,7 +130,6 @@ export default function ProfileInfo () {
     }
   }
   const token = localStorage.getItem('token')
-  // console.log(token)
   if (!token) {
     navigate('/signin')
     return
@@ -166,7 +145,6 @@ export default function ProfileInfo () {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // setLoading(true)
     setIsSaving(true) // Disable the button
 
     const token = localStorage.getItem('token')
@@ -198,21 +176,15 @@ export default function ProfileInfo () {
 
         await getRefreshData()
         setIsEditModalOpen(false)
-        // setLoading(false)
-        // Fetch updated data to refresh the component
       } else {
         toast.info('No changes detected.')
-        // setIsSaving(false); // Disable the button
       }
     } catch (err) {
       setIsSaving(false) // Disable the button
 
       toast.error('Failed to update profile. Please try again.')
     }
-
-    // setIsEditModalOpen(false)// Toggle edit mode
   }
-  //  handle the profile image upload
   const handleProfileImage = async () => {
     if (!image) {
       toast.error('Please select an image before confirming.')
@@ -225,7 +197,6 @@ export default function ProfileInfo () {
       if (imageUrl) {
         setImagePreview(imageUrl)
 
-        // Update profile picture in the backend
         await axios.put(
           `${BACKEND_URL}/api/v1/user/update-profile-picture`,
           { profilePicture: imageUrl },
@@ -257,7 +228,6 @@ export default function ProfileInfo () {
       const imageUrl = await ImageUploadHook(coverImage)
       if (imageUrl) {
         setcoverImagePreview(imageUrl)
-
         // Update profile picture in the backend
         await axios.put(
           `${BACKEND_URL}/api/v1/user/update-cover-picture`,
@@ -278,10 +248,6 @@ export default function ProfileInfo () {
       setConfirm(false)
     }
   }
- 
-    
-
-
 
   const stats = [
     {
@@ -293,79 +259,26 @@ export default function ProfileInfo () {
     },
     {
       label: 'Blog Posts',
-      value:  stat.totalPosts,
+      value: stat.totalPosts,
       icon: TrendingUp,
       change: 'Post More, for more Reach',
       color: 'text-purple-400'
     },
     {
       label: 'Total Comments',
-      value:  stat.totalComments,
+      value: stat.totalComments,
       icon: TrendingUp,
       change: 'Engage with the Comments,  Engagement++',
       color: 'text-pink-400'
-    },
-    // {
-    //   label: 'Comments',
-    //   value: '1.2K',
-    //   icon: MessageCircle,
-    //   change: '+7.1%',
-    //   color: 'text-amber-400'
-    // }
+    }
   ]
 
-  // const savedPosts = [
-  //   {
-  //     title: 'The Future of Web Development',
-  //     author: 'Mike Chen',
-  //     date: '2 days ago',
-  //     thumbnail:
-  //       'https://images.unsplash.com/photo-1504639725590-34d0984388bd?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80'
-  //   },
-  //   {
-  //     title: 'Understanding TypeScript Generics',
-  //     author: 'Emily Rodriguez',
-  //     date: '1 week ago',
-  //     thumbnail:
-  //       'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80'
-  //   },
-  //   {
-  //     title: 'Advanced Git Workflows',
-  //     author: 'Alex Thompson',
-  //     date: '2 weeks ago',
-  //     thumbnail:
-  //       'https://images.unsplash.com/photo-1556075798-4825dfaaf498?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80'
-  //   }
-  // ]
-
-  // const dummyuserPosts = [
-  //   {
-  //     title: "Understanding React 18's Concurrent Features",
-  //     excerpt:
-  //       'An in-depth look at the new concurrent features in React 18 and how they improve application performance.',
-  //     thumbnail:
-  //       'https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80',
-  //     date: '2 days ago',
-  //     readTime: '5 min',
-  //     views: '1.2K',
-  //     likes: 234,
-  //     comments: 45
-  //   },
-  //   {
-  //     title: 'Building Scalable Applications with Next.js',
-  //     excerpt:
-  //       'Learn how to leverage Next.js features to build performant and scalable web applications.',
-  //     thumbnail:
-  //       'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80',
-  //     date: '5 days ago',
-  //     readTime: '8 min',
-  //     views: '2.5K',
-  //     likes: 456,
-  //     comments: 78
-  //   }
-  // ]
-  if(isloading){
-    return <div><Loading/></div>
+  if (isloading) {
+    return (
+      <div>
+        <Loading />
+      </div>
+    )
   }
   return (
     <>
@@ -586,44 +499,36 @@ export default function ProfileInfo () {
                         {userDetails.blogName}
                       </p>
                     </div>
-                    {/* <button
+
+                    <button
                       onClick={() => setIsEditModalOpen(true)}
-                      className='flex items-center gap-2 px-4 ml-7 py-2 bg-cyan-400 hover:bg-cyan-600 text-gray-900 font-medium rounded-lg transition-colors'
+                      className=' rounded ml-7 px-5 py-2.5 overflow-hidden group bg-green-500 relative hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300'
                     >
-                      <Edit3 size={18} />
-                      Edit Profile
-                    </button> */}
-                    <button  onClick={() => setIsEditModalOpen(true)}  className=" rounded ml-7 px-5 py-2.5 overflow-hidden group bg-green-500 relative hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300">
-    <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
-    <span className="relative">Edit Profile</span>
-</button>
-                    {/* <button
+                      <span className='absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease'></span>
+                      <span className='relative'>Edit Profile</span>
+                    </button>
+
+                    <button
                       onClick={handleLogout}
-                      className='flex items-center gap-1 px-4 ml-3 py-2 bg-red-600 hover:bg-red-700 text-gray-900 font-medium rounded-lg transition-colors'
+                      className='ml-3 relative inline-flex items-center justify-start px-7 py-3 overflow-hidden font-medium transition-all bg-red-600 rounded-xl group'
                     >
-                      <LogOut size={18} />
-                      Log Out
-                    </button> */}
-                    <button onClick={handleLogout} className="ml-3 relative inline-flex items-center justify-start px-7 py-3 overflow-hidden font-medium transition-all bg-red-600 rounded-xl group">
-    <span className="absolute top-0 right-0 inline-block w-4 h-4 transition-all duration-500 ease-in-out bg-red-800 rounded group-hover:-mr-4 group-hover:-mt-4">
-        <span className="absolute top-0 right-0 w-5 h-5 rotate-45 translate-x-1/2 -translate-y-1/2 bg-white"></span>
-    </span>
-    <span className="absolute bottom-0 left-0 w-full h-full transition-all duration-500 ease-in-out delay-200 -translate-x-full translate-y-full bg-red-700 rounded-2xl group-hover:mb-12 group-hover:translate-x-0"></span>
-    <span className="relative w-full text- font-mono text-white transition-colors duration-200 ease-in-out group-hover:text-white">Log Out</span>
-</button>
+                      <span className='absolute top-0 right-0 inline-block w-4 h-4 transition-all duration-500 ease-in-out bg-red-800 rounded group-hover:-mr-4 group-hover:-mt-4'>
+                        <span className='absolute top-0 right-0 w-5 h-5 rotate-45 translate-x-1/2 -translate-y-1/2 bg-white'></span>
+                      </span>
+                      <span className='absolute bottom-0 left-0 w-full h-full transition-all duration-500 ease-in-out delay-200 -translate-x-full translate-y-full bg-red-700 rounded-2xl group-hover:mb-12 group-hover:translate-x-0'></span>
+                      <span className='relative w-full text- font-mono text-white transition-colors duration-200 ease-in-out group-hover:text-white'>
+                        Log Out
+                      </span>
+                    </button>
                   </div>
 
                   <p className='mt-2 text-gray-300 font-mono max-w-2xl'>
                     {userDetails.bio}
                   </p>
 
-                  <div className='mt-4 flex flex-wrap items-center gap-4 text-gray-400'>
-                   
-                  </div>
+                  <div className='mt-4 flex flex-wrap items-center gap-4 text-gray-400'></div>
 
-                  <div className='mt-4 flex gap-4'>
-                   
-                  </div>
+                  <div className='mt-4 flex gap-4'></div>
                 </div>
               )}
             </div>
@@ -635,36 +540,41 @@ export default function ProfileInfo () {
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
             <div className='lg:col-span-2 space-y-6'>
               {/* Stats Grid */}
-              {isloading? <div className=""> <Loading/></div>
-               : <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
-              
-                {stats.map(status => (
-                  <div
-                    key={status.label}
-                    className='bg-black backdrop-blur-lg rounded-xl p-6 border border-gray-700/50'
-                  >
-                    <div className='flex items-center gap-3 '>
-                      <div
-                        className={`p-1 rounded-lg   bg-opacity-10`}
-                      >
-                        {/* <stat.icon className={`h-6 w-6 ${stat.color}`} /> */}
+              {isloading ? (
+                <div className=''>
+                  {' '}
+                  <Loading />
+                </div>
+              ) : (
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+                  {stats.map(status => (
+                    <div
+                      key={status.label}
+                      className='bg-black backdrop-blur-lg rounded-xl p-6 border border-gray-700/50'
+                    >
+                      <div className='flex items-center gap-3 '>
+                        <div className={`p-1 rounded-lg   bg-opacity-10`}>
+                          {/* <stat.icon className={`h-6 w-6 ${stat.color}`} /> */}
+                        </div>
+                        <div className=' flex flex-col justify-center items-center'>
+                          <p className='text-sm flex justify-center items-center font-mono text-indigo-500'>
+                            {status.label}
+                          </p>
+                          <p className='text-2xl font-mono font-bold text-white'>
+                            {status.value}
+                          </p>
+                        </div>
                       </div>
-                      <div className=' flex flex-col justify-center items-center'>
-                        <p className='text-sm flex justify-center items-center font-mono text-indigo-500'>{status.label}</p>
-                        <p className='text-2xl font-mono font-bold text-white'>
-                          {status.value}
-                        </p>
+                      <div className='mt-2 flex items-center justify-center text-center text-sm '>
+                        <span className='text-green-400 text center font-mono'>
+                          {status.change}
+                        </span>
+                        {/* <span className='text-gray-500 ml-2'>vs last month</span> */}
                       </div>
                     </div>
-                    <div className='mt-2 flex items-center justify-center text-center text-sm '>
-                      <span className='text-green-400 text center font-mono'>{status.change}</span>
-                      {/* <span className='text-gray-500 ml-2'>vs last month</span> */}
-                    </div>
-                  </div>
-                ))}
-              
-              </div>
-}
+                  ))}
+                </div>
+              )}
               {/* dummyuser Posts */}
               <div className='bg-black backdrop-blur-lg rounded-xl p-6 border border-indigo-500'>
                 <div className='flex items-center justify-between mb-6'>
@@ -676,27 +586,26 @@ export default function ProfileInfo () {
                      
                     </button> */}
                     <button className='px-4 py-2 text-sm font-mono text-gray-400 hover:text-white transition-colors'>
-                    Wrote by You
+                      Wrote by You
                     </button>
                   </div>
                 </div>
 
                 <div className='space-y-6 bg-black backdrop-blur-lg'>
-                  {blogsPersonal.map((blog) => (
-                          <AuthorPosts
-                          key={blog.id}
-                          id={blog.id}
-                          authorName={blog.author.name || 'Anonymous'}
-                          title={blog.title}
-                          content={blog.content}
-                          publishDate=" save the date also and then fetch here"
-                          url={blog.url}
-              
-                          // make user upload the photo then fetch here
-                          like={blog._count.like}
-                          comment={blog._count.comment}
-                          save={blog._count.savedPosts}
-                          />
+                  {blogsPersonal.map(blog => (
+                    <AuthorPosts
+                      key={blog.id}
+                      id={blog.id}
+                      authorName={blog.author.name || 'Anonymous'}
+                      title={blog.title}
+                      content={blog.content}
+                      publishDate=' save the date also and then fetch here'
+                      url={blog.url}
+                      // make user upload the photo then fetch here
+                      like={blog._count.like}
+                      comment={blog._count.comment}
+                      save={blog._count.savedPosts}
+                    />
                   ))}
                 </div>
               </div>
@@ -713,16 +622,12 @@ export default function ProfileInfo () {
                       Saved Posts
                     </h2>
                   </div>
-                  {/* <button className='text-sm text-cyan-400 hover:text-cyan-300'>
-                  View All
-                </button> */}
                 </div>
                 {savedblogs.map(post => (
                   <SavedBlogComponent
                     key={post.id}
                     id={post.id}
                     authorId={post.authorId}
-                    // authorName={post.author.name || 'Anonymous'}
                     title={post.title}
                     content={post.content}
                     authorName={post.author.name}
@@ -730,35 +635,6 @@ export default function ProfileInfo () {
                     url={post.url}
                   />
                 ))}
-
-                {/* <div className='space-y-4'>
-                {
-                savedblogs.map((post) => (
-                  <div
-                    key={post.id}
-                    className='flex items-center gap-3 p-3 rounded-lg hover:bg-gray-900/50 transition-colors cursor-pointer'
-                  >
-                    <img
-                      src={post.url}
-                      alt={post.title}
-                      className='w-12 h-12 rounded-lg object-cover'
-                    />
-                    <div className='flex-1 min-w-0'>
-                      <h3 className='font-medium text-white truncate'>
-                        {post.title}
-                      </h3>
-                      <div className='flex items-center gap-2 mt-1 text-sm'>
-                        <span className='text-gray-400'> {post.title}</span>
-                        <span className='text-gray-600'>•</span>
-                        <div className='flex items-center gap-1 text-gray-500'>
-                          <Clock size={14} />
-                          <span>{"date v save kra saleya"}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div> */}
               </div>
             </div>
           </div>
@@ -783,32 +659,11 @@ export default function ProfileInfo () {
               <form
                 onSubmit={
                   handleSubmit
-                  // handleInputChange(editeduser);
                 }
                 className='space-y-6'
               >
                 {/* Avatar Upload */}
-                <div className='flex items-center gap-4'>
-                  {/* <div className="relative group">
-                  <img
-                    src={dummyuser.avatar}
-                    alt={dummyuser.name}
-                    className="w-20 h-20 rounded-full"
-                  />
-                  <label className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
-                    <Camera size={20} className="text-white" />
-                    <input type="file" className="hidden" accept="image/*" />
-                  </label>
-                </div> */}
-                  {/* <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Profile Picture
-                  </label>
-                  <p className="text-sm text-gray-400">
-                    Recommended: Square image, at least 400x400px
-                  </p>
-                </div> */}
-                </div>
+                <div className='flex items-center gap-4'></div>
 
                 {/* Form Fields */}
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
@@ -876,57 +731,53 @@ export default function ProfileInfo () {
                       className='w-full bg-gray-900/50 border border-indigo-500 font-mono text-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent'
                     />
                   </div>
-
-                  {/* <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Twitter username
-                  </label>
-                  <input
-                    type="text"
-                    value={"dummyuser.social.twitter"}
-                    onChange={(e) => setEditeduser({
-                      ...editeduser,
-                     Social: e.target.value })
-                    className="w-full bg-gray-900/50 border border-gray-700 text-gray-100 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent"
-                  />
-                </div> */}
                 </div>
 
                 {/* Action Buttons */}
                 <div className='flex justify-end gap-4 pt-4'>
-                  {/* <button
-                    type='button'
+                  <button
                     onClick={handleCancel}
-                    className='px-6 py-2.5 text-gray-300 hover:text-white transition-colors'
+                    className='box-border relative z-30 inline-flex items-center justify-center w-auto px-8 py-3 overflow-hidden font-bold text-white transition-all duration-300 bg-indigo-600 rounded-md cursor-pointer group ring-offset-2 ring-1 ring-indigo-300 ring-offset-indigo-200 hover:ring-offset-indigo-500 ease focus:outline-none'
                   >
-                    Cancel
-                  </button> */}
-                  <button onClick={handleCancel} className="box-border relative z-30 inline-flex items-center justify-center w-auto px-8 py-3 overflow-hidden font-bold text-white transition-all duration-300 bg-indigo-600 rounded-md cursor-pointer group ring-offset-2 ring-1 ring-indigo-300 ring-offset-indigo-200 hover:ring-offset-indigo-500 ease focus:outline-none">
-    <span className="absolute bottom-0 right-0 w-8 h-20 -mb-8 -mr-5 transition-all duration-300 ease-out transform rotate-45 translate-x-1 bg-white opacity-10 group-hover:translate-x-0"></span>
-    <span className="absolute top-0 left-0 w-20 h-8 -mt-1 -ml-12 transition-all duration-300 ease-out transform -rotate-45 -translate-x-1 bg-white opacity-10 group-hover:translate-x-0"></span>
-    <span className="relative z-20 flex items-center text-sm">
-        <svg className="relative w-5 h-5 mr-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-        Cancel
-    </span>
-</button>
-                  {/* <button
-                    type='submit'
-                    disabled={isSaving} // Disable the button conditionally
-                    className={`px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 ${
-                      isSaving ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
-                  >
-                    {isSaving ? 'Saving...' : 'Save Changes'}
-                  </button> */}
+                    <span className='absolute bottom-0 right-0 w-8 h-20 -mb-8 -mr-5 transition-all duration-300 ease-out transform rotate-45 translate-x-1 bg-white opacity-10 group-hover:translate-x-0'></span>
+                    <span className='absolute top-0 left-0 w-20 h-8 -mt-1 -ml-12 transition-all duration-300 ease-out transform -rotate-45 -translate-x-1 bg-white opacity-10 group-hover:translate-x-0'></span>
+                    <span className='relative z-20 flex items-center text-sm'>
+                      <svg
+                        className='relative w-5 h-5 mr-2 text-white'
+                        fill='none'
+                        stroke='currentColor'
+                        viewBox='0 0 24 24'
+                        xmlns='http://www.w3.org/2000/svg'
+                      >
+                        <path
+                          stroke-linecap='round'
+                          stroke-linejoin='round'
+                          stroke-width='2'
+                          d='M13 10V3L4 14h7v7l9-11h-7z'
+                        ></path>
+                      </svg>
+                      Cancel
+                    </span>
+                  </button>
 
-                  <button  type='submit' disabled={isSaving}  className="relative inline-flex items-center justify-center inline-block p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 rounded-lg shadow-2xl group">
-    <span className={`absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 transition-all duration-700 bg-red-500 rounded-full blur-md ease ${ isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}></span>
-    <span className="absolute inset-0 w-full h-full transition duration-700 group-hover:rotate-180 ease">
-        <span className="absolute bottom-0 left-0 w-24 h-24 -ml-10 bg-purple-500 rounded-full blur-md"></span>
-        <span className="absolute bottom-0 right-0 w-24 h-24 -mr-10 bg-pink-500 rounded-full blur-md"></span>
-    </span>
-    <span className="relative text-white">{isSaving ? 'Saving...' : 'Save Changes'}</span>
-</button>
+                  <button
+                    type='submit'
+                    disabled={isSaving}
+                    className='relative inline-flex items-center justify-center inline-block p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 rounded-lg shadow-2xl group'
+                  >
+                    <span
+                      className={`absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 transition-all duration-700 bg-red-500 rounded-full blur-md ease ${
+                        isSaving ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
+                    ></span>
+                    <span className='absolute inset-0 w-full h-full transition duration-700 group-hover:rotate-180 ease'>
+                      <span className='absolute bottom-0 left-0 w-24 h-24 -ml-10 bg-purple-500 rounded-full blur-md'></span>
+                      <span className='absolute bottom-0 right-0 w-24 h-24 -mr-10 bg-pink-500 rounded-full blur-md'></span>
+                    </span>
+                    <span className='relative text-white'>
+                      {isSaving ? 'Saving...' : 'Save Changes'}
+                    </span>
+                  </button>
                 </div>
               </form>
             </div>
