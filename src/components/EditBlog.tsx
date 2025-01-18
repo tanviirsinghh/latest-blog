@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import {
   
   HelpCircle,
@@ -35,7 +35,20 @@ function EditBlog () {
   )
   const editorRef = useRef<TinyMCEEditor | null>(null)
   const navigate = useNavigate()
+  
+const changeImg= () =>{
+  setImagePreview(undefined)
+ setImage(null) // Add this line to clear the selected image
+  blog.url = ""
 
+}
+useEffect(()=>{
+
+  if(blog.url){
+    setImagePreview(blog.url)
+  
+  }
+},[])
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target && e.target.files && e.target.files[0]) {
       const file = e.target.files[0]
@@ -77,8 +90,7 @@ function EditBlog () {
   }
 
   const sendData = async (imgUrl: string) => {
-    console.log(blog.id)
-    console.log('frontend api hit sendData' + imgUrl)
+  
     try {
       const response = await axios.put(
         `${BACKEND_URL}/api/v1/blog/editedblog/${blog.id}`,
@@ -119,10 +131,7 @@ function EditBlog () {
   
   const deleteBlog = async () => {
     setLoading(true)
-    console.log()
     try {
-      console.log("delete blog di id")
-      console.log(blog.id)
       const response = await axios.delete(
         `${BACKEND_URL}/api/v1/blog/deleteblog/${blog.id}`,
         {
@@ -218,10 +227,10 @@ function EditBlog () {
                     </label>
                     <div className='mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl hover:border-purple-500 transition duration-150'>
                       <div className='space-y-1 text-center'>
-                        { imagePreview || blog.url ? (
+                        { imagePreview != undefined ? (
                           <div className='relative'>
                             <img
-                              src={imagePreview || blog.url}
+                              src={imagePreview }
                               alt='Preview'
                               className='mx-auto h-64 w-full object-cover rounded-lg'
                             />
@@ -235,7 +244,7 @@ function EditBlog () {
                             <X
                               size={16}
                               className='absolute top-0 right-0 mt-2 mr-2 cursor-pointer'
-                              onClick={() => setImagePreview(undefined)}
+                              onClick={changeImg}
                             />
                           </div>
                         ) : (
@@ -380,9 +389,9 @@ function EditBlog () {
                     <h1 className='text-3xl font-bold text-gray-300 font-mono  mb-4'>
                       {title || 'Your Title Here'}
                     </h1>
-                    {  imagePreview || blog.url&& (
+                    {  imagePreview != undefined && (
                       <img
-                        src={  imagePreview || blog.url }
+                        src={  imagePreview  }
                         alt='Cover'
                         className='w-full h-64 object-cover rounded-xl mb-6'
                       />

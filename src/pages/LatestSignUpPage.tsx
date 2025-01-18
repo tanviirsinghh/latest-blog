@@ -63,7 +63,6 @@ const LatestSignupPage = () => {
         toast.error('Image upload failed. Cannot proceed.')
         return
       }
-      console.log('image uploaded successfully and here is your url' + imgUrl)
       await sendData(imgUrl || '') // Handle empty URLs gracefully
     } catch (error) {
       console.error('Error in handleSubmit:', error)
