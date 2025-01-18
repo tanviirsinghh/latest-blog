@@ -54,7 +54,7 @@ const reviews = [
     name: "James",
     username: "@james",
     body: " SQL Database",
-    img: "./src/assets/sql-server.png",
+    img: "../assets/sql-server.png",
   },
   
 ];
