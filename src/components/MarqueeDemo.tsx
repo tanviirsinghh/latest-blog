@@ -1,6 +1,6 @@
 import { cn } from "../lib/utils";
 import {Marquee} from "../components/magicui/marquee";
-import react from '../assets/react.png';
+import g from '../assets/react.png';
 import typescript from '../assets/typescript.png';
 import tailwind from '../assets/tailwind.png';
 import packages from '../assets/npm.svg';
@@ -16,7 +16,7 @@ const reviews = [
     name: "Jack",
     username: "@jack",
     body: "React Js",
-    img: react,
+    img: g,
   },
   {
     name: "Jill",
