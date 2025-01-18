@@ -215,7 +215,7 @@ Join me on this exciting journey as we explore the cutting-edge advancements in 
       <div className='max-w-7xl  mx-auto  px-4 py-24 font-sans'>
         <div className='flex flex-col lg:flex-row gap-8'>
           {/* Left side - tempBlog Content */}
-          
+        
           <div className='lg:w-2/3'>
             <h1 className='text-4xl font-bold mb-4'>{blog.title}</h1>
             <div className='flex items-center mb-6'>

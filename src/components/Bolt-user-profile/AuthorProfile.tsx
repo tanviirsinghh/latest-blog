@@ -82,6 +82,7 @@ export default function AuthorProfile () {
     navigate('/signin')
     return
   }
+  console.log('detail route, author data, autor di profile te click kita',authorData)
   //  this check insure that component only when authorData is not null, otherwise it will not render and give error
   if (loading || !authorData) {
     return (
@@ -123,10 +124,10 @@ export default function AuthorProfile () {
                       {authorData.blogName}
                     </p>
                   </div>
-                  <button className='inline-flex items-center px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-medium rounded-lg transition-colors'>
+                  {/* <button className='inline-flex items-center px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-medium rounded-lg transition-colors'>
                     <Users className='h-5 w-5 mr-2' />
                     Follow
-                  </button>
+                  </button> */}
                 </div>
 
                 <p className='mt-4 text-gray-300 max-w-2xl'>{authorData.bio}</p>

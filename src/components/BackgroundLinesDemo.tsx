@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom'
 import { BackgroundLines } from './ui/background-lines'
 import { Book } from 'lucide-react'
 import { AnimatedModal } from './Buttons/AnimatedModel'
+import { memo } from 'react'
 
-export function BackgroundLinesDemo () {
+const BackgroundLinesDemo = memo(() => {
   return (
     <BackgroundLines className='flex  items-center justify-center w-full flex-col px-4'>
       <h2 className='bg-clip-text text-transparent text-center bg-gradient-to-b from-neutral-500 to-neutral-300 dark:from-neutral-200 dark:to-white text-2xl md:text-4xl lg:text-7xl font-sans py-2 md:py-10 relative z-20 font-bold tracking-tight'>
@@ -34,4 +35,5 @@ export function BackgroundLinesDemo () {
       </div>
     </BackgroundLines>
   )
-}
+})
+  export default BackgroundLinesDemo;

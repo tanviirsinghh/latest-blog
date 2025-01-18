@@ -1,8 +1,9 @@
+import { lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
-import { BackgroundLinesDemo } from '../components/BackgroundLinesDemo'
-import { MarqueeDemo } from '../components/MarqueeDemo'
-import Features from '../components/Features'
-import Footer from '../components/Footer'
+const BackgroundLinesDemo = lazy(() => import('../components/BackgroundLinesDemo'))
+const MarqueeDemo = lazy(() => import('../components/MarqueeDemo'))
+const Features = lazy(() => import('../components/Features'))
+const Footer = lazy(() => import('../components/Footer'))
 import { PenSquare } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { OrbitProgress } from 'react-loading-indicators'
@@ -25,11 +26,18 @@ export default function BoltLandingPage () {
   }
   return (
     <>
+        <Suspense fallback={    <OrbitProgress variant="spokes" color="#4a45f0" size="medium" text="" textColor="" />}>
+
       <div className='bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'>
-        <BackgroundLinesDemo />
-        <Features />
+        
+      <Suspense fallback={<OrbitProgress variant="spokes" color="#4a45f0" size="medium" text="" textColor="" />}>
+          <BackgroundLinesDemo />
+        </Suspense>
+                <Features />
         <section className='bg-white'>
-          <MarqueeDemo />
+        <Suspense fallback={<OrbitProgress variant="spokes" color="#4a45f0" size="medium" text="" textColor="" />}>
+            <MarqueeDemo />
+          </Suspense>
         </section>
         {/* CTA Section */}
         <section className='py-20 bg-black'>
@@ -66,8 +74,12 @@ export default function BoltLandingPage () {
             </div>
           </div>
         </section>
-        <Footer />
+        <Suspense fallback={<OrbitProgress variant="spokes" color="#4a45f0" size="medium" text="" textColor="" />}>
+          <Footer />
+        </Suspense>
       </div>
+      </Suspense>
+
     </>
   )
 }

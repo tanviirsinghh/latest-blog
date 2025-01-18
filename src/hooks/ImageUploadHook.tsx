@@ -23,7 +23,6 @@ const useImageUploadHook = async (image : File): Promise<string | undefined> => 
       console.log('complete')
       
       const imgurl = response.data.secure_url
-    //   setUrl(imgurl)
        
       return imgurl
     } catch (e) {

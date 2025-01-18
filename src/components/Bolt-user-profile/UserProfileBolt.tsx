@@ -45,7 +45,7 @@ export default function ProfileInfo () {
     // coverpicture: user?.coverpicture || ''
   })
   const[isloading,setLoading] = useState(false)
-  
+  console.log('userDetailssxxxxxxxxxxxxxxxxxxxx', userDetails)
 
   const [stat, setStats] = useState({
     totalPosts: 0,

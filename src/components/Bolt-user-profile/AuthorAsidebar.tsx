@@ -9,6 +9,7 @@ interface AuthorAsidebarProps {
 
 export default function AuthorAsidebar ({ authorId }: AuthorAsidebarProps) {
   const { userDetails } = useUserDetails(authorId)
+  console.log('authoraside bar te author di if', authorId)
   if (!userDetails) {
     return (
       <aside className='lg:col-span-1'>
@@ -42,8 +43,8 @@ export default function AuthorAsidebar ({ authorId }: AuthorAsidebarProps) {
             alt={userDetails.name}
             className='w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-500 hover:border-indigo-400 transition-colors duration-300'
           />
-          <Link  to={`/details`}>
-          <h2 className='font-mono text-2xl text-gray-100 font-bold hover:text-blue-500 cursor-pointer transition-all'>
+      <Link to={`/authorprofile?authorId=${authorId}`}>
+      <h2 className='font-mono text-2xl text-gray-100 font-bold hover:text-blue-500 cursor-pointer transition-all'>
             {userDetails.name}
           </h2>
           </Link>
@@ -91,52 +92,4 @@ export default function AuthorAsidebar ({ authorId }: AuthorAsidebarProps) {
     </aside>
   )
 
-  // return (
-
-  //     <aside className='lg:col-span-1'>
-  //         <div className='sticky top-44 rounded-lg p-6
-  //      bg-black/5 backdrop-blur-lg
-  //      border border-white/10
-  //      shadow-[0_8px_32px_0_rgba(31,38,135,0.37)]
-  //      hover:bg-black/10
-  //      transition-all duration-300'>
-  //         <div className='text-center mb-6'>
-  //           <img
-  //             src={userDetails.profilePicture}
-  //             alt='Emma Roberts'
-  //             className='w-24 h-24 rounded-full mx-auto mb-4'
-  //           />
-  //           <h2 className='text-xl text-gray-300 font-bold'>
-  //             {userDetails.name}
-  //           </h2>
-  //           <p className='text-gray-300'>{userDetails.blogName}</p>
-  //         </div>
-
-  //         <div className='mb-6'>
-  //           <p className='text-gray-300'>{userDetails.bio}</p>
-  //         </div>
-
-  //         <div className='border-t border-gray-200 pt-4'>
-  //           <h3 className='font-semibold mb-3 text-gray-300'>
-  //             {userDetails.email}
-  //           </h3>
-  //           <div className='flex justify-center space-x-4'>
-  //             <a className='text-gray-300 hover:text-blue-300 cursor-pointer'>
-  //               <Twitter className='w-5 h-5' />
-  //             </a>
-  //             <a className='text-gray-300 hover:text-blue-300 cursor-pointer'>
-  //               <Linkedin className='w-5 h-5' />
-  //             </a>
-  //             <a className='text-gray-300 hover:text-blue-300 cursor-pointer'>
-  //               <Globe className='w-5 h-5' />
-  //             </a>
-  //             <a className='text-gray-300 hover:text-blue-300 cursor-pointer'>
-  //               <Mail className='w-5 h-5' />
-  //             </a>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </aside>
-
-  // )
 }

@@ -110,7 +110,7 @@ function App () {
             }
           ></Route>
           <Route
-            path='/details'
+            path='/authorprofile'
             element={
               <React.Suspense fallback={<Loading />}>
                 <AuthorProfile />

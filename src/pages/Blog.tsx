@@ -6,6 +6,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import Navbar from '../components/Bolt-user-profile/Navbar'
 // import NewFullBlog from './NewFullBlog';
 import BoltFullBlog from "../components/Bolt-user-profile/BoltFullBlog";
+import Loading from '../components/Loading';
 
 
 // atomFamilies/selectorFamilies
@@ -23,17 +24,16 @@ export default function  Blog  () {
     // console.log(blog)
        if(loading){
         return <div>
-            loading...
-        </div>
+<Loading/>        </div>
        }
     if (loading || !blog) {
         return <div>
             <Navbar/>       
-            fuckofs 
+           
             <div className="h-screen flex flex-col justify-center">
                
                 <div className="flex justify-center">
-                   loading...
+                <Loading/> 
                 </div>
             </div>
         </div>
