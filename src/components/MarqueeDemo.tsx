@@ -1,61 +1,76 @@
 import { cn } from "../lib/utils";
 import {Marquee} from "../components/magicui/marquee";
-import aceternityImg from '../assets/typescript.png';
+import react from '..assets/react.png';
+import typescript from '../assets/typescript.png';
+
+import tailwind from '../assets/tailwind.png';
+
+import packages from '../assets/npm.svg';
+
+import backend from '../assets/cloudflare.svg';
+import language from '../assets/hono.png';
+
+import library from '../assets/aceternity.png';
+
+import orm from '../assets/prismaorm.png';
+
+import database from '../assets/sql-server.png';
+
 
 const reviews = [
   {
     name: "Jack",
     username: "@jack",
     body: "React Js",
-    img: "src/assets/react.png",
+    img: react,
   },
   {
     name: "Jill",
     username: "@jill",
     body: "Typescript",
-    img:aceternityImg,
+    img:typescript,
   },
   {
     name: "John",
     username: "@john",
     body: "CSS Library",
-    img: "src/assets/tailwind.png"
+    img: tailwind
   },
   {
     name: "Jane",
     username: "@jane",
     body: " For Custom Package",
-    img: "src/assets/npm.svg",
+    img: packages,
   },
   {
     name: "Jenny",
     username: "@jenny",
     body: "Serverless BackEnd",
-    img: "src/assets/cloudflare.svg",
+    img: backend
   },
   {
     name: "James",
     username: "@james",
     body: "Backend Language",
-    img: "src/assets/hono.png",
+    img:language
   },
   {
     name: "James",
     username: "@james",
     body: "UI Library",
-    img: "src/assets/aceternity.png",
+    img: library
   }
   ,
   {
     name: "James",
     username: "@james",
     body: "O R M",
-    img: "src/assets/prismaorm.png",
+    img:orm
   },{
     name: "James",
     username: "@james",
     body: " SQL Database",
-    img: "../assets/sql-server.png",
+    img:database
   },
   
 ];
