@@ -1,6 +1,6 @@
 import { cn } from "../lib/utils";
 import {Marquee} from "../components/magicui/marquee";
-import react from '..assets/react.png';
+import react from '../assets/react.png';
 import typescript from '../assets/typescript.png';
 
 import tailwind from '../assets/tailwind.png';

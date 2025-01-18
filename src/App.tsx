@@ -22,7 +22,7 @@ function App () {
         <Routes>
         <Route
             path='/'
-            element={token ? <BoltMainPage /> : <BoltLandingPage />}
+            element={<BoltLandingPage />}
           ></Route>
           <Route
             path='/signin'
