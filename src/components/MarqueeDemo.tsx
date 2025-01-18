@@ -42,19 +42,19 @@ const reviews = [
     name: "James",
     username: "@james",
     body: "UI Library",
-    img: "src/assets/aceternity.png",
+    img: "../assets/aceternity.png",
   }
   ,
   {
     name: "James",
     username: "@james",
     body: "O R M",
-    img: "src/assets/prismaorm.png",
+    img: "../assets/prismaorm.png",
   },{
     name: "James",
     username: "@james",
     body: " SQL Database",
-    img: "src/assets/sql-server.png",
+    img: "../assets/sql-server.png",
   },
   
 ];
@@ -76,7 +76,7 @@ const ReviewCard = ({
       )}
     >
       <div className="flex  h-20 flex-row justify-center items-center gap-4">
-        <img className="rounded-full" width="70" height="70" alt="fuck" src={img}/>
+        <img className="rounded-full" width="70" height="70" alt="img" src={img}/>
       </div>
       <blockquote className="mt-2 font-mono text-sm text-center ">{body}</blockquote>
     </figure>
