@@ -81,7 +81,7 @@ export function BlogCard ({
               </h4>
             </div>
             <button className='text-grey-400 flex justify-center items-center  hover:text-primary transition-colors'>
-              <img className='h-7' src='/src/assets/bookmark.png' alt='' />
+              <img className='h-7' src='../assets/bookmark.png' alt='' />
               <span className='text-blue-500 font-mono p-1'>
                 <h4> {saved}</h4>{' '}
               </span>
