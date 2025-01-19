@@ -1,5 +1,9 @@
 import DOMPurify from 'dompurify'
 import { Link } from 'react-router-dom'
+import bookmarkIcon from './assets/bookmark.png';
+import likes from '../assets/3d-fire.png';
+import commentIcon from '/src/assets/comment.png';
+
 
 interface BlogCardProps {
   id: string
@@ -66,7 +70,7 @@ export function BlogCard ({
                   <h4> {like} </h4>{' '}
                 </span>
 
-                <img className='h-5' src='/src/assets/3d-fire.png' alt='' />
+                <img className='h-5' src={likes} alt='' />
               </h4>
 
               <h4 className=' font-mono flex items-center space-x-1 text-gray-400 hover:text-primary transition-colors'>
@@ -74,14 +78,14 @@ export function BlogCard ({
                   <h4 className='text-grey-400 font-mono'> {comment} </h4>
                   <img
                     className='h-7'
-                    src='/src/assets/comment.png'
+                    src={commentIcon}
                     alt=''
                   />{' '}
                 </span>
               </h4>
             </div>
             <button className='text-grey-400 flex justify-center items-center  hover:text-primary transition-colors'>
-              <img className='h-7' src='../assets/bookmark.png' alt='' />
+              <img className='h-7' src={bookmarkIcon} alt='' />
               <span className='text-blue-500 font-mono p-1'>
                 <h4> {saved}</h4>{' '}
               </span>
