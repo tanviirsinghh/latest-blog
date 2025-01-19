@@ -1,6 +1,6 @@
 import DOMPurify from 'dompurify'
 import { Link } from 'react-router-dom'
-import bookmarkIcon from './assets/bookmark.png';
+import bookmarkIcon from '../assets/bookmark.png';
 import likes from '../assets/3d-fire.png';
 import commentIcon from '/src/assets/comment.png';
 
