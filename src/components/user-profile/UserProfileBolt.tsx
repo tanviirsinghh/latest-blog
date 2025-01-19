@@ -52,8 +52,19 @@ export default function ProfileInfo () {
     totalComments: 0,
     totalLikes: 0
   })
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  useEffect(() => {
+    const authToken = localStorage.getItem('token');
+    if (!authToken) {
+      navigate('/signin');
+      return;
+    }
+    setIsAuthenticated(true);
+  }, [navigate]);
 
   useEffect(() => {
+    if (!isAuthenticated) return;
+
     const fetchStats = async () => {
       setLoading(true)
       try {
@@ -78,6 +89,8 @@ export default function ProfileInfo () {
   }, [])
 
   useEffect(() => {
+    if (!isAuthenticated) return;
+
     if (userDetails) {
       setEditeduser({
         name: userDetails.name || '',

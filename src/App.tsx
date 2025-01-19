@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route,  } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import Loading from './components/Loading'
 const LatestSignupPage = React.lazy(() => import('./pages/LatestSignUpPage'))
@@ -14,7 +14,7 @@ const BoltLandingPage = React.lazy(() => import('./pages/BoltLandingPage'))
 
 function App () {
   const token = localStorage.getItem('token')
-
+ 
   return (
     <>
       <ToastContainer />
@@ -84,7 +84,7 @@ function App () {
             path='/userprofile'
             element={
               <React.Suspense fallback={<Loading />}>
-                {token ? <UserProfileBolt /> : <LatestSignin />}
+                {<UserProfileBolt /> }
               </React.Suspense>
             }
           ></Route>

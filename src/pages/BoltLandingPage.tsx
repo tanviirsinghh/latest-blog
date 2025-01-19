@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy } from 'react'
 import { Link } from 'react-router-dom'
 const BackgroundLinesDemo = lazy(() => import('../components/BackgroundLinesDemo'))
 const MarqueeDemo = lazy(() => import('../components/MarqueeDemo'))
@@ -26,18 +26,24 @@ export default function BoltLandingPage () {
   }
   return (
     <>
-        <Suspense fallback={    <OrbitProgress variant="spokes" color="#4a45f0" size="medium" text="" textColor="" />}>
+        {/* <Suspense fallback={   <div className='h-screen bg-black w-full flex justify-center items-center'>
+    <OrbitProgress variant="spokes" color="#4a45f0" size="medium" text="" textColor="" />
+  </div>}> */}
 
       <div className='bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'>
         
-      <Suspense fallback={<OrbitProgress variant="spokes" color="#4a45f0" size="medium" text="" textColor="" />}>
+      {/* <Suspense fallback={<div className='h-screen bg-black w-full flex justify-center items-center'>
+    <OrbitProgress variant="spokes" color="#4a45f0" size="medium" text="" textColor="" />
+  </div>}> */}
           <BackgroundLinesDemo />
-        </Suspense>
+        {/* </Suspense> */}
                 <Features />
         <section className='bg-white'>
-        <Suspense fallback={<OrbitProgress variant="spokes" color="#4a45f0" size="medium" text="" textColor="" />}>
+        {/* <Suspense fallback={<div className='h-screen bg-black w-full flex justify-center items-center'>
+    <OrbitProgress variant="spokes" color="#4a45f0" size="medium" text="" textColor="" />
+  </div>}> */}
             <MarqueeDemo />
-          </Suspense>
+          {/* </Suspense> */}
         </section>
         {/* CTA Section */}
         <section className='py-20 bg-black'>
@@ -74,11 +80,11 @@ export default function BoltLandingPage () {
             </div>
           </div>
         </section>
-        <Suspense fallback={<OrbitProgress variant="spokes" color="#4a45f0" size="medium" text="" textColor="" />}>
+        {/* <Suspense fallback={<OrbitProgress variant="spokes" color="#4a45f0" size="medium" text="" textColor="" />}> */}
           <Footer />
-        </Suspense>
+        {/* </Suspense> */}
       </div>
-      </Suspense>
+      {/* </Suspense> */}
 
     </>
   )

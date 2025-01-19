@@ -13,6 +13,10 @@ const LatestSignupPage = () => {
     if (token) {
       navigate('/blogs')
     }
+    else{
+      navigate('/signin')
+      return
+    }
   })
 
   const [name, setName] = useState('')
@@ -26,6 +30,7 @@ const LatestSignupPage = () => {
   const [imagePreview, setImagePreview] = useState<string | undefined>(
     undefined
   )
+  
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target && e.target.files && e.target.files[0]) {
@@ -72,7 +77,6 @@ const LatestSignupPage = () => {
 
   const sendData = async (imgurl: string | undefined) => {
     try {
-      console.log('entered request frontend with url and user info')
       const response = await axios.post(`${BACKEND_URL}/api/v1/user/signup`, {
         name,
         email,
