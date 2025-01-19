@@ -2,7 +2,7 @@
     "rewrites": [
       {
         "source": "/((?!api/.*).*)",
-        "destination": "dist/index.html"
+        "destination": "index.html"
       }
     ]
   }
