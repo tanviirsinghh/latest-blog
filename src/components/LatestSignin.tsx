@@ -1,48 +1,99 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BACKEND_URL } from '../config';
 import { toast } from 'react-toastify';
+import { signinInput } from '@tanviirsinghh/medium-common';
 //using
+
+interface ErrorState {
+  email?: string;
+  password?: string;
+}
+
 const LatestSignin: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+  const [errors, setErrors] = useState<ErrorState>({});
+  const [isLoading, setIsLoading] = useState(false);
+
     const navigate= useNavigate()
   
-
+    useEffect(() => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        navigate('/blogs');
+      }
+    }, [navigate]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prevData => ({
       ...prevData,
       [name]: value
     }));
+      // Clear error when user types
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
+
     try{
-      const response =  await  axios.post(`${BACKEND_URL}/api/v1/user/signin`, 
-        formData
-      )
+
+      const validationResult = signinInput.safeParse(formData)
+      if (!validationResult.success) {
+        // Clear previous errors
+        setErrors({});
+        
+        // Set new validation errors
+        validationResult.error.errors.forEach((err) => {
+            setErrors(prev => ({
+                ...prev,
+                [err.path[0]]: err.message
+            }));
+        });
+        setIsLoading(false)
+
+        toast.error('Please check your input fields');
+        return;
+    }
+
+    const response = await axios.post(
+        `${BACKEND_URL}/api/v1/user/signin`, 
+        validationResult.data // Use validated data
+    );
+
         const token = response.data.token
         localStorage.setItem("token", token)
         console.log(token)
             navigate('/blogs')
-            toast.success('Signup successfull')
+            toast.success('Signin successfull')
 
-}catch (e : unknown ){
-    if(axios.isAxiosError(e) && e.response?.status === 401){
-   toast.error('User not found / Sign up first')
-} else if (axios.isAxiosError(e) && e.response?.status === 500){
-    toast.error('Please try again / Internal Server Error')
-}
-else if (axios.isAxiosError(e) && e.response?.status === 411){
-    toast.error('Input Not Correct')
-}
+}catch (e: unknown) {
+  if (axios.isAxiosError(e)) {
+    setIsLoading(false)
 
- }
+    switch (e.response?.status) {
+        case 401:
+            toast.error('User not found / Invalid credentials');
+            break;
+        case 411:
+            toast.error('Please check your input fields');
+            break;
+        case 500:
+            toast.error('Please try again / Internal Server Error');
+            break;
+        default:
+            toast.error('An unexpected error occurred');
+    }
+  }
+}
   };
 
   return (
@@ -61,12 +112,17 @@ else if (axios.isAxiosError(e) && e.response?.status === 411){
                   placeholder="your@email.com"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2 rounded-full border-2 border-black focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
-                  required
+                  className={`w-full px-4 py-2 rounded-full border text-gray-300 bg-black 
+                    focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 
+                    ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+                     required
                 />
                 <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700">
                   <MailIcon />
                 </span>
+                {errors.email && (
+                    <p className="text-red-500 text-sm ml-4">{errors.email}</p>
+                )}
               </div>
               <div className="relative">
                 <input
@@ -75,19 +131,24 @@ else if (axios.isAxiosError(e) && e.response?.status === 411){
                   placeholder="Your Password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2 rounded-full border-2 border-black focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
-                  required
+                  className={`w-full px-4 py-2 rounded-full border text-gray-300 bg-black 
+                    focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 
+                    ${errors.password ? 'border-red-500' : 'border-gray-300'}`}                
+                      required
                 />
                 <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700">
                   <LockIcon />
                 </span>
+                {errors.password && (
+                    <p className="text-red-500 text-sm ml-4">{errors.password}</p>
+                )}
               </div>
               <button
                 type="submit"
-                className="w-full bg-indigo-500 text-yellow-50 font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 hover:text-white transition-all duration-300 transform hover:scale-95 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50"
+                className="w-full bg-indigo-500 text-yellow-50 font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 hover:text-white transition-all duration-300 transform hover:scale-95 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50         ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-indigo-600'}`}
+"
               >
-                Sign In
-              </button>
+                 {isLoading ? 'Signing in...' : 'Sign In'}              </button>
             </form>
             <Link to="/signup">
             <p className="mt-6 text-sm text-gray-400 text-center">

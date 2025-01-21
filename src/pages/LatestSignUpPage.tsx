@@ -4,6 +4,9 @@ import axios from 'axios'
 import { FormEvent, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import {  signupInput } from '@tanviirsinghh/medium-common'
+
+
 
 const LatestSignupPage = () => {
   const navigate = useNavigate()
@@ -13,11 +16,8 @@ const LatestSignupPage = () => {
     if (token) {
       navigate('/blogs')
     }
-    else{
-      navigate('/signin')
-      return
-    }
-  })
+    
+},[token,navigate])
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -30,7 +30,16 @@ const LatestSignupPage = () => {
   const [imagePreview, setImagePreview] = useState<string | undefined>(
     undefined
   )
-  
+  type ErrorState = {
+    name?: string;
+    email?: string;
+    password?: string;
+    blogName?: string;
+    bio?: string;
+    location?: string;
+};
+
+const [errors, setErrors] = useState<ErrorState>({});
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target && e.target.files && e.target.files[0]) {
@@ -68,6 +77,7 @@ const LatestSignupPage = () => {
         toast.error('Image upload failed. Cannot proceed.')
         return
       }
+
       await sendData(imgUrl || '') // Handle empty URLs gracefully
     } catch (error) {
       console.error('Error in handleSubmit:', error)
@@ -77,7 +87,7 @@ const LatestSignupPage = () => {
 
   const sendData = async (imgurl: string | undefined) => {
     try {
-      const response = await axios.post(`${BACKEND_URL}/api/v1/user/signup`, {
+      console.log('Validating data with Zod', {
         name,
         email,
         password,
@@ -85,13 +95,42 @@ const LatestSignupPage = () => {
         profilePicture: imgurl,
         bio,
         location
-      })
+    });
+      const validationResult = signupInput.safeParse({
+        name,
+        email,
+        password,
+        blogName,
+        profilePicture: imgurl,
+        bio,
+        location
+    });
+    if (!validationResult.success) {
+      // Handle Zod validation errors
+      setErrors({});
+      validationResult.error.errors.forEach((err) => {
+          setErrors(prev => ({
+              ...prev,
+              [err.path[0]]: err.message
+          }));
+      });
+      toast.error(validationResult.error.errors[0].message);
+      return; // Stop execution if validation fails
+  }
+    const fullUserData = {
+      ...validationResult.data,
+    };
+
+      const response = await axios.post(`${BACKEND_URL}/api/v1/user/signup`, 
+        fullUserData
+      )
       toast.success('Signup Successfully')
       const token = response.data.token
-      localStorage.setItem('token', token)
+       localStorage.setItem('token', token)
       navigate('/blogs')
     } catch (e: unknown) {
-      if (axios.isAxiosError(e)) {
+    
+       if(axios.isAxiosError(e)) {
         switch (e.response?.status) {
           case 401:
             toast.error('User not found / Sign up first')
@@ -229,74 +268,167 @@ const LatestSignupPage = () => {
                 />
               </label>
             </div>
-            <input
-              type='text'
-              name='name'
-              placeholder='Your Awesome Name'
-              onChange={e => {
-                setName(e.target.value)
-              }}
-              className='w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50'
-              required
-            />
-            <input
-              type='email'
-              name='email'
-              placeholder='your@email.com'
-              onChange={e => {
-                setEmail(e.target.value)
-              }}
-              className='w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50'
-              required
-            />
-            <input
-              type='password'
-              name='password'
-              placeholder='Super Secret Password'
-              // value={formData.password}
-              onChange={e => {
-                setPassword(e.target.value)
-              }}
-              className='w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50'
-              required
-            />
-            <input
-              type='text'
-              name='Bio'
-              placeholder='Bio'
-              onChange={e => {
-                setBio(e.target.value)
-              }}
-              className='w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50'
-              required
-            />
-            <input
-              type='text'
-              name='Location'
-              placeholder='Location'
-              onChange={e => {
-                setLocation(e.target.value)
-              }}
-              className='w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50'
-              required
-            />
-            <select
-              name='blogCategory'
-              // value={formData.blogCategory}
-              onChange={e => {
-                setBlogName(e.target.value)
-              }}
-              className='w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50'
-              required
-            >
-              <option value=''>Select Your Blog's Superpower</option>
-              <option value='technology'>Tech Wizardry</option>
-              <option value='lifestyle'>Life's Adventures</option>
-              <option value='travel'>Wanderlust Chronicles</option>
-              <option value='food'>Culinary Quests</option>
-              <option value='fashion'>Style Spectrum</option>
-              <option value='other'>Unique Perspectives</option>
-            </select>
+           {/* Add a container div for each input to handle the error message */}
+<div className="space-y-1">
+    <input
+        type='text'
+        name='name'
+        placeholder='Your Awesome Name'
+        onChange={e => {
+            setName(e.target.value);
+            setErrors(prev => ({ ...prev, name: '' }));
+        }}
+        className={`w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 ${
+            errors.name 
+                ? 'border-red-500 focus:border-red-500' 
+                : 'focus:border-indigo-500'
+        }`}
+        required
+    />
+    {errors.name && (
+        <p className="text-red-500 text-sm ml-4">{errors.name}</p>
+    )}
+</div>
+
+<div className="space-y-1">
+    <input
+        type='email'
+        name='email'
+        placeholder='your@email.com'
+        onChange={e => {
+            setEmail(e.target.value);
+            setErrors(prev => ({ ...prev, email: '' }));
+        }}
+        className={`w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 ${
+            errors.email 
+                ? 'border-red-500 focus:border-red-500' 
+                : 'focus:border-indigo-500'
+        }`}
+        required
+    />
+    {errors.email && (
+        <p className="text-red-500 text-sm ml-4">{errors.email}</p>
+    )}
+</div>
+
+<div className="space-y-1">
+    <input
+        type='password'
+        name='password'
+        placeholder='Super Secret Password'
+        onChange={e => {
+            const value = e.target.value;
+            setPassword(value);
+            
+            // Clear previous error
+            setErrors(prev => ({ ...prev, password: '' }));
+            
+            // Immediate validation feedback
+            if (value.length < 6) {
+                setErrors(prev => ({ ...prev, password: 'Password must be at least 6 characters' }));
+            } else if (!/[A-Z]/.test(value)) {
+                setErrors(prev => ({ ...prev, password: 'Password must contain at least one uppercase letter' }));
+            } else if (!/[0-9]/.test(value)) {
+                setErrors(prev => ({ ...prev, password: 'Password must contain at least one number' }));
+            } else if (!/[!@#$%^&*]/.test(value)) {
+                setErrors(prev => ({ ...prev, password: 'Password must contain at least one special character (!@#$%^&*)' }));
+            }
+        }}
+        className={`w-full px-4 py-2 rounded-full border text-gray-300 bg-black 
+            focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 
+            ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+        required
+    />
+    {errors.password && (
+        <p className="text-red-500 text-sm ml-4">{errors.password}</p>
+    )}
+    <div className="text-xs text-gray-400 mt-1 ml-4">
+        Password requirements:
+        <ul className="list-disc list-inside mt-1">
+            <li className={password.length >= 6 ? 'text-green-500' : ''}>
+                At least 6 characters
+            </li>
+            <li className={/[A-Z]/.test(password) ? 'text-green-500' : ''}>
+                One uppercase letter
+            </li>
+            <li className={/[0-9]/.test(password) ? 'text-green-500' : ''}>
+                One number
+            </li>
+            <li className={/[!@#$%^&*]/.test(password) ? 'text-green-500' : ''}>
+                One special character (!@#$%^&*)
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div className="space-y-1">
+    <input
+        type='text'
+        name='Bio'
+        placeholder='Bio'
+        onChange={e => {
+            setBio(e.target.value);
+            setErrors(prev => ({ ...prev, bio: '' }));
+        }}
+        className={`w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 ${
+            errors.bio 
+                ? 'border-red-500 focus:border-red-500' 
+                : 'focus:border-indigo-500'
+        }`}
+        required
+    />
+    {errors.bio && (
+        <p className="text-red-500 text-sm ml-4">{errors.bio}</p>
+    )}
+</div>
+
+<div className="space-y-1">
+    <input
+        type='text'
+        name='Location'
+        placeholder='Location'
+        onChange={e => {
+            setLocation(e.target.value);
+            setErrors(prev => ({ ...prev, location: '' }));
+        }}
+        className={`w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 ${
+            errors.location 
+                ? 'border-red-500 focus:border-red-500' 
+                : 'focus:border-indigo-500'
+        }`}
+        required
+    />
+    {errors.location && (
+        <p className="text-red-500 text-sm ml-4">{errors.location}</p>
+    )}
+</div>
+
+<div className="space-y-1">
+    <select
+        name='blogCategory'
+        onChange={e => {
+            setBlogName(e.target.value);
+            setErrors(prev => ({ ...prev, blogName: '' }));
+        }}
+        className={`w-full px-4 py-2 rounded-full border text-gray-300 bg-black focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 ${
+            errors.blogName 
+                ? 'border-red-500 focus:border-red-500' 
+                : 'focus:border-indigo-500'
+        }`}
+        required
+    >
+        <option value=''>Select Your Blog's Superpower</option>
+        <option value='technology'>Tech Wizardry</option>
+        <option value='lifestyle'>Life's Adventures</option>
+        <option value='travel'>Wanderlust Chronicles</option>
+        <option value='food'>Culinary Quests</option>
+        <option value='fashion'>Style Spectrum</option>
+        <option value='other'>Unique Perspectives</option>
+    </select>
+    {errors.blogName && (
+        <p className="text-red-500 text-sm ml-4">{errors.blogName}</p>
+    )}
+</div>
             <button
               type='submit'
               className='w-full bg-indigo-500 text-yellow-50 font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 hover:text-white transition-all duration-300 transform hover:scale-95 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50'

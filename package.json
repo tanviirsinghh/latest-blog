@@ -8,7 +8,6 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
-
   },
   "dependencies": {
     "@cloudinary/react": "^1.13.1",
@@ -22,7 +21,7 @@
     "@radix-ui/react-slot": "^1.1.1",
     "@react-three/fiber": "^8.17.12",
     "@tabler/icons-react": "^3.28.1",
-    "@tanviirsinghh/medium-common": "^2.0.2",
+    "@tanviirsinghh/medium-common": "^3.4.5",
     "@tinymce/tinymce-react": "^5.1.1",
     "@types/dompurify": "^3.0.5",
     "@types/three": "^0.172.0",
@@ -48,7 +47,8 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.172.0",
-    "tinymce": "^7.5.0"
+    "tinymce": "^7.5.0",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
