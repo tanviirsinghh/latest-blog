@@ -9,7 +9,7 @@ export interface Blog {
   content: string
   title: string
   id: string
-  url: string //changed from number
+  url: string 
   _count:{
     like:number,
     comment:number
@@ -34,7 +34,7 @@ export interface SavedBlog {
     like:number,
     comment:number
     savedPosts:number
-  }//changed from number
+  }
   author: {
     name: string
   }
@@ -66,12 +66,12 @@ export function useUserDetails (authorId?: string) {
         const token = localStorage.getItem('token')
         if (!token) {
           throw new Error('Token Undefined')
-          // Handle the case where the token is missing
+      
         }
 
         const response = await axios.get(`${BACKEND_URL}/api/v1/user/details`, {
           headers: {
-            Authorization: `Bearer ${token}` // Ensure the token format is correct
+            Authorization: `Bearer ${token}` 
            
           },
           params: { authorId }
@@ -248,8 +248,6 @@ export const useSavedBlogs = () => {
     savedblogs
   }
 }
-
-
 
 export default function formatTimestamp(timestamp: string) {
   const date = new Date(timestamp);
