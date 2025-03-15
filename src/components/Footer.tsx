@@ -36,7 +36,7 @@ export default function Footer () {
           <p className='text-xs text-gray-500'>
             Designed with <span className='text-red-500'>&hearts; </span> by{' '}
             <a
-              href='www.instagram.com/tanviirsinghh'
+              href=''
               target='_blank'
               className='text-indigo-400 hover:underline'
             >
@@ -47,9 +47,9 @@ export default function Footer () {
       </div>
 
       <div className='bg-black '>
-        <div className='text-xs font-bold font-mono text-center text text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-800'>
+        {/* <div className='text-xs font-bold font-mono text-center text text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-800'>
           <p>FUCK OFF, GO TO HELL. MAI INDUSTRY DA BANDA NI !!</p>
-        </div>
+        </div> */}
       </div>
     </footer>
   )
